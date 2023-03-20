@@ -53,11 +53,26 @@ Function template represents pair of values that can be different types
 Constructor for std::pair, used for insertion in map and unordered map
 -What is the use and functionality of all of the above, why do we need them, how will Earth look like without them?
 -What is std::allocator, why and how to use it?
+Is a class template that used to allocate and deallocate templates of containers.
 -What are the member and non member functions of vectors, maps, stack?
--What is friend, and who is my friend>
--What is std::map::value_compare
+-What is friend, and who is my friend>?
+Is used to access other private or protected attributes of other class.
+class Car {
+private:
+    int fuelLevel;
+public:
+    friend void drive(Car& car, int distance);
+};
+
+void drive(Car& car, int distance) {
+    car.fuelLevel -= distance;
+    // ... drive the car ...
+}
+-What is std::map::value_compare?
+Compares key of the map.
 -How to make the test that compare the leaks and time?
 
+# Vectors
 
 # Refrences:
 https://www.cplusplus.com/
