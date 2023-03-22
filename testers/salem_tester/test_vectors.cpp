@@ -1,12 +1,13 @@
 #include "../../srcs/vector/vector.hpp"
 #include <iostream>
 #include <vector>
+#include <stddef.h>
 
 int main()
 {
 	std::vector<int> a;
-	vector<int> b;
+	std::cout << "Testing capcity" << std::endl;
+	return 0;
 
-	// b.a = 3;
-	std::cout << b.a << std::endl;
 }
+

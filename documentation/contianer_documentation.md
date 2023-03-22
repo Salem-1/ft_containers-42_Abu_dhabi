@@ -77,3 +77,14 @@ Compares key of the map.
 # Refrences:
 https://www.cplusplus.com/
 https://cppreference.com/
+
+vector:
+Constructors:
+(1) empty container constructor (default constructor)
+Constructs an empty container, with no elements.
+(2) fill constructor
+Constructs a container with n elements. Each element is a copy of val.
+(3) range constructor
+Constructs a container with as many elements as the range [first,last), with each element constructed from its corresponding element in that range, in the same order.
+(4) copy constructor
+Constructs a container with a copy of each of the elements in x, in the same order.
