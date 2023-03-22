@@ -6,7 +6,7 @@ OBJ =  $(SRC:.cpp=.o)
 
 
 all: $(NAME)
-	./salem_tester
+
 
 $(NAME): $(OBJ)
 	$(CXX)  $(CXXFLAGS) $(OBJ) -o $(NAME)
@@ -16,5 +16,9 @@ clean:
 
 fclean: clean
 	@rm -rf $(NAME)
+test: all
+	./salem_tester
 
+mem: re
+	valgrind ./salem_tester
 re: fclean all 

@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/22 13:29:10 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/23 01:35:37 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,35 +26,49 @@ class vector
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef typename allocator_type::const_reference	const_reference;
-		typedef typename allocator_type::max_size			max_capacity;
+		allocator_type										allocator;
+		size_t 												max_capacity;
 		size_t												_capacity;
+		size_t												old_capacity;
 		size_t												_size;
 		value_type											*arr;
-		allocator_type										allocator;
 
 
 
 		//---------------HELPER_FUNCTIONS--------------------//
 		size_t		update_capacity(size_t n)
 		{
-			if ((n + (_capacity + 1)) * 2 < SIZE_MAX )
+			if ((n + (_capacity + 1)) * 2 < max_capacity )
 				return ((n + (_capacity + 1)) * 2);
 			else
-				return (SIZE_MAX);
+				return (max_capacity);
 		};
-		// void	vec_realloc()
-		// {
-		// 	T	*tmp= allocator_type.allocate(_capacity);
-		// 	std::copy (T[0], T[_size], );
-		// }
+		value_type	*vec_realloc()
+		{
+			value_type	*tmp = allocator.allocate(_capacity);
+			for (size_t i = 0; i < _size; i++)
+				tmp[i] = arr[i];
+			if (old_capacity)
+			{
+				allocator.destroy(arr);
+				allocator.deallocate(arr, old_capacity);
+			}
+			return (tmp);
+		}
 
 
 	public:
-	//---------------------------CONSTRUCTORS---------------------//
-		vector(){
-			_capacity = 0;
-			_size = 0;
-		};
+		//---------------------------CONSTRUCTORS---------------------//
+		vector(): max_capacity(allocator.max_size()), _capacity(0), _size(0){};
+		~vector()
+		{
+			std::cout << "Destructor called !" <<std::endl;
+			if (_capacity)
+			{
+				allocator.destroy(arr);
+				allocator.deallocate(arr, _capacity);
+			}
+		}
 		vector		operator= (const vector &v2);
 		// vector(size_t n, value_type val);
 		// vector(const vector& v2){};
@@ -73,45 +87,93 @@ class vector
 		{
 			return (_capacity);
 		};
-		// size_type	max_size()
-		// {
-		// 	return (max_capacity / sizeof(value_type));
-		// };
-		//TBC inshalla
+		size_type	max_size()
+		{
+			return (max_capacity);
+		};
 		void push_back (const value_type& val)
 		{
-			arr = allocator_type.allocate(1);
-			//inshalla just fill first element and print it
-			//then do realloc for second element
-			//then scale it
-			//why not doing iterators first
-			// if (size == _capacity)
-			// {
-			// 	_capacity = update_capacity();
-			// 	vec_realloc();
-			// }
-			// else if (size < _capacity)
-			// {
-			// 	T[_size + 1] = val;
-			// }
-			// size++;
-			// // else
-			// // 	throw (index out of range exception);
+			if (_size == _capacity)
+			{
+				old_capacity = _capacity;
+				_capacity = update_capacity(1);
+				arr = vec_realloc();
+			}
+			arr[_size] = val;
+			_size++;
 		};
-		void		resize();
-		bool		empty() const;
-		void		reserve(size_type n);
-		void		shrink_to_fit();
-		
+		void resize (size_type n, value_type val = value_type())
+		{
+			if (n < _size)
+				_size = n;
+			else if (n > _size)
+			{
+				reserve(n);
+				for (size_t i = _size; i < _capacity; i++)
+					arr[i] = val;
+			}
+		};
+		void	resize(size_type n)
+		{
+			if (n < _size)
+				_size = n;
+			else if (n > _size)
+				reserve(n);
+		};
+		bool	empty() const
+		{
+			if (_size)
+				return (false);
+			else
+				return (true);
+		};
+		void	reserve(size_type n)
+		{
+			if (n <= _capacity)
+				return ;
+			old_capacity = _capacity;
+			_capacity = update_capacity(n - _capacity);
+			arr = vec_realloc();
+		};
 		//--------------------ELEMENT_ACCESS---------------------//
-		value_type&										operator[] (size_type n);
-		const value_type&								operator[] (size_type n) const;
-		value_type&										at (size_type n);
-		const value_type&								at (size_type n) const;
-		value_type&										front();
-		const value_type&								front() const;
-		value_type&										back();
-		const value_type&								back() const;
+		value_type	&operator[] (size_type n)
+		{
+			return (&arr[n]);
+		};
+		const value_type&	operator[] (size_type n) const
+		{
+			return (&arr[n]);
+		};
+		value_type&			at (size_type n)
+		{
+			if (n < _size)
+				return (&arr[n]);
+			else
+				throw (std::out_of_range("Index out of range"));
+		};
+		const value_type&	at (size_type n) const
+				{
+			if (n < _size)
+				return (&arr[n]);
+			else
+				throw (std::out_of_range("Index out of range"));
+		};
+		value_type&			front()
+		{
+			return (&arr[0]);
+		};
+		const value_type&	front() const
+		{
+			return (&arr[0]);
+		};
+		value_type&	back()
+		{
+			return (&arr[_size - 1])
+		};
+		const value_type&	back() const
+		{
+			return (&arr[_size - 1])
+		};
 
 };
 }

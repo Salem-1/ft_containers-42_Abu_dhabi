@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector.hpp                                         :+:      :+:    :+:   */
+/*   vector_draft.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/20 22:51:45 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/23 01:17:19 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ class vector
 		void											resize();
 		size_type										capacity()const;
 		bool											empty() const;
-		void											reserve(size_type n);
-		void											shrink_to_fit();
-		
+		void											reserve(size_type n);		
 		//--------------------ELEMENT_ACCESS---------------------//
 		reference		operator[] (size_type n);
 		const_reference	operator[] (size_type n) const;
