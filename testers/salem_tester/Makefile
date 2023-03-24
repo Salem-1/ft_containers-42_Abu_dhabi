@@ -9,15 +9,16 @@ all: $(NAME)
 
 
 $(NAME): $(OBJ)
-	$(CXX)  $(CXXFLAGS) $(OBJ) -o $(NAME)
+	@$(CXX)  $(CXXFLAGS) $(OBJ) -o $(NAME)
 
 clean:
 	@rm -rf *.o
 
 fclean: clean
 	@rm -rf $(NAME)
-test: all
-	./salem_tester
+test: re
+	@echo "\n\n"
+	@./salem_tester
 
 mem: re
 	valgrind ./salem_tester

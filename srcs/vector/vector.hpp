@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/23 01:35:37 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/24 19:23:32 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ class vector
 {
 	public:
 		typedef Alloc										allocator_type;
+		typedef  T*											iterator;
 	protected:
 		typedef T											value_type;
 		typedef typename allocator_type::pointer			pointer;
@@ -59,17 +60,17 @@ class vector
 
 	public:
 		//---------------------------CONSTRUCTORS---------------------//
-		vector(): max_capacity(allocator.max_size()), _capacity(0), _size(0){};
+		vector(): max_capacity(allocator.max_size()), _capacity(0), _size(0)
+		{};
 		~vector()
 		{
-			std::cout << "Destructor called !" <<std::endl;
 			if (_capacity)
 			{
 				allocator.destroy(arr);
 				allocator.deallocate(arr, _capacity);
 			}
 		}
-		vector		operator= (const vector &v2);
+		vector	operator= (const vector &v2);
 		// vector(size_t n, value_type val);
 		// vector(const vector& v2){};
 
@@ -78,8 +79,17 @@ class vector
 		//----------------------MEMBER_TYPE---------------------------//
 		typedef size_t										size_type;
 		
+		//----------------------ITERATORS-----------------------------//
+		iterator	begin()
+		{
+			return (&arr[0]);
+		}
+		iterator	end()
+		{
+			return (&arr[_size]);
+		}
 		//--------------------MEMBER_FUNTIONS---------------------//
-		size_type	size()
+		size_type	size() const
 		{
 			return (_size);
 		};
@@ -101,6 +111,14 @@ class vector
 			}
 			arr[_size] = val;
 			_size++;
+		};
+		void pop_back()
+		{
+			if (_size)
+			{
+				allocator.destroy(&arr[_size - 1]);
+				_size--;
+			}
 		};
 		void resize (size_type n, value_type val = value_type())
 		{
@@ -138,44 +156,108 @@ class vector
 		//--------------------ELEMENT_ACCESS---------------------//
 		value_type	&operator[] (size_type n)
 		{
-			return (&arr[n]);
+			return (arr[n]);
 		};
 		const value_type&	operator[] (size_type n) const
 		{
-			return (&arr[n]);
+			return (arr[n]);
 		};
 		value_type&			at (size_type n)
 		{
 			if (n < _size)
-				return (&arr[n]);
+				return (arr[n]);
 			else
 				throw (std::out_of_range("Index out of range"));
 		};
 		const value_type&	at (size_type n) const
 				{
 			if (n < _size)
-				return (&arr[n]);
+				return (arr[n]);
 			else
 				throw (std::out_of_range("Index out of range"));
-		};
+		}; 
 		value_type&			front()
 		{
-			return (&arr[0]);
+			return (arr[0]);
 		};
 		const value_type&	front() const
 		{
-			return (&arr[0]);
+			return (arr[0]);
 		};
 		value_type&	back()
 		{
-			return (&arr[_size - 1])
+			return (arr[_size - 1]);
 		};
 		const value_type&	back() const
 		{
-			return (&arr[_size - 1])
+			return (arr[_size - 1]);
 		};
-
+	//------------MODIFIRES------------------------//
+	void clear()
+	{
+		if (!_size)
+			return ;
+		for (size_t i = 0; i < _size; i++)
+			allocator.destroy(&arr[i]);
+		_size = 0;
+	};
+	
+	//------------ALLOCATOR---------------------//
+	allocator_type get_allocator() const
+	{
+		return (allocator);
+	};
 };
+			//--NON-MEMBERS--//
+	//------------RELATIONAL_OPERATORS-------------//
+
+template <class T, class Alloc>
+bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+{
+	if (lhs.size() != rhs.size())
+		return (false);
+	for (size_t i = 0; i < lhs.size(); i++)
+	{
+		
+		if (lhs.at(i) != rhs.at(i))
+			return (false);
+	}
+	return (true);
+}
+
+// template <class T, class Alloc>
+// bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+// {
+// 	std::vector<T>::iterator it1;
+// 	std::vector<T>::iterator it2;
+
+// 	size_t	small_size;
+// 	if (lhs.size() < rhs.size())
+// 		small_size = lhs.size();
+// 	else
+// 		small_size = rhs.size();
+// 	for (size_t i = 0; i < small_size; i++)
+// 	{
+// 		std::cout << "left = " << lhs.at(i) <<" right = " <<  rhs.at(i) << std::endl;
+// 		if (lhs.at(i) < rhs.at(i))
+// 			continue;
+// 		else
+// 			return (false);
+// 	}
+// 	std::cout << "left =  " << lhs.size() << ", right = " << rhs.size() << std::endl;
+// 	if (lhs.size() <= rhs.size())
+// 		return (true);
+// 	return (false);
+// }
+
+// template <class T, class Alloc>
+// bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+// template <class T, class Alloc>
+// bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+// template <class T, class Alloc>
+// bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+// template <class T, class Alloc>
+// bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
 }
 
 #endif

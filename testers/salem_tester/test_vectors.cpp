@@ -25,21 +25,92 @@ void	test_at()
 	std::cout << mine.front() << std::endl;
 }
 
-int main()
+void	test_push_back()
 {
-	std::cout << "Testing capcity" << std::endl;
 	ft::vector<int> a;
 	a.back();
 	std::cout <<  a.back() << std::endl;
 	std::cout << "yes empty " << a.empty() << std::endl; 
 	std::cout << "NO empty " << a.empty() << std::endl; 
-	// for (int i = 0; i < 100000; i++)
-	// {
+	for (int i = 0; i < 100000; i++)
+	{
+		a.push_back(i);
+		std::cout <<  a[i] << " capacity = " << a.capacity() <<std::endl;
+	}
+};
+
+void	test_pop()
+{
+	std::vector<int> brand;
+	ft::vector<int> copy;
+	for (int i = 0; i < 1000;i ++)
+	{
+		brand.push_back(i);
+		copy.push_back(i);
+	}
+	for (int i = 0; i < 1000;i ++)
+	{
+		brand.pop_back();
+		copy.pop_back();
+		std::cout << brand.front() << " == " << copy.front() << std::endl;
+		// if (brand.back() != copy.back())
+		// 	throw (std::out_of_range("Failed pop_back()"));
+
+	}
+}
+
+void	test_clear()
+{
+	std::vector<int> brand;
+	ft::vector<int> copy;
+	for (int i = 0; i < 1000;i ++)
+	{
+		brand.push_back(i);
+		copy.push_back(i);
+	}
+	std::cout << "Size before clear ";
+	std::cout << brand.size() << " == " << copy.size() << std::endl;
+	brand.clear();
+	copy.clear();
+	std::cout << "Size after clear ";
+	std::cout << brand.size() << " == " << copy.size() << std::endl;
+	std::cout << "Capacity after clear ";
+	std::cout << brand.capacity() << " == " << copy.capacity() << std::endl;
+	brand.get_allocator();
+	copy.get_allocator();
+}
+
+void	test_equalibrium()
+{
+	std::vector<int> brand;
+	std::vector<int> copy;
+	for (int i = 0; i < 10;i ++)
+	{
+		brand.push_back(i);
+		copy.push_back(i);
+	}
+	brand.push_back(1);
+	// brand.push_back(-1);
+	// brand.push_back(-1);
+	if (copy == brand)
+		std::cout << "They are equal" << std::endl;
+	else
+		std::cout << "Not equal" << std::endl;
+}
+void	test_begin_end()
+{
+	ft::vector<int> a;
+	ft::vector<int>::iterator it;
+	it = a.end();
+	std::cout<< "iterator " << it << std::endl;
+	// for (int i = 10; i < 100;i ++)
 	// 	a.push_back(i);
-	// 	std::cout <<  a[i] << " capacity = " << a.capacity() <<std::endl;
-	// }
-	test_at();
-	return 0;
+	// for (it = a.begin(); it != a.end(); it++)
+	// 	std::cout<< "iterator " << *it << std::endl;
+}
+int main()
+{
+	test_begin_end();
 
 }
 

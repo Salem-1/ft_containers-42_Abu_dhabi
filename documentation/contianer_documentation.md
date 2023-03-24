@@ -88,3 +88,18 @@ Constructs a container with n elements. Each element is a copy of val.
 Constructs a container with as many elements as the range [first,last), with each element constructed from its corresponding element in that range, in the same order.
 (4) copy constructor
 Constructs a container with a copy of each of the elements in x, in the same order.
+
+
+
+
+
+
+
+
+
+Notes:
+Left functions in vector:
+1-iterators
+2-insert
+3-erase  (both needs iterators)
+4-Swap (needs copy constructor)

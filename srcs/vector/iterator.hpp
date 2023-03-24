@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 22:22:00 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/20 22:25:19 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/24 18:18:12 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,5 @@ class iterator
 		T*	end();
 		T*	rbegin();
 		T*	rend();
-		T*	cbegin();
-		T*	cend();
-		T*	crbegin();
-		T*	crend();
 };
 #endif
