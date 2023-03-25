@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/24 19:23:32 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/25 04:10:23 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,85 @@
 #include <iostream>
 
 namespace ft{
+
+template <typename vector>
+class iterator
+{
+	public:
+		typedef typename vector::value_type value_type;
+		typedef value_type* pointer_type;
+		typedef value_type& refrence_type;
+		//defining const iterator
+		typedef const value_type* const_pointer_type;
+		typedef const value_type& const_refrence_type;
+		iterator(): _ptr(NULL) {};
+		iterator(pointer_type ptr): _ptr(ptr) {};
+		iterator(const iterator& it): _ptr(it._ptr) {};
+		iterator& operator=(const iterator& rhs)
+		{
+			_ptr = rhs._ptr;
+			return (*this);
+		};
+		iterator& operator=(pointer_type ptr)
+		{
+			_ptr = ptr;
+			return (*this);
+		};
+		iterator& operator++()
+		{
+			_ptr++;
+			return (*this);
+		};
+		iterator operator++(int)
+		{
+			iterator tmp(*this);
+			operator++();
+			return (tmp);
+		};
+		iterator& operator--()
+		{
+			_ptr--;
+			return (*this);
+		};
+		iterator operator--(int)
+		{
+			iterator tmp(*this);
+			operator--();
+			return (tmp);
+		};
+		refrence_type operator*()
+		{
+			return (*_ptr);
+		};
+		iterator operator->()
+		{
+			return (_ptr);
+		};
+		bool operator==(const iterator& rhs)
+		{
+			return (_ptr == rhs._ptr);
+		};
+		bool operator!=(const iterator& rhs)
+		{
+			return (_ptr != rhs._ptr);
+		};
+		// friend std::ostream& operator<<(std::ostream& os, const iterator& it)
+ 		// {
+		// 	return os << *it;
+ 		// }
+	protected:
+		pointer_type _ptr;
+};
+
 template < class T, class Alloc = std::allocator<T> >
 class vector
 {
 	public:
 		typedef Alloc										allocator_type;
-		typedef  T*											iterator;
-	protected:
 		typedef T											value_type;
+		typedef  iterator< vector<T> >						iterator;
+        // typedef iterator<const vector<T>> 					const_iterator;
+	protected:
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::const_pointer		const_pointer;
@@ -80,14 +151,22 @@ class vector
 		typedef size_t										size_type;
 		
 		//----------------------ITERATORS-----------------------------//
-		iterator	begin()
+		iterator begin()
 		{
-			return (&arr[0]);
-		}
-		iterator	end()
+			return (iterator(arr));
+		};
+		iterator end()
 		{
-			return (&arr[_size]);
-		}
+			return (iterator(arr + _size));
+		};
+		// const_iterator begin() const
+		// {
+		// 	return (const_iterator(arr));
+		// };
+		// const_iterator end() const
+		// {
+		// 	return (const_iterator(arr + _size));
+		// };
 		//--------------------MEMBER_FUNTIONS---------------------//
 		size_type	size() const
 		{
