@@ -106,47 +106,29 @@ void	test_begin_end()
 	for (it = a.begin(); it != a.end(); it++)
 		std::cout<< "iterator " << *it << std::endl;
 }
+void	test_rbegin_rend()
+{
+	ft::vector<int> a;
+	ft::vector<int>::reverse_iterator it;
+	for (int i = 10; i < 100; i++)
+		a.push_back(i);
+	for (it = a.rbegin(); it != a.rend(); it++)
+		std::cout<< "iterator " << *it << std::endl;
+}
 
-// void test_begin_end()
-// {
-//     ft::vector<int> a;
-//     for (int i = 10; i < 100; i++)
-//         a.push_back(i);
-//     ft::vector<int>::iterator it = a.begin();
-//     std::cout << "iterator " << *it << std::endl;
-// }
-// void	test_rbegin_rend()
-// {
-// 	std::vector<int> a;
-// 	std::vector<int>::iterator it;
-// 	for (int i = 10; i < 100;i ++)
-// 		a.push_back(i);
-// 	it = a.rend();
-// 		std::cout<< "iterator " << *it << std::endl;
-// 	// for (it = a.begin(); it != a.end(); it++)
-// 	// 	std::cout<< "iterator " << *it << std::endl;
-// }
 
-// void	test_const_iterator()
-// {
-//     ft::vector<int> vec;
 
-//     // populate the vector
-//     for (int i = 0; i < 5; i++) {
-//         vec.push_back(i);
-//     }
-
-//     // test const iterator
-//     const ft::vector<int> const_vec(vec);
-//     ft::vector<int>::const_iterator it = const_vec.begin();
-//     while (it != const_vec.end()) {
-//         std::cout << *it << " ";
-//         it++;
-//     }
-//     std::cout << std::endl;
-// }
+void	test_const_iter()
+{
+	std::vector<int> a;
+	std::vector<int>::const_iterator it;
+	for (int i = 10; i < 100; i++)
+		a.push_back(i);
+	for (it = a.begin(); it != a.end(); it++)
+		std::cout<< "iterator " << *it << std::endl;
+}
 int main()
 {
-	test_begin_end();
+	test_const_iter();
 }
 
