@@ -98,8 +98,20 @@ Constructs a container with a copy of each of the elements in x, in the same ord
 
 
 Notes:
-Left functions in vector:
-1-iterators
-2-insert
-3-erase  (both needs iterators)
+Left functions in vector: 
+1-iterators (done)
+2-insert 
+3-erase 
 4-Swap (needs copy constructor)
+
+
+
+nice use of == and < to do all other operations:
+|--------------------------------|
+|operation | equivelant operation|
+|--------------------------------|
+|a!=b	  | !(a==b)              |
+|a>b	  | b<a                  |
+|a<=b	  | !(b<a)               |
+|a>=b	  | !(a<b)               |
+|--------------------------------|
