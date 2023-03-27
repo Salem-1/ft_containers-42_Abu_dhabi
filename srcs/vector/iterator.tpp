@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 22:22:00 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/27 06:39:38 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/27 23:03:27 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,10 @@ class Veciterator
 		{
 			return (_ptr != rhs._ptr);
 		};
-		
+		pointer_type	get_ptr()
+		{
+			return (_ptr);
+		}
 	protected:
 		pointer_type _ptr;
 };

@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/27 07:09:58 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/28 00:22:35 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,13 @@ class vector
 		typedef Vecreverse_iterator< vector<T> >			reverse_iterator;
 		typedef reverse_iterator							const_reverse_iterator;
 		typedef size_t										size_type;
-	protected:
-		typedef typename allocator_type::pointer			pointer;
+		typedef typename allocator_type::difference_type difference_type;
 		typedef typename allocator_type::reference			reference;
+		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef typename allocator_type::const_reference	const_reference;
+
+	protected:
 		allocator_type										allocator;
 		size_type 											max_capacity;
 		size_type												_capacity;
@@ -154,14 +156,6 @@ class vector
 		{
 			return (reverse_iterator(arr - 1));
 		};
-		// const_iterator begin() const
-		// {
-		// 	return (const_iterator(arr));
-		// };
-		// const_iterator end() const
-		// {
-		// 	return (const_iterator(arr + _size));
-		// };
 		//--------------------MEMBER_FUNTIONS---------------------//
 		size_type	size() const
 		{
@@ -274,12 +268,29 @@ class vector
 		_size--;
 		return (position);
 	};
-	
-	// iterator erase (iterator first, iterator last)
-	// {
-	// 	if (last != )
-		
-	// };
+
+	iterator erase (iterator first, iterator last)
+	{
+		iterator	tfirst = first;
+		iterator	tend = last;
+		while (tfirst != last)
+		{
+			allocator.destroy(tfirst.get_ptr());
+			tfirst++;
+		}
+		tfirst = first;
+		while (last != end())
+		{
+			*tfirst = *last;
+			tfirst++;
+			last++;
+		}
+		std::cout << "size was " << _size << std::endl;
+		_size -= std::distance(first.get_ptr(), tend.get_ptr());
+		std::cout << "size now " << _size << std::endl;
+		return (first);
+;	};
+
 	void clear()
 	{
 		if (!_size)
@@ -407,7 +418,13 @@ insert(iterator position, InputIterator first, InputIterator last)
 	_capacity = new_capacity;
 	arr = tmp;
 };
-	
+
+	void	swap(vector& x)
+	{
+		vector	tmp(x);
+		x = *this;
+		*this = tmp; 
+	};
 	//------------ALLOCATOR---------------------//
 	allocator_type get_allocator() const
 	{
@@ -484,6 +501,14 @@ bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	return (!(lhs < rhs));
 };
 
+template <class T, class Alloc>
+void	swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
+{
+	vector<T> tmp(x);
+
+	x = y;
+	y = x;
+};
 }
 
 #endif
