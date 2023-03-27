@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/23 01:17:19 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/26 19:45:31 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ class vector
 		void		swap (vector& x);
 		void		clear();
 		void		push_back (const value_type& val);
-		// template <class... Args>iterator emplace (const_iterator position, Args&&... args);??
-		// template <class... Args>  void emplace_back (Args&&... args);??
 		//--------------------------ALLOCATOR--------------------//
 		allocator_type	get_allocator() const;
 		//------------------NON_MEMBER_FUNTION_OVERLOAD----------//

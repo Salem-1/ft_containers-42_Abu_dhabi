@@ -1,6 +1,7 @@
 NAME = salem_tester
 SRC =  test_vectors.cpp 
 CXXFLAGS= -Wall -Wextra -Werror -std=c++98
+# CXXFLAGS= 
 CXX = c++ 
 OBJ =  $(SRC:.cpp=.o)
 

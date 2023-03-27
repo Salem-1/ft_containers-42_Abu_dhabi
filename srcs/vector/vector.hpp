@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/26 04:35:18 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/27 07:09:58 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define VECTOR_HPP
 #include <iostream>
 #include "iterator.tpp"
-// #include "const_iterator.tpp"
+#include "type_safety.tpp"
 
 namespace ft{
 
@@ -31,21 +31,18 @@ class vector
 		typedef iterator									const_iterator;
 		typedef Vecreverse_iterator< vector<T> >			reverse_iterator;
 		typedef reverse_iterator							const_reverse_iterator;
-        // typedef iterator<const vector<T>> 					const_iterator;
+		typedef size_t										size_type;
 	protected:
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef typename allocator_type::const_reference	const_reference;
 		allocator_type										allocator;
-		size_t 												max_capacity;
-		size_t												_capacity;
-		size_t												old_capacity;
-		size_t												_size;
-		value_type											*arr;
-
-
-
+		size_type 											max_capacity;
+		size_type												_capacity;
+		size_type												old_capacity;
+		size_type												_size;
+		value_type												*arr;
 		//---------------HELPER_FUNCTIONS--------------------//
 		size_t		update_capacity(size_t n)
 		{
@@ -68,30 +65,62 @@ class vector
 			}
 			return (tmp);
 		}
-
-
 	public:
+		void	push_back (const value_type& val)
+		{
+			if (_size == _capacity)
+			{
+				old_capacity = _capacity;
+				_capacity = update_capacity(1);
+				arr = vec_realloc();
+			}
+			arr[_size] = val;
+			_size++;
+		};
 		//---------------------------CONSTRUCTORS---------------------//
-		vector(): max_capacity(allocator.max_size()), _capacity(0), _size(0)
+		
+		explicit vector (const allocator_type& alloc = allocator_type()) : allocator(alloc), 
+		max_capacity(allocator.max_size()), _capacity(0), _size(0)
 		{};
+		explicit vector (size_type n,
+			const value_type& val = value_type(),
+			const allocator_type& alloc = allocator_type()) : allocator(alloc),
+				max_capacity(allocator.max_size()),  _capacity(0), _size(n)
+			{
+				_capacity = update_capacity(n);
+				arr = allocator.allocate(_capacity);
+				for (size_type i = 0; i < _size; i++)
+					arr[i] = val;
+			};
+		template <class InputIterator>
+		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()):
+			allocator(alloc), max_capacity(allocator.max_size()),
+			 _capacity(0), _size(0)
+		{
+			assign(first, last);
+		}
+		vector	&operator= (const vector &v2)
+		{
+			std::cout<< std::endl;
+			if (this != &v2)
+			{
+				assign(v2.begin(), v2.end());
+			}
+			return (*this);
+		}
+		vector (const vector& x):  allocator(x.get_allocator()), 
+		max_capacity(allocator.max_size()), _capacity(0), _size(0)
+		{
+			*this = x;
+		};
 		~vector()
 		{
 			if (_capacity)
 			{
-				//I believe should destroy in a loop
-				allocator.destroy(arr); //I doubt this linewill cause leaks.
+				clear(); //I doubt this linewill cause leaks.
 				allocator.deallocate(arr, _capacity);
 			}
 		}
-		vector	operator= (const vector &v2);
-		// vector(size_t n, value_type val);
-		// vector(const vector& v2){};
-
-
-
-		//----------------------MEMBER_TYPE---------------------------//
-		typedef size_t										size_type;
-		
 		//----------------------ITERATORS-----------------------------//
 		iterator begin()
 		{
@@ -145,17 +174,6 @@ class vector
 		size_type	max_size()
 		{
 			return (max_capacity);
-		};
-		void push_back (const value_type& val)
-		{
-			if (_size == _capacity)
-			{
-				old_capacity = _capacity;
-				_capacity = update_capacity(1);
-				arr = vec_realloc();
-			}
-			arr[_size] = val;
-			_size++;
 		};
 		void pop_back()
 		{
@@ -237,7 +255,31 @@ class vector
 		{
 			return (arr[_size - 1]);
 		};
-	//------------MODIFIRES------------------------//
+	//----------------------MODIFIRES------------------------//
+	iterator erase (iterator position)
+	{
+		iterator it = position;
+		if (it == end() - 1)
+		{
+			pop_back();
+			return (position);
+		}
+		*it = *(it + 1);
+		it++;
+		while (it != end())
+		{
+			*it = *(it + 1);
+			it++;
+		}
+		_size--;
+		return (position);
+	};
+	
+	// iterator erase (iterator first, iterator last)
+	// {
+	// 	if (last != )
+		
+	// };
 	void clear()
 	{
 		if (!_size)
@@ -246,7 +288,24 @@ class vector
 			allocator.destroy(&arr[i]);
 		_size = 0;
 	};
-	
+	template <class InputIterator>
+	typename ft::enable_if<!ft::is_integral<InputIterator>::value, void>::type 
+		 assign (InputIterator first, InputIterator last)
+	{
+		clear();
+		while(first != last)
+		{
+			push_back(*first);
+			first++;
+		}
+	};
+	void assign (size_type n, const value_type& val)
+	{
+		clear();
+		for (size_t i = 0; i < n; i++)
+			push_back(val);
+	};
+
 iterator insert (iterator position, const value_type& val)
 {
 	value_type	*tmp;
@@ -308,7 +367,11 @@ void insert (iterator position, size_type n, const value_type& val)
 	arr = tmp;
 };
 
-template <class InputIterator>    void insert(iterator position, InputIterator first, InputIterator last)
+//modify the function below to use std::enable_if and std::is_integral
+
+template <class InputIterator>
+typename ft::enable_if<!ft::is_integral<InputIterator>::value, void>::type 
+insert(iterator position, InputIterator first, InputIterator last)
 {
 	value_type	*tmp;
 	int		range = 0;

@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 22:22:00 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/26 04:10:48 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/27 06:39:38 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,11 @@ template <typename vector>
 class Veciterator
 {
 	public:
-		typedef typename vector::value_type value_type;
-		typedef value_type* pointer_type;
-		typedef const value_type* const_pointer_type;
-		typedef value_type& refrence_type;
+		typedef typename vector::value_type	value_type;
+		typedef value_type* 				pointer_type;
+		typedef const value_type*			const_pointer_type;
+		typedef value_type&					refrence_type;
+		
 		Veciterator(): _ptr(NULL) {};
 		Veciterator(pointer_type ptr): _ptr(ptr) {};
 		Veciterator(const_pointer_type cptr): _ptr(cptr) {};
@@ -95,6 +96,7 @@ class Veciterator
 		{
 			return (_ptr != rhs._ptr);
 		};
+		
 	protected:
 		pointer_type _ptr;
 };
@@ -157,6 +159,10 @@ class Vecreverse_iterator
 		bool operator!=(const Vecreverse_iterator& rhs)
 		{
 			return (_ptr != rhs._ptr);
+		}
+		pointer_type	get_pointer()
+		{
+			return (_ptr);
 		}
 	protected:
 		pointer_type _ptr;
