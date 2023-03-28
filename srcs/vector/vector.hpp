@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/28 00:22:35 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/28 05:38:12 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class vector
 	public:
 		typedef Alloc										allocator_type;
 		typedef T											value_type;
-		typedef Veciterator< vector<T> >					iterator;
+		typedef iterato< vector<T> >					iterator;
 		typedef iterator									const_iterator;
 		typedef Vecreverse_iterator< vector<T> >			reverse_iterator;
 		typedef reverse_iterator							const_reverse_iterator;
@@ -103,7 +103,6 @@ class vector
 		}
 		vector	&operator= (const vector &v2)
 		{
-			std::cout<< std::endl;
 			if (this != &v2)
 			{
 				assign(v2.begin(), v2.end());
@@ -165,7 +164,7 @@ class vector
 		{
 			return (_capacity);
 		};
-		size_type	max_size()
+		size_type	max_size() const
 		{
 			return (max_capacity);
 		};
@@ -219,14 +218,14 @@ class vector
 		{
 			return (arr[n]);
 		};
-		value_type&			at (size_type n)
+		reference			at (size_type n)
 		{
 			if (n < _size)
 				return (arr[n]);
 			else
 				throw (std::out_of_range("Index out of range"));
 		};
-		const value_type&	at (size_type n) const
+		const_reference	at (size_type n) const
 				{
 			if (n < _size)
 				return (arr[n]);
@@ -285,9 +284,7 @@ class vector
 			tfirst++;
 			last++;
 		}
-		std::cout << "size was " << _size << std::endl;
 		_size -= std::distance(first.get_ptr(), tend.get_ptr());
-		std::cout << "size now " << _size << std::endl;
 		return (first);
 ;	};
 
