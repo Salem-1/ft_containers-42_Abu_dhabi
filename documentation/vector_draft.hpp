@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/26 19:45:31 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/29 06:12:47 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ class vector
 		typedef typename __alloc_traits::const_pointer	const_pointer;
 		typedef pointer									iterator;
 		typedef const_pointer							const_iterator;
+		
+
 
 };
 
@@ -109,3 +111,4 @@ private:
 
 
 */
+

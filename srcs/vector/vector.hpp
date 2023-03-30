@@ -6,15 +6,16 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/28 05:38:12 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/29 18:34:03 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 #include <iostream>
-#include "iterator.tpp"
+#include "reverse_iterator.hpp"
 #include "type_safety.tpp"
+
 
 namespace ft{
 
@@ -27,9 +28,10 @@ class vector
 	public:
 		typedef Alloc										allocator_type;
 		typedef T											value_type;
-		typedef iterato< vector<T> >					iterator;
+		typedef Veciterator< T>					iterator;
 		typedef iterator									const_iterator;
-		typedef Vecreverse_iterator< vector<T> >			reverse_iterator;
+	//change this later
+		typedef typename ft::reverse_iterator< iterator >		reverse_iterator;
 		typedef reverse_iterator							const_reverse_iterator;
 		typedef size_t										size_type;
 		typedef typename allocator_type::difference_type difference_type;
@@ -84,6 +86,7 @@ class vector
 		explicit vector (const allocator_type& alloc = allocator_type()) : allocator(alloc), 
 		max_capacity(allocator.max_size()), _capacity(0), _size(0)
 		{};
+		
 		explicit vector (size_type n,
 			const value_type& val = value_type(),
 			const allocator_type& alloc = allocator_type()) : allocator(alloc),
@@ -94,6 +97,7 @@ class vector
 				for (size_type i = 0; i < _size; i++)
 					arr[i] = val;
 			};
+		
 		template <class InputIterator>
 		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()):
 			allocator(alloc), max_capacity(allocator.max_size()),
@@ -101,10 +105,12 @@ class vector
 		{
 			assign(first, last);
 		}
+		
 		vector	&operator= (const vector &v2)
 		{
 			if (this != &v2)
 			{
+				clear();
 				assign(v2.begin(), v2.end());
 			}
 			return (*this);
@@ -179,21 +185,20 @@ class vector
 		void resize (size_type n, value_type val = value_type())
 		{
 			if (n < _size)
-				_size = n;
+				erase(begin() + n, end());
 			else if (n > _size)
 			{
-				reserve(n);
-				for (size_t i = _size; i < _capacity; i++)
-					arr[i] = val;
+				insert(end(), n - size(), val);
 			}
 		};
-		void	resize(size_type n)
-		{
-			if (n < _size)
-				_size = n;
-			else if (n > _size)
-				reserve(n);
-		};
+			// void	resize(size_type n)
+			// {
+			// 	if (n < _size)
+			// 		_size = n;
+			// 	else if (n > _size)
+			// 		reserve(n);
+			// };
+			
 		bool	empty() const
 		{
 			if (_size)
@@ -257,12 +262,16 @@ class vector
 			pop_back();
 			return (position);
 		}
-		*it = *(it + 1);
-		it++;
-		while (it != end())
+		// *it = *(it + 1);
+		// it++;
+		iterator tmp = it;
+		tmp++;
+		while (tmp != end() && it != end())
 		{
-			*it = *(it + 1);
+			
+			*it = *tmp;
 			it++;
+			tmp++;
 		}
 		_size--;
 		return (position);
@@ -274,7 +283,7 @@ class vector
 		iterator	tend = last;
 		while (tfirst != last)
 		{
-			allocator.destroy(tfirst.get_ptr());
+			allocator.destroy(tfirst.base());
 			tfirst++;
 		}
 		tfirst = first;
@@ -284,7 +293,7 @@ class vector
 			tfirst++;
 			last++;
 		}
-		_size -= std::distance(first.get_ptr(), tend.get_ptr());
+		_size -= std::distance(first.base(), tend.base());
 		return (first);
 ;	};
 
@@ -314,6 +323,7 @@ class vector
 			push_back(val);
 	};
 
+/*
 iterator insert (iterator position, const value_type& val)
 {
 	value_type	*tmp;
@@ -342,11 +352,34 @@ iterator insert (iterator position, const value_type& val)
 	arr = tmp;
 	return (begin() + location);
 };
-
+*/
+iterator insert (iterator position, const value_type& val)
+{
+	iterator	tmp = begin();
+	iterator	filler;
+	vector<T>	new_vec(_size + 1);
+	std::cout << "Calling insert (position, val)" << std::endl;
+	while (tmp != position)
+	{
+		new_vec.push_back(*tmp);
+		tmp++;
+	}
+	new_vec.push_back(val);
+	position = tmp;
+	tmp++;
+	while(tmp != end())
+	{
+		new_vec.push_back(*tmp);
+		tmp++;
+	}
+	this->swap(new_vec);
+	return (position);
+};
 void insert (iterator position, size_type n, const value_type& val)
 {
 	value_type	*tmp;
 	size_t		new_capacity = _capacity;
+	std::cout << "Calling insert (position, n,       val)" << std::endl;
 	if (_capacity < _size + n)
 	{
 		new_capacity += n;
@@ -378,12 +411,13 @@ void insert (iterator position, size_type n, const value_type& val)
 //modify the function below to use std::enable_if and std::is_integral
 
 template <class InputIterator>
-typename ft::enable_if<!ft::is_integral<InputIterator>::value, void>::type 
-insert(iterator position, InputIterator first, InputIterator last)
+void insert(iterator position, InputIterator first, InputIterator last, 
+typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 {
 	value_type	*tmp;
 	int		range = 0;
-	while ((first + range) != last)
+	std::cout << "Calling insert (iterator first , ;last)" << std::endl;
+	while (first++ != last)
 		range++;
 	size_t		new_capacity = _capacity;
 	if (_capacity < _size + range)
@@ -400,7 +434,7 @@ insert(iterator position, InputIterator first, InputIterator last)
 	}
 	while (first != last)
 	{
-		allocator.construct(&tmp[i++], first);
+		allocator.construct(&tmp[i++], *first);
 		first++;
 	}
 	while (it != end())
