@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 22:22:00 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/31 18:36:29 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/31 22:22:37 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ reference	iterator_traits<Iterator>::referenc
 				return (*this);
 			};
 			
-			Veciterator& operator+(int n)
-			{
-				_ptr += n;
-				return (*this);
-			};
+			// Veciterator& operator+(int n)
+			// {
+			// 	_ptr += n;
+			// 	return (*this);
+			// };
 			Veciterator& operator-(int n)
 			{
 				_ptr -= n;
@@ -188,7 +188,7 @@ reference	iterator_traits<Iterator>::referenc
 		return (lhs.base() + d);
 	}
 	template < class iter1>
-	int operator+ (const Veciterator<iter1>& lhs,
+	Veciterator<iter1> operator+ (const Veciterator<iter1>& lhs,
 		int d)
 	{
 		return (lhs.base() + d);

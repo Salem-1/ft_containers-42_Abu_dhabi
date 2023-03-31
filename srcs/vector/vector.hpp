@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/31 14:49:39 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/31 22:30:37 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -575,7 +575,7 @@ void	swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
 	vector<T> tmp(x);
 
 	x = y;
-	y = x;
+	y = tmp;
 };
 }
 
