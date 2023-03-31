@@ -31,6 +31,29 @@ void	printSize(TESTED_NAMESPACE::vector<T> const &vct, bool print_content = true
 	std::cout << "###############################################" << std::endl;
 }
 
+int		rev_mli_comp(void)
+{
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct;
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vct.begin();
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator cit = vct.begin();
+
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator rit(it);
+
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator crit(rit);
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator crit_(it);
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator crit_2(cit);
+
+	/* error expected
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator rit_(crit);
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator rit2(cit);
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it2(rit);
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator cit2(crit);
+	*/
+
+	std::cout << "OK" << std::endl;
+	return (0);
+}
+
 void	test_insert_mli()
 {
 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(10);
@@ -562,7 +585,7 @@ int		test_biderection_at(void)
 int main()
 {
 
-	test_insert_mli();
+	rev_mli_comp();
 
 }
 

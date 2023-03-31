@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 23:11:09 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/29 01:49:38 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/01 00:35:11 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ template <class iterator>
 			
 			reverse_iterator(): _ptr(NULL) {};
 			reverse_iterator(pointer_type ptr): _ptr(ptr) {};
-			reverse_iterator(const_pointer_type cptr): _ptr(cptr) {};
-			reverse_iterator(const reverse_iterator& it): _ptr(it._ptr) {};
+			// reverse_iterator(const_pointer_type cptr): _ptr(cptr) {};
+			reverse_iterator(const reverse_iterator& it): _ptr(it.base()) {};
+			reverse_iterator(const iterator& it): _ptr(it.base()) {};
 			
 			template <class T>
 			reverse_iterator(const reverse_iterator<T>& it): _ptr(it.base()) {};
