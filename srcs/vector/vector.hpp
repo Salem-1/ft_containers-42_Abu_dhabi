@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/29 18:34:03 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/31 08:26:48 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,13 +323,16 @@ class vector
 			push_back(val);
 	};
 
-/*
+
 iterator insert (iterator position, const value_type& val)
 {
+	if (position == end())
+	{
+		push_back(val);
+		return (position);
+	}
 	value_type	*tmp;
-	size_t		new_capacity = _capacity;
-	if (_capacity == _size)
-		tmp = allocator.allocate(++new_capacity);
+	tmp = allocator.allocate(_capacity + 1);
 	iterator it = begin();
 	int	i = 0;
 	while (it != position)
@@ -338,7 +341,9 @@ iterator insert (iterator position, const value_type& val)
 		it++; i++;
 	}
 	size_t location = i;
-	tmp[i++] = val;
+	tmp[i] = val;
+	// std::cout << "inserted  >>>   " << tmp[i] << "      in lcation " << i << std::endl;
+	i++;
 	while (it != end())
 	{
 		tmp[i] = arr[i - 1];
@@ -348,52 +353,50 @@ iterator insert (iterator position, const value_type& val)
 	clear();
 	allocator.deallocate(arr, _capacity);
 	_size = old_size + 1;
-	_capacity = new_capacity;
+	_capacity = _size;
 	arr = tmp;
 	return (begin() + location);
 };
-*/
-iterator insert (iterator position, const value_type& val)
-{
-	iterator	tmp = begin();
-	iterator	filler;
-	vector<T>	new_vec(_size + 1);
-	std::cout << "Calling insert (position, val)" << std::endl;
-	while (tmp != position)
-	{
-		new_vec.push_back(*tmp);
-		tmp++;
-	}
-	new_vec.push_back(val);
-	position = tmp;
-	tmp++;
-	while(tmp != end())
-	{
-		new_vec.push_back(*tmp);
-		tmp++;
-	}
-	this->swap(new_vec);
-	return (position);
-};
+
+// iterator insert (iterator position, const value_type& val)
+// {
+// 	iterator	tmp = begin();
+// 	iterator	filler;
+// 	vector<T>	new_vec(_size + 1);
+// 	while (tmp != position)
+// 	{
+// 		new_vec.push_back(*tmp);
+// 		tmp++;
+// 	}
+// 	new_vec.push_back(val);
+// 	position = tmp;
+// 	tmp++;
+// 	while(tmp != end())
+// 	{
+// 		new_vec.push_back(*tmp);
+// 		tmp++;
+// 	}
+// 	this->swap(new_vec);
+// 	return (position);
+// };
 void insert (iterator position, size_type n, const value_type& val)
 {
-	value_type	*tmp;
-	size_t		new_capacity = _capacity;
-	std::cout << "Calling insert (position, n,       val)" << std::endl;
-	if (_capacity < _size + n)
+	if (position == end())
 	{
-		new_capacity += n;
-		tmp = allocator.allocate(new_capacity);
+		for (size_t i = 0; i < n; i++)
+			push_back(val);
+		return ;
 	}
+	value_type	*tmp;
+	tmp = allocator.allocate(_capacity + n);
 	iterator it = begin();
-	size_t	i = 0;
+	int	i = 0;
 	while (it != position)
 	{
 		tmp[i] = arr[i];
 		it++; i++;
 	}
-	size_t location = i;
-	while (i < location + n)
+	for (size_type x = 0; x < n; x++)
 		tmp[i++] = val;
 	while (it != end())
 	{
@@ -404,7 +407,7 @@ void insert (iterator position, size_type n, const value_type& val)
 	clear();
 	allocator.deallocate(arr, _capacity);
 	_size = old_size + n;
-	_capacity = new_capacity;
+	_capacity = _size;
 	arr = tmp;
 };
 
@@ -414,9 +417,40 @@ template <class InputIterator>
 void insert(iterator position, InputIterator first, InputIterator last, 
 typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 {
+	if (position == end())
+	{
+		for (; first != last; first++)
+			push_back(*first);
+		return ;
+	}
+	value_type	*tmp;
+	size_type n = std::distance(first.base(), last.base());
+	tmp = allocator.allocate(_capacity + n);
+	iterator it = begin();
+	int	i = 0;
+	while (it != position)
+	{
+		tmp[i] = arr[i];
+		it++; i++;
+	}
+	for (; first != last; first++)
+		tmp[i++] = *first;
+	while (it != end())
+	{
+		tmp[i] = arr[i - n];
+		it++; i++;
+	}
+	size_t	old_size = _size;
+	clear();
+	allocator.deallocate(arr, _capacity);
+	_size = old_size + n;
+	_capacity = _size;
+	arr = tmp;
+}
+
+/*{
 	value_type	*tmp;
 	int		range = 0;
-	std::cout << "Calling insert (iterator first , ;last)" << std::endl;
 	while (first++ != last)
 		range++;
 	size_t		new_capacity = _capacity;
@@ -449,7 +483,7 @@ typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::t
 	_capacity = new_capacity;
 	arr = tmp;
 };
-
+*/
 	void	swap(vector& x)
 	{
 		vector	tmp(x);

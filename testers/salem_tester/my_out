@@ -2,19 +2,38 @@ c++  -Wall -Wextra -Werror -std=c++98   -c -o test_vectors.o test_vectors.cpp
 
 
 
-size: 10
+size: 4
 capacity: OK
 max_size: 4611686018427387903
 
 Content is:
-- 30
-- 27
-- 24
-- 21
-- 18
-- 15
-- 12
-- 9
-- 6
 - 3
+- 6
+- 9
+- 12
+###############################################
+size: 4
+capacity: OK
+max_size: 4611686018427387903
+
+Content is:
+- 5
+- 10
+- 15
+- 20
+###############################################
+Calling insert (iterator first , ;last)
+size: 8
+capacity: OK
+max_size: 4611686018427387903
+
+Content is:
+- 5
+- 10
+- 15
+- 20
+- 20
+- 15
+- 10
+- 5
 ###############################################

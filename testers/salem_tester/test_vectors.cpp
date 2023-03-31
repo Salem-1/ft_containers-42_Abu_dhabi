@@ -42,28 +42,29 @@ void	test_insert_mli()
 	printSize(vct);
 
 	vct2.insert(vct2.end(), 42);
+	printSize(vct2);
 	vct2.insert(vct2.begin(), 2, 21);
 	printSize(vct2);
 
-	vct2.insert(vct2.end() - 2, 42);
-	printSize(vct2);
+	// vct2.insert(vct2.end() - 2, 42);
+	// printSize(vct2);
 
-	vct2.insert(vct2.end(), 2, 84);
-	printSize(vct2);
+	// vct2.insert(vct2.end(), 2, 84);
+	// printSize(vct2);
 
-	vct2.resize(4);
-	printSize(vct2);
+	// vct2.resize(4);
+	// printSize(vct2);
 
-	vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
-	vct.clear();
-	printSize(vct2);
+	// vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
+	// vct.clear();
+	// printSize(vct2);
 
-	printSize(vct);
+	// printSize(vct);
 
-	for (int i = 0; i < 5; ++i)
-		vct3.insert(vct3.end(), i);
-	vct3.insert(vct3.begin() + 1, 2, 111);
-	printSize(vct3);
+	// for (int i = 0; i < 5; ++i)
+	// 	vct3.insert(vct3.end(), i);
+	// vct3.insert(vct3.begin() + 1, 2, 111);
+	// printSize(vct3);
 
 }
 // void	checkErase(TESTED_NAMESPACE::vector<TESTED_TYPE> const &vct,
@@ -140,26 +141,26 @@ void	test_insert_mli()
 // 	printSize(vct_copy);
 // }
 
-// int		test_biderection_at(void)
-// {
-// 	std::list<TESTED_TYPE> lst;
-// 	std::list<TESTED_TYPE>::iterator lst_it;
-// 	for (int i = 1; i < 5; ++i)
-// 		lst.push_back(i * 3);
+int		test_biderection_at(void)
+{
+	std::list<TESTED_TYPE> lst;
+	std::list<TESTED_TYPE>::iterator lst_it;
+	for (int i = 1; i < 5; ++i)
+		lst.push_back(i * 3);
 
-// 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(lst.begin(), lst.end());
-// 	printSize(vct);
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(lst.begin(), lst.end());
+	printSize(vct);
 
-// 	lst_it = lst.begin();
-// 	for (int i = 1; lst_it != lst.end(); ++i)
-// 		*lst_it++ = i * 5;
-// 	vct.assign(lst.begin(), lst.end());
-// 	printSize(vct);
+	lst_it = lst.begin();
+	for (int i = 1; lst_it != lst.end(); ++i)
+		*lst_it++ = i * 5;
+	vct.assign(lst.begin(), lst.end());
+	printSize(vct);
 
-// 	vct.insert(vct.end(), lst.rbegin(), lst.rend());
-// 	printSize(vct);
-// 	return (0);
-// }
+	vct.insert(vct.end(), lst.rbegin(), lst.rend());
+	printSize(vct);
+	return (0);
+}
 
 // int		test_at_mli(void)
 // {
