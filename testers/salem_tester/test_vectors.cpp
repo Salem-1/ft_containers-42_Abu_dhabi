@@ -42,29 +42,29 @@ void	test_insert_mli()
 	printSize(vct);
 
 	vct2.insert(vct2.end() , 42);
-	// printSize(vct2);
-	// vct2.insert(vct2.begin(), 2, 21);
-	// printSize(vct2);
+	printSize(vct2);
+	vct2.insert(vct2.begin(), 2, 21);
+	printSize(vct2);
 
-	// vct2.insert(vct2.end() - 2, 42);
-	// printSize(vct2);
+	vct2.insert(vct2.end() - 2, 42);
+	printSize(vct2);
 
-	// vct2.insert(vct2.end(), 2, 84);
-	// printSize(vct2);
+	vct2.insert(vct2.end(), 2, 84);
+	printSize(vct2);
 
-	// vct2.resize(4);
-	// printSize(vct2);
+	vct2.resize(4);
+	printSize(vct2);
 
-	// vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
-	// vct.clear();
-	// printSize(vct2);
+	vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
+	vct.clear();
+	printSize(vct2);
 
-	// printSize(vct);
+	printSize(vct);
 
-	// for (int i = 0; i < 5; ++i)
-	// 	vct3.insert(vct3.end(), i);
-	// vct3.insert(vct3.begin() + 1, 2, 111);
-	// printSize(vct3);
+	for (int i = 0; i < 5; ++i)
+		vct3.insert(vct3.end(), i);
+	vct3.insert(vct3.begin() + 1, 2, 111);
+	printSize(vct3);
 }
 // void	checkErase(TESTED_NAMESPACE::vector<TESTED_TYPE> const &vct,
 // 					TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator const &it)

@@ -29,7 +29,7 @@ class vector
 		typedef Alloc										allocator_type;
 		typedef T											value_type;
 		typedef Veciterator< T>					iterator;
-		typedef iterator									const_iterator;
+		typedef Veciterator<const T>										const_iterator;
 	//change this later
 		typedef typename ft::reverse_iterator< iterator >		reverse_iterator;
 		typedef reverse_iterator							const_reverse_iterator;
@@ -84,7 +84,7 @@ class vector
 		//---------------------------CONSTRUCTORS---------------------//
 		
 		explicit vector (const allocator_type& alloc = allocator_type()) : allocator(alloc), 
-		max_capacity(allocator.max_size()), _capacity(0), _size(0)
+		max_capacity(allocator.max_size()), _capacity(0), _size(0), arr(NULL)
 		{}
 		
 		explicit vector (size_type n,
@@ -208,6 +208,8 @@ class vector
 		};
 		void	reserve(size_type n)
 		{
+			// if (n > max_capacity())
+			// 	throw (std::length_error("n > max size"));
 			if (n <= _capacity)
 				return ;
 			old_capacity = _capacity;

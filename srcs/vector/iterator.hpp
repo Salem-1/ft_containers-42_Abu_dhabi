@@ -39,14 +39,16 @@ reference	iterator_traits<Iterator>::referenc
 			typedef value_type* 					pointer_type;
 			typedef const value_type*				const_pointer_type;
 			typedef value_type&						refrence_type;
-			typedef typename std::ptrdiff_t				difference_type;
+			typedef typename std::ptrdiff_t			difference_type;
 			
 			Veciterator(): _ptr(NULL) {};
 			Veciterator(pointer_type ptr): _ptr(ptr) {};
-			Veciterator(const_pointer_type cptr): _ptr(cptr) {};
-			Veciterator(const Veciterator& it): _ptr(it._ptr) {};
+
+			// Veciterator(const_pointer_type cptr): _ptr(cptr) {};
+			
+			Veciterator(const Veciterator& it): _ptr(it.base()) {};
 			template <typename iterator>		
-			Veciterator(const Veciterator<iterator>& it): _ptr(it._ptr) {};
+			Veciterator(const Veciterator<iterator>& it): _ptr(it.base()) {};
 			~Veciterator(){};
 			Veciterator& operator=(const Veciterator& rhs)
 			{
@@ -74,6 +76,16 @@ reference	iterator_traits<Iterator>::referenc
 				_ptr -= n;
 				return (*this);
 			};
+			Veciterator& operator+=(int n)
+			{
+				_ptr += n;
+				return (*this);
+			};
+			Veciterator& operator-=(int n)
+			{
+				_ptr -= n;
+				return (*this);
+			};
 			Veciterator operator++(int)
 			{
 				Veciterator tmp(*this);
@@ -94,6 +106,12 @@ reference	iterator_traits<Iterator>::referenc
 			refrence_type operator*()
 			{
 				return (*_ptr);
+			};
+			value_type &operator[](const size_t i)
+			{
+				// pointer_type tmp;
+				// tmp = _ptr + i;
+				return (*( _ptr + i));
 			};
 			pointer_type operator->()
 			{
@@ -140,13 +158,19 @@ reference	iterator_traits<Iterator>::referenc
 		return (lhs.base() != rhs.base());
 	}
 	template < class iter1, class iter2>
-	size_t operator-(const Veciterator<iter1>& lhs, const Veciterator<iter2>& rhs)
+	std::ptrdiff_t operator-(const Veciterator<iter1>& lhs, const Veciterator<iter2>& rhs)
 	{
 		return (lhs.base() - rhs.base());
 	}
-	template < class iter1>
-	size_t operator+ (const Veciterator<iter1>& lhs,
-		typename Veciterator<iter1>::difference_type d)
+	// template < class iter1>
+	// size_t operator+ (const Veciterator<iter1>& lhs,
+	// 	typename Veciterator<iter1>::difference_type d)
+	// {
+	// 	return (lhs.base() + d);
+	// }
+		template < class iter1>
+	Veciterator<iter1> operator+ (
+		typename Veciterator<iter1>::difference_type d, const Veciterator<iter1>& lhs)
 	{
 		return (lhs.base() + d);
 	}
