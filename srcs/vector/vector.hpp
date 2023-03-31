@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/31 08:26:48 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/31 14:49:39 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ class vector
 		};
 		value_type	*vec_realloc()
 		{
-			value_type	*tmp = allocator.allocate(_capacity);
+			value_type	*tmp = allocator.allocate(_capacity, 0);
 			for (size_t i = 0; i < _size; i++)
 				tmp[i] = arr[i];
 			//allocator_type::construct(&tmp[i],&arr[i]);
@@ -85,7 +85,7 @@ class vector
 		
 		explicit vector (const allocator_type& alloc = allocator_type()) : allocator(alloc), 
 		max_capacity(allocator.max_size()), _capacity(0), _size(0)
-		{};
+		{}
 		
 		explicit vector (size_type n,
 			const value_type& val = value_type(),
@@ -93,9 +93,9 @@ class vector
 				max_capacity(allocator.max_size()),  _capacity(0), _size(n)
 			{
 				_capacity = update_capacity(n);
-				arr = allocator.allocate(_capacity);
+				arr = allocator.allocate(_capacity, NULL);
 				for (size_type i = 0; i < _size; i++)
-					arr[i] = val;
+					allocator.construct(&arr[i], val);
 			};
 		
 		template <class InputIterator>
@@ -135,7 +135,7 @@ class vector
 		};
 		iterator end()
 		{
-			return (iterator(arr + _size));
+			return (arr + _size);
 		};
 		const_iterator begin() const
 		{
@@ -305,6 +305,7 @@ class vector
 			allocator.destroy(&arr[i]);
 		_size = 0;
 	};
+
 	template <class InputIterator>
 	typename ft::enable_if<!ft::is_integral<InputIterator>::value, void>::type 
 		 assign (InputIterator first, InputIterator last)
@@ -316,6 +317,7 @@ class vector
 			first++;
 		}
 	};
+	
 	void assign (size_type n, const value_type& val)
 	{
 		clear();
@@ -326,13 +328,13 @@ class vector
 
 iterator insert (iterator position, const value_type& val)
 {
-	if (position == end())
+	if (position  == end())
 	{
 		push_back(val);
 		return (position);
 	}
-	value_type	*tmp;
-	tmp = allocator.allocate(_capacity + 1);
+	value_type	*tmp = NULL;
+	tmp = allocator.allocate(_capacity + 1, 0);
 	iterator it = begin();
 	int	i = 0;
 	while (it != position)
@@ -342,7 +344,6 @@ iterator insert (iterator position, const value_type& val)
 	}
 	size_t location = i;
 	tmp[i] = val;
-	// std::cout << "inserted  >>>   " << tmp[i] << "      in lcation " << i << std::endl;
 	i++;
 	while (it != end())
 	{
@@ -387,8 +388,8 @@ void insert (iterator position, size_type n, const value_type& val)
 			push_back(val);
 		return ;
 	}
-	value_type	*tmp;
-	tmp = allocator.allocate(_capacity + n);
+	value_type	*tmp = NULL;
+	tmp = allocator.allocate(_capacity + n, 0);
 	iterator it = begin();
 	int	i = 0;
 	while (it != position)
@@ -423,9 +424,9 @@ typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::t
 			push_back(*first);
 		return ;
 	}
-	value_type	*tmp;
+	value_type	*tmp = NULL;
 	size_type n = std::distance(first.base(), last.base());
-	tmp = allocator.allocate(_capacity + n);
+	tmp = allocator.allocate(_capacity + n, 0);
 	iterator it = begin();
 	int	i = 0;
 	while (it != position)
@@ -449,7 +450,7 @@ typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::t
 }
 
 /*{
-	value_type	*tmp;
+	value_type	*tmp = NULL;
 	int		range = 0;
 	while (first++ != last)
 		range++;

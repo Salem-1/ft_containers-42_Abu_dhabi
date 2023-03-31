@@ -1,6 +1,6 @@
 NAME = salem_tester
 SRC =  test_vectors.cpp 
-CXXFLAGS= -Wall -Wextra -Werror -std=c++98
+CXXFLAGS= -Wall -Wextra -Werror -std=c++98 -g3
 # CXXFLAGS= 
 CXX = c++ 
 OBJ =  $(SRC:.cpp=.o)
@@ -22,5 +22,5 @@ test: re
 	@./salem_tester
 
 mem: re
-	valgrind ./salem_tester
+	valgrind --track-origins=yes ./salem_tester
 re: fclean all 
