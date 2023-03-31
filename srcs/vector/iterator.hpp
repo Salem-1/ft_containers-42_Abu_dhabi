@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 22:22:00 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/31 22:42:15 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/01 02:27:26 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,10 @@ reference	iterator_traits<Iterator>::referenc
 				_ptr -= n;
 				return (*this);
 			};
+			bool operator==(pointer_type n)
+			{
+				return (_ptr == n);
+			};
 			Veciterator operator++(int)
 			{
 				Veciterator tmp(*this);
@@ -132,6 +136,12 @@ difference_type	iterator_traits<Iterator>::difference_type	Preserves Iterator's 
 pointer	iterator_traits<Iterator>::pointer	Preserves Iterator's pointer type
 reference	iterator_traits<Iterator>::referenc
 */
+	// template < class iter1>
+	// bool operator==(const Veciterator<iter1>& lhs,
+	// 	typename Veciterator<iter1>::difference_type d)
+	// {
+	// 	return (lhs.base() == d);
+	// };
 	template < class iter1, class iter2>
 	bool operator==(const Veciterator<iter1>& lhs, const Veciterator<iter2>& rhs)
 	{
@@ -194,7 +204,7 @@ reference	iterator_traits<Iterator>::referenc
 		return (lhs.base() + d);
 	}
 	template < class iter1>
-	size_t operator- (const Veciterator<iter1>& lhs,
+	Veciterator<iter1>  operator- (const Veciterator<iter1>& lhs,
 		typename Veciterator<iter1>::difference_type d)
 	{
 		return (lhs.base() - d);
