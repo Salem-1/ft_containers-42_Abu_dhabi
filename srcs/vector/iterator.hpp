@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 22:22:00 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/03/31 14:49:08 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/03/31 18:36:29 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,11 @@ reference	iterator_traits<Iterator>::referenc
 	{
 		return (lhs.base() == rhs.base());
 	};
+	template < class iter1, class iter2>
+	bool operator!=(const Veciterator<iter1>& lhs, const Veciterator<iter2>& rhs)
+	{
+		return (lhs.base() != rhs.base());
+	}
 	// template < class iter1, class iter2>
 	// bool operator==(const Veciterator<iter1>& lhs, size_t rhs_base)
 	// {
@@ -147,16 +152,24 @@ reference	iterator_traits<Iterator>::referenc
 	{
 		return (lhs.base() < rhs.base());
 	};
+	
 	template < class iter1, class iter2>
 	bool operator> (const Veciterator<iter1>& lhs, const Veciterator<iter2>& rhs)
 	{
 		return (lhs.base() > rhs.base());
 	};
 	template < class iter1, class iter2>
-	bool operator!=(const Veciterator<iter1>& lhs, const Veciterator<iter2>& rhs)
+	bool operator>= (const Veciterator<iter1>& lhs, const Veciterator<iter2>& rhs)
 	{
-		return (lhs.base() != rhs.base());
-	}
+		return (lhs.base() >= rhs.base());
+	};
+	template < class iter1, class iter2>
+	bool operator<= (const Veciterator<iter1>& lhs, const Veciterator<iter2>& rhs)
+	{
+		return (lhs.base() <= rhs.base());
+	};
+	
+
 	template < class iter1, class iter2>
 	std::ptrdiff_t operator-(const Veciterator<iter1>& lhs, const Veciterator<iter2>& rhs)
 	{
