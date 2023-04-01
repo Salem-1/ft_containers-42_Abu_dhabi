@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/01 00:44:50 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/02 01:07:46 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ class vector
 				max_capacity(allocator.max_size()),  _capacity(0), _size(n)
 			{
 				_capacity = update_capacity(n);
-				arr = allocator.allocate(_capacity, NULL);
+				arr = allocator.allocate(_capacity);
 				for (size_type i = 0; i < _size; i++)
 					allocator.construct(&arr[i], val);
 			};
@@ -146,19 +146,19 @@ class vector
 		};
 		reverse_iterator	rbegin()
 		{
-			return (reverse_iterator(arr + _size - 1));
+			return (reverse_iterator(end()));
 		};
 		reverse_iterator	rend()
 		{
-			return (reverse_iterator(arr - 1));
+			return (reverse_iterator(begin()));
 		};
 		reverse_iterator	rbegin() const
 		{
-			return (reverse_iterator(arr + _size - 1));
+			return (reverse_iterator(end()));
 		};
 		reverse_iterator	rend() const
 		{
-			return (reverse_iterator(arr - 1));
+			return (reverse_iterator(begin()));
 		};
 		//--------------------MEMBER_FUNTIONS---------------------//
 		size_type	size() const

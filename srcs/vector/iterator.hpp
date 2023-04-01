@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 22:22:00 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/01 02:27:26 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/01 23:55:10 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,6 @@ reference	iterator_traits<Iterator>::referenc
 				_ptr++;
 				return (*this);
 			};
-			
-			// Veciterator& operator+(int n)
-			// {
-			// 	_ptr += n;
-			// 	return (*this);
-			// };
-			Veciterator& operator-(int n)
-			{
-				_ptr -= n;
-				return (*this);
-			};
 			Veciterator& operator+=(int n)
 			{
 				_ptr += n;
@@ -113,8 +102,6 @@ reference	iterator_traits<Iterator>::referenc
 			};
 			value_type &operator[](const size_t i)
 			{
-				// pointer_type tmp;
-				// tmp = _ptr + i;
 				return (*( _ptr + i));
 			};
 			pointer_type operator->()

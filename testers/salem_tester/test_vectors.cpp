@@ -53,7 +53,45 @@ int		rev_mli_comp(void)
 	std::cout << "OK" << std::endl;
 	return (0);
 }
+int		ret2(void)
+{
+	const int size = 5;
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it = vct.rbegin();
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator ite = vct.rbegin();
+std::cout << "size, capacity = " << vct.size() << "   " <<vct.capacity() << std::endl;
+	std::cout << "begin, end " << vct.begin().base() << " " << vct.end().base() << std::endl;
+	std::cout << "it , ite " << it.base().base() << ", " << ite.base().base() << std::endl; 
+	for (int i = 0; i < size; ++i)
+    {
+	   it[i] = (size - i) * 5;
+	 }
+	printSize(vct, true);
+	std::cout << "address "<< it.base().base() << " it = " << *it << "   ,  it + 5 = ";
+	it = it + 5;
+	std::cout << *it << std::endl;
+	std::cout << "address "<< it.base().base() << " it = " << *it << "   ,  1 + it = ";
+	it = 1 + it;
+	std::cout << *it << std::endl;
+	std::cout << "address "<< it.base().base() << " it = " << *it << "   ,  it - 4 = ";
+	it = it - 4;
+	std::cout << *it << std::endl;
 
+	std::cout << "address "<< it.base().base() << " it = " << *it << " , *(it += 2) = " << *(it += 2) << std::endl;
+	std::cout << "address "<< it.base().base() << " it = " << *it << " , *(it -= 1) = " << *(it -= 1) << std::endl;
+
+	*(it -= 2) = 42;
+	*(it += 2) = 21;
+
+	std::cout << "const_ite +=/-=: " << *(ite += 2) << " | " << *(ite -= 2) << std::endl;
+
+	std::cout << "(it == const_it): " << (ite == it) << std::endl;
+	std::cout << "(const_ite - it): " << (ite - it) << std::endl;
+	std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+
+	printSize(vct, true);
+	return (0);
+}
 void	test_insert_mli()
 {
 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(10);
@@ -585,7 +623,7 @@ int		test_biderection_at(void)
 int main()
 {
 
-	rev_mli_comp();
+	ret2();
 
 }
 
