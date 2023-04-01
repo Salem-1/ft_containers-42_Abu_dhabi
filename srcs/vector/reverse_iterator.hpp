@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 23:11:09 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/01 02:34:15 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/01 02:43:53 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,13 +118,13 @@ template <class iterator>
 	reverse_iterator<iter1> operator+ (const reverse_iterator<iter1>& lhs,
 		typename reverse_iterator<iter1>::difference_type d)
 	{
-		return (lhs.base() + d);
+		return (lhs.base() - d);
 	}
 	template < class iter1>
 	reverse_iterator<iter1> operator- (const reverse_iterator<iter1>& lhs,
 		typename reverse_iterator<iter1>::difference_type d)
 	{
-		return (lhs.base() - d);
+		return (lhs.base() + d);
 	}
 };
 #endif
