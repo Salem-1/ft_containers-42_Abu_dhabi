@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 23:11:09 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/02 01:08:05 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/02 02:20:31 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,10 @@ template <class iterator>
 				iterator tmp = _ptr;
 				return (*--tmp);
 			};
-			iterator_type operator->()
+			pointer_type operator->()
 			{
-				return (_ptr);
+				iterator tmp = _ptr;
+				return ((--tmp).operator->());
 			};
 			iterator_type	base() const
 			{
@@ -129,6 +130,26 @@ template <class iterator>
 		return (lhs.base() != rhs.base());
 	}
 	template < class iter1, class iter2>
+	bool operator>(const reverse_iterator<iter1>& lhs, const reverse_iterator<iter2>& rhs)
+	{
+		return (lhs.base() < rhs.base());
+	}
+	template < class iter1, class iter2>
+	bool operator<(const reverse_iterator<iter1>& lhs, const reverse_iterator<iter2>& rhs)
+	{
+		return (lhs.base() > rhs.base());
+	}
+	template < class iter1, class iter2>
+	bool operator<=(const reverse_iterator<iter1>& lhs, const reverse_iterator<iter2>& rhs)
+	{
+		return (lhs.base() >= rhs.base());
+	}
+	template < class iter1, class iter2>
+	bool operator>=(const reverse_iterator<iter1>& lhs, const reverse_iterator<iter2>& rhs)
+	{
+		return (lhs.base() <= rhs.base());
+	}
+	template < class iter1, class iter2>
 	int operator-(const reverse_iterator<iter1>& lhs, const reverse_iterator<iter2>& rhs)
 	{
 		return (rhs.base() - lhs.base());
@@ -150,6 +171,7 @@ template <class iterator>
 	{
 		return (lhs.base() + d);
 	}
+	
 };
 #endif
 

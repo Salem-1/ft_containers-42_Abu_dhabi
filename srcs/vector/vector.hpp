@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/02 01:07:46 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/02 03:44:39 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,21 @@ class vector
 		typedef Veciterator< T>								iterator;
 		typedef Veciterator<const T>						const_iterator;
 		typedef typename ft::reverse_iterator< iterator >	reverse_iterator;
-		typedef ft::reverse_iterator< const_iterator >				const_reverse_iterator;
+		typedef ft::reverse_iterator< const_iterator >		const_reverse_iterator;
 		typedef size_t										size_type;
 		typedef typename allocator_type::difference_type	difference_type;
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef typename allocator_type::const_reference	const_reference;
+		allocator_type										allocator;
+		size_type											_capacity;
+		size_type											_size;
+		value_type											*arr;
 
 	protected:
-		allocator_type										allocator;
 		size_type 											max_capacity;
-		size_type												_capacity;
-		size_type												old_capacity;
-		size_type												_size;
-		value_type												*arr;
+		size_type											old_capacity;
 		//---------------HELPER_FUNCTIONS--------------------//
 		size_t		update_capacity(size_t n)
 		{
@@ -83,13 +83,13 @@ class vector
 		//---------------------------CONSTRUCTORS---------------------//
 		
 		explicit vector (const allocator_type& alloc = allocator_type()) : allocator(alloc), 
-		max_capacity(allocator.max_size()), _capacity(0), _size(0), arr(NULL)
+		 _capacity(0), _size(0), arr(NULL), max_capacity(allocator.max_size())
 		{}
 		
 		explicit vector (size_type n,
 			const value_type& val = value_type(),
 			const allocator_type& alloc = allocator_type()) : allocator(alloc),
-				max_capacity(allocator.max_size()),  _capacity(0), _size(n)
+				  _capacity(0), _size(n), max_capacity(allocator.max_size())
 			{
 				_capacity = update_capacity(n);
 				arr = allocator.allocate(_capacity);
@@ -99,8 +99,7 @@ class vector
 		
 		template <class InputIterator>
 		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()):
-			allocator(alloc), max_capacity(allocator.max_size()),
-			 _capacity(0), _size(0)
+			allocator(alloc), _capacity(0), _size(0), max_capacity(allocator.max_size())
 		{
 			assign(first, last);
 		}
@@ -115,7 +114,7 @@ class vector
 			return (*this);
 		}
 		vector (const vector& x):  allocator(x.get_allocator()), 
-		max_capacity(allocator.max_size()), _capacity(0), _size(0)
+		 _capacity(0), _size(0), max_capacity(allocator.max_size())
 		{
 			*this = x;
 		};
@@ -488,9 +487,27 @@ typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::t
 */
 	void	swap(vector& x)
 	{
-		vector	tmp(x);
-		x = *this;
-		*this = tmp; 
+		allocator_type		tmp_allocator;
+		size_type			tmp_capacity;
+		size_type			tmp_size;
+		value_type*         tmp_arr;
+		
+		tmp_allocator = allocator;
+		tmp_capacity = _capacity;
+		tmp_size = _size ;
+		tmp_arr = arr ;
+		
+		
+		allocator = x.allocator;
+		_capacity = x._capacity;
+		_size = x._size;
+		arr = x.arr;
+		
+		x.allocator = tmp_allocator;
+		x._capacity = tmp_capacity;
+		x._size = tmp_size;
+		x.arr = tmp_arr;
+		
 	};
 	//------------ALLOCATOR---------------------//
 	allocator_type get_allocator() const
@@ -571,10 +588,11 @@ bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 template <class T, class Alloc>
 void	swap(vector<T,Alloc>& x, vector<T,Alloc>& y)
 {
-	vector<T> tmp(x);
+	x.swap(y);
+	// vector<T> tmp(x);
 
-	x = y;
-	y = tmp;
+	// x = y;
+	// y = tmp;
 };
 }
 
