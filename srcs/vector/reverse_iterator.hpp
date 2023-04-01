@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 23:11:09 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/01 02:43:53 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/01 19:47:19 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ template <class iterator>
 			};
 			refrence_type operator*()
 			{
-				return (*_ptr);
+				iterator tmp(_ptr);
+				
+				return (*--tmp);
 			};
 			pointer_type operator->()
 			{
