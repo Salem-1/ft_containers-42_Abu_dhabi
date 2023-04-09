@@ -278,14 +278,61 @@ void	left-rotate(T, x)
 // 	x.right = y;
 // 	y.parent = x;
 // }
-
+void	right-rotate(T, y);
 //note that all instance of NULL, replaced with T.nill
 //insert in redblack tree
 
 //fixing up the red black tree
-void	red_black_insert_fixup(T, Z)
+void	red_black_insert_fixup(T, z)
 {
-	
+	while (z.parent.color == red)
+	{
+		if (z.parent == z.parent.parent.left)
+		{
+			y = z.parent.parent.right;
+			if (y.color == red)
+			{
+				z.parent.color = black;
+				y.color = black;
+				z.parent.parent.color = red;
+				z = z.parent.parent;
+			}
+			else
+			{
+				if (z == z.p.right)
+				{
+					z = z.p;
+					left_rotate(T,z);
+				}
+				z.parent.color = black;
+				z.parent.parent.color = red;
+				right_rotate(T, z.parent.parent);
+			}
+		}
+		else
+		{
+			y = z.parent.parent.left;
+			if (y.color == red)
+			{
+				z.parent.color = black;
+				y.color = black;
+				z.parent.parent.color = red;
+				z = z.parent.parent;
+			}
+			else
+			{
+				if (z == z.parent.left)
+				{
+					z = z.parent;
+					right_rotate(T, z);
+				}
+				z.parent.color = black;
+				z.parent.parent.color = red;
+				left_rotate(t, z.parent.parent);
+			}
+		}
+	}
+	T.root.color = black;
 }
 void	red_black_insert(T, z)
 {
@@ -307,7 +354,7 @@ void	red_black_insert(T, z)
 		y.left = z;
 	else
 		y.right = z;
-	z.left = T.nill;
+	z.left = T.nill; //T.nill ensure maintaining healthy tree structure
 	z.right = T.nill;
 	z.color = red;  //the new node start red
 	red_black_insert_fixup(T, Z); //correct any violation in the redblack tree
