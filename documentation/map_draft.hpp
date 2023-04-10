@@ -299,11 +299,13 @@ void	red_black_insert_fixup(T, z)
 			}
 			else
 			{
+				
 				if (z == z.p.right)
 				{
 					z = z.p;
 					left_rotate(T,z);
 				}
+
 				z.parent.color = black;
 				z.parent.parent.color = red;
 				right_rotate(T, z.parent.parent);
