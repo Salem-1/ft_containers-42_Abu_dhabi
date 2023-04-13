@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:30:31 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/13 06:28:46 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/13 13:15:38 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,25 @@ void test_make_pair()
 	std::cout << "foo: " << foo.first << ", " << foo.second << '\n';
 	std::cout << "bar: " << bar.first << ", " << bar.second << '\n';
 }
+
+void	test_insert()
+{
+	ft::map<std::string, int> fruits;
+	ft::pair<std::string, int> apple;
+	apple.first = "apple";
+	apple.second = 10;
+	fruits.insert(apple);
+}
 int main()
 {
-	// ft::map<std::string, int> fruits;
+	test_insert();
 	// fruits.tree.key = "apple";
 	// fruits.tree.val = 10;
 	// std::cout << "tree parent is " << fruits.tree.parent << std::endl;
 	// std::cout << "tree key is " << fruits.tree.key << std::endl;
 	// std::cout << "tree val is " << fruits.tree.val << std::endl;
-	testpair();
-	// ft::pair<int, int> pair;
-	// fruits["orange"] = 1;
+	// testpair();
+	// std::map<std::string, int>  fruits;
 	// fruits["orange"] = 2;
 	// fruits["orang"] = 2;
 	// fruits["orane"] = 2;

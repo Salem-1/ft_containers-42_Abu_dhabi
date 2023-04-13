@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 21:55:31 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/13 06:27:30 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/13 13:21:17 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,26 @@
 
 namespace ft
 {
+	template <class T1, class T2> struct pair;
 	template <class Key,
 			  class T>
 	class Node
 	{
 	public:
-		Key key;
-		T val;
-		Node *left;
-		Node *right;
-		Node *parent;
-		int height;
-		Node(Key k, T v, Node *l, Node *r, Node *p) : key(k), val(v), left(l), right(r), parent(p), height(0){};
-		Node() : left(NULL), right(NULL), parent(NULL), height(0){};
+		pair<Key, T> key_val;
+		Node	*left;
+		Node	*right;
+		Node	*parent;
+		int		height;
+		int		is_sentinel;
+		Node(pair<Key, T> given_key_val, Node *l, Node *r, Node *p) 
+		:  left(l), right(r), parent(p), height(0), is_sentinel(0)
+		{
+			this>key_val = given_key_val;
+		};
+		Node() :left(NULL), right(NULL), parent(NULL), height(0), is_sentinel(1)
+		{};
+		~Node(){};
 	};
 
 	template <class T1, class T2>
@@ -42,10 +49,14 @@ namespace ft
 		pair()
 		{
 		}
-		template <class U, class V>
-		pair(const pair<U, V> &pr) : first(pr.first), second(pr.second)
+		template <class first_type, class second_type>
+		pair(const pair<first_type, second_type> &pr) : first(pr.first), second(pr.second)
 		{
 		}
+		// template <class first_type, class second_type>
+		// pair( pair<first_type, second_type> &pr) : first(pr.first), second(pr.second)
+		// {
+		// }
 		pair(const first_type &a, const second_type &b) : first(a), second(b)
 		{
 		}

@@ -31,7 +31,7 @@ namespace ft
 		public:
 			typedef Key												key_type;
 			typedef T												mapped_type;
-			typedef std::pair<const key_type, mapped_type>			value_type;
+			typedef ft::pair<const key_type, mapped_type>			value_type;
 			typedef typename __identity<Compare>::type				key_compare;
 			typedef typename __identity<Allocator>::type			allocator_type;
 			typedef value_type&										reference;
@@ -39,12 +39,14 @@ namespace ft
 			typedef typename	allocator_type::const_pointer		const_pointer;
 			typedef typename	allocator_type::difference_type		difference_type;
 			typedef typename	allocator_type::size_type			size_type;
-			Node<key_type, mapped_type>								tree;
+			typedef				value_type&							tmp_iterator;
+			ft::Node<key_type, mapped_type>								tree;
 		
 		protected:
-			key_compare					keycomp;
-			allocator_type				allocator;
-
+			key_compare						keycomp;
+			allocator_type					allocator;
+			ft::Node<key_type, value_type>		_tree;
+			
 		
 		//empty
 		public:
@@ -53,7 +55,14 @@ namespace ft
 					keycomp(comp), allocator(alloc)
 			{};
 			~map(){};
-		// //range
+			ft::pair<tmp_iterator, bool>
+			insert (const value_type& val)
+			{
+				ft::pair<Key, T> tmp = val;
+				std::cout << "should insert" << val.first << " = " << val.second << std::endl;
+
+				return (tmp);
+			};
 	};
 }
 #endif
