@@ -55,6 +55,10 @@
 		"typeinfo": "cpp",
 		"utility": "cpp",
 		"*.tpp": "cpp",
-		"list": "cpp"
+		"list": "cpp",
+		"map": "cpp",
+		"__node_handle": "cpp",
+		"__tree": "cpp",
+		"optional": "cpp"
 	}
 }

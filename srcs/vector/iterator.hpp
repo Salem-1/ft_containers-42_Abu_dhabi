@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 22:22:00 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/02 01:42:07 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/10 10:22:43 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,7 @@
 # include <cstddef>
 namespace ft
 {
-// template 
-// 	<class Category,
-// 	 // iterator::iterator_category class T,
-// 	 // iterator::value_type class Distance = ptrdiff_t,
-// 	 // iterator::difference_type  class Pointer = T*,
-// 	 // iterator::pointer        class Reference = T&         //
-// 	  iterator::reference  > class iterator;
-/*
-iterator_type	Iterator	Iterator's type
-iterator_category	iterator_traits<Iterator>::iterator_category	Preserves Iterator's category
-value_type	iterator_traits<Iterator>::value_type	Preserves Iterator's value type
-difference_type	iterator_traits<Iterator>::difference_type	Preserves Iterator's difference type
-pointer	iterator_traits<Iterator>::pointer	Preserves Iterator's pointer type
-reference	iterator_traits<Iterator>::referenc
-	*/
+
 	template <typename T>
 	class Veciterator
 	{
@@ -209,13 +195,22 @@ reference	iterator_traits<Iterator>::referenc
 template<class Iterator>
 struct iterator_traits
 {
-    typedef typename Iterator::difference_type difference_type;
-    typedef typename Iterator::value_type value_type;
-    typedef typename Iterator::pointer pointer;
-    typedef typename Iterator::reference reference;
-    typedef typename Iterator::iterator_category iterator_category;
+    typedef typename Iterator::difference_type		difference_type;
+    typedef typename Iterator::value_type			value_type;
+    typedef typename Iterator::pointer				pointer;
+    typedef typename Iterator::reference			reference;
+    typedef typename Iterator::iterator_category	iterator_category;
 };
 
+// template <class _Iter>
+// struct __iterator_traits_impl
+// {
+//     typedef typename _Iter::difference_type   difference_type;
+//     typedef typename _Iter::value_type        value_type;
+//     typedef typename _Iter::pointer           pointer;
+//     typedef typename _Iter::reference         reference;
+//     typedef typename _Iter::iterator_category iterator_category;
+// };
 
 };
 #endif

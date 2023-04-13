@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/19 19:51:11 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/10 10:18:12 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/10 11:24:12 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 #include "type_safety.tpp"
 
 
-namespace ft{
+namespace ft
+{
 
 template <typename vector> class Veciterator;
 template <typename vector> class Vecreverse_iterator;
