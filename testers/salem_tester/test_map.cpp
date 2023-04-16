@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:30:31 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/13 13:15:38 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/15 21:30:39 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,31 +75,77 @@ void test_make_pair()
 	std::cout << "bar: " << bar.first << ", " << bar.second << '\n';
 }
 
+template <class Key, class T>
+void	print_tree(ft::Node<Key, T> *print_me)
+{
+	if (print_me->empty)
+		return ;
+	print_tree(print_me->left);
+	print_tree(print_me->right);
+	std::cout << print_me->key_val.first << " : ";
+	std::cout << print_me->key_val.second << std::endl;
+}
+
+template <class Key, class T>
+void printTree(ft::Node<Key, T>  *root, std::string indent, bool last) 
+{
+  if (root != NULL) {
+    std::cout << indent;
+    if (last) {
+      std::cout << "R----";
+      indent += "   ";
+    } else {
+     std:: cout << "L----";
+      indent += "|  ";
+    }
+    std::cout << root->key_val.first << std::endl;
+    printTree(root->left, indent, false);
+    printTree(root->right, indent, true);
+  }
+  
+}
+template <class Key, class T>
+	 void print2DUtil(ft::Node<Key, T>*root, int space) 
+{
+	if (root == NULL ) return;
+		space += 10;
+	print2DUtil(root->right, space);
+	std::cout << std::endl;
+	for (int i = 10; i < space; i++)
+		std::cout << " ";
+	std::cout << root->key_val.first  << std::endl;
+	for (int i = 10; i < space; i++)
+		std::cout << " ";
+		// if (root->parent)
+			// std::cout << "Parent: " << root->parent->key_val.first << std::endl;
+	print2DUtil(root->left, space);
+}
+template <class Key, class T>
+void print2D(ft::Node<Key, T>  *node) {
+	std::cout << "Tree:" << std::endl;
+	print2DUtil(node, 0);
+}
+
 void	test_insert()
 {
-	ft::map<std::string, int> fruits;
-	ft::pair<std::string, int> apple;
-	apple.first = "apple";
-	apple.second = 10;
-	fruits.insert(apple);
+	ft::map<int, std::string> fruits;
+	ft::pair<int, std::string> apple;
+	for (int i = 0; i < 10; i++)
+	{
+		apple.first = i;
+		apple.second = "apple";
+		fruits.insert(apple);
+		// std::cout << "Printing your tree " << std::endl;
+		// print_tree((fruits._tree));
+		//  printTree(fruiclearts._tree, "", true);
+		//  printTree(fruits._tree, "", false);
+	}
+		print2D(fruits._tree);
 }
+
+
 int main()
 {
 	test_insert();
-	// fruits.tree.key = "apple";
-	// fruits.tree.val = 10;
-	// std::cout << "tree parent is " << fruits.tree.parent << std::endl;
-	// std::cout << "tree key is " << fruits.tree.key << std::endl;
-	// std::cout << "tree val is " << fruits.tree.val << std::endl;
-	// testpair();
-	// std::map<std::string, int>  fruits;
-	// fruits["orange"] = 2;
-	// fruits["orang"] = 2;
-	// fruits["orane"] = 2;
-	// fruits["apple"] = 2;
-	// fruits["aple"] = 2;
-	// fruits["a"] = 2;
-	// for (std::map<std::string, int>::iterator it = fruits.begin();
-	// 	it != fruits.end(); it++)
-	// 	std::cout << it->first << " = " << it->second << std::endl;
+
 }

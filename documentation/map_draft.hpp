@@ -361,3 +361,98 @@ void	red_black_insert(T, z)
 	z.color = red;  //the new node start red
 	red_black_insert_fixup(T, Z); //correct any violation in the redblack tree
 }
+
+
+//Psudo code from the extract of the programmers effort along 6 generations (ChatGPT)
+insert(node, key):
+    if node is null:
+        return new node(key)
+    else if key < node.key:
+        node.left = insert(node.left, key)
+    else if key > node.key:
+        node.right = insert(node.right, key)
+    else:
+        return node
+
+    # Update the height of this node
+    node.height = max(height(node.left), height(node.right)) + 1
+
+    # Get the balance factor of this node
+    balance = get_balance(node)
+
+    # If the node is unbalanced, there are 4 cases to consider
+    if balance > 1 and key < node.left.key:
+        # Left-left case
+        return right_rotate(node)
+    else if balance < -1 and key > node.right.key:
+        # Right-right case
+        return left_rotate(node)
+    else if balance > 1 and key > node.left.key:
+        # Left-right case
+        node.left = left_rotate(node.left)
+        return right_rotate(node)
+    else if balance < -1 and key < node.right.key:
+        # Right-left case
+        node.right = right_rotate(node.right)
+        return left_rotate(node)
+
+    # If the node is already balanced, return it
+    return node
+
+
+// AVL node structure
+struct Node {
+    int key;
+    Node* left;
+    Node* right;
+    int height;
+};
+
+function get_balance(node):
+    if node is null:
+        return 0
+    return height(node.left) - height(node.right)
+
+
+
+function left_rotate(node):
+    new_root = node.right
+    node.right = new_root.left
+    new_root.left = node
+
+    // Update parent pointers
+    if node.parent is not null:
+        if node.parent.left == node:
+            node.parent.left = new_root
+        else:
+            node.parent.right = new_root
+    new_root.parent = node.parent
+    node.parent = new_root
+
+    // Update heights
+    node.height = 1 + max(height(node.left), height(node.right))
+    new_root.height = 1 + max(height(new_root.left), height(new_root.right))
+
+    return new_root
+
+function right_rotate(node):
+    new_root = node.left
+    node.left = new_root.right
+    new_root.right = node
+
+    // Update parent pointers
+    if node.parent is not null:
+        if node.parent.left == node:
+            node.parent.left = new_root
+        else:
+            node.parent.right = new_root
+    new_root.parent = node.parent
+    node.parent = new_root
+
+    // Update heights
+    node.height = 1 + max(height(node.left), height(node.right))
+    new_root.height = 1 + max(height(new_root.left), height(new_root.right))
+
+    return new_root
+
+//you do the max
