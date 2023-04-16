@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:30:31 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/15 21:30:39 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/16 12:34:40 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,17 +107,19 @@ void printTree(ft::Node<Key, T>  *root, std::string indent, bool last)
 template <class Key, class T>
 	 void print2DUtil(ft::Node<Key, T>*root, int space) 
 {
-	if (root == NULL ) return;
+	if (root == NULL)
+		return;
 		space += 10;
 	print2DUtil(root->right, space);
 	std::cout << std::endl;
 	for (int i = 10; i < space; i++)
 		std::cout << " ";
-	std::cout << root->key_val.first  << std::endl;
+	// std::cout << root->key_val.first  << " , h = " << root->height <<  std::endl;
+	std::cout << root->key_val.first  <<  std::endl;
 	for (int i = 10; i < space; i++)
 		std::cout << " ";
-		// if (root->parent)
-			// std::cout << "Parent: " << root->parent->key_val.first << std::endl;
+		if (root->parent)
+			std::cout << "Parent: " << root->parent->key_val.first << std::endl;
 	print2DUtil(root->left, space);
 }
 template <class Key, class T>
@@ -126,21 +128,30 @@ void print2D(ft::Node<Key, T>  *node) {
 	print2DUtil(node, 0);
 }
 
+#include <unistd.h>
 void	test_insert()
 {
 	ft::map<int, std::string> fruits;
 	ft::pair<int, std::string> apple;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		apple.first = i;
 		apple.second = "apple";
+		std::cout << std::endl;
 		fruits.insert(apple);
-		// std::cout << "Printing your tree " << std::endl;
-		// print_tree((fruits._tree));
-		//  printTree(fruiclearts._tree, "", true);
-		//  printTree(fruits._tree, "", false);
+		// print2D(fruits._tree);
+		// std::cout << "\n----------------------------------------\n" << std::endl;
+		printTree(fruits._tree, "  ", true) ;
+		// sleep(i);
 	}
-		print2D(fruits._tree);
+		// apple.first = 40;
+		// fruits.insert(apple);
+		// apple.first = 50;
+		// fruits.insert(apple);
+		// apple.first = 60;
+		// fruits.insert(apple);
+		// apple.first = 70;
+		// fruits.insert(apple);
 }
 
 
