@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 21:55:31 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/15 15:14:26 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/16 08:14:11 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ namespace ft
 			int		empty;
 	
 			Node(pair<Key, T> given_key_val, Node *l, Node *r, Node *p) 
-			:  left(l), right(r), parent(p), height(0), is_sentinel(0), empty(0)
+			:  left(l), right(r), parent(p), height(1), is_sentinel(0), empty(0)
 			{
 				this>key_val = given_key_val;
 			};
-			Node() :left(NULL), right(NULL), parent(NULL), height(0), is_sentinel(1), empty(1)
+			Node() :left(NULL), right(NULL), parent(NULL), height(1), is_sentinel(1), empty(1)
 			{};
 			Node(pair<Key, T> val):key_val(val), left(NULL), right(NULL), parent(NULL), height(1), is_sentinel(0), empty(0)
 			{};

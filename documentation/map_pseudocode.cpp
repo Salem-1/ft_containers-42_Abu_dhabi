@@ -202,3 +202,96 @@ int main() {
   cout << "After deleting " << endl;
   printTree(root, "", true);
 }
+
+
+
+
+
+//my old insert code 
+tree	*new_node(const value_type &val)
+		{
+			// comp()
+			//use allocator instead of new here;
+			tree	*inserted = new tree;
+			inserted->key_val = val;
+			
+			return (inserted);
+		}
+
+		tree	*right_rotate(tree *y)
+		{
+			tree	*x = y->left;
+			tree	*T2 = x->right;
+
+			x->right = y;
+			y->left = T2;
+			y->height = max_height(height(y->left), height(y->right)) + 1;
+			x->height = max_height(height(x->left), height(x->right)) + 1;
+			return (x);
+		}
+		tree	*left_rotate(tree *x)
+		{
+			tree	*y = x->right;
+			tree	*T2 = x->left;
+
+			y->left = x;
+			x->right = T2;
+			y->height = max_height(height(y->left), height(y->right)) + 1;
+			x->height = max_height(height(x->left), height(x->right)) + 1;
+			return (y);
+		}
+
+		int	getBalanceFactor(tree *N)
+		{
+			if (!N)
+				return (0);
+			return (height(N->left) - height(N->right));
+		}
+		tree	*do_insert(
+			tree *node, const value_type &val)
+		{
+			// std::cout << "inserting " << val.first << " : " << val.second << std::endl;
+			if (!node)
+				return (new_node(val));
+			if (val.first < node->key_val.first)
+				node->left = do_insert(node->left, val);
+			if (val.first > node->key_val.first)
+				node->right = do_insert(node->right, val);
+			else
+				return (node);
+			node->height = 1 + max_height(height(node->left), height(node->right));
+			int balance_factor = getBalanceFactor(node);
+			if (balance_factor > 1)
+			{
+				if (val.first < node->left->key_val.first)
+					return (right_rotate(node));
+				else if (val.first > node->left->key_val.first)
+				{
+					node->left = left_rotate(node->left);
+					return (right_rotate(node));
+				}
+			}
+			else if (balance_factor < -1)
+			{
+				if (val.first > node->right->key_val.first)
+					return (left_rotate(node));
+				else if (val.first < node->right->key_val.first)
+				{
+					node->right = right_rotate(node->right);
+					return (left_rotate(node));
+				}
+			}
+			return (node);
+		}
+
+
+//comp relational operators
+/*
+
+operation	equivalent operation
+a!=b	!(a==b)
+a>b	b<a
+a<=b	!(b<a)
+a>=b	!(a<b)
+
+*/

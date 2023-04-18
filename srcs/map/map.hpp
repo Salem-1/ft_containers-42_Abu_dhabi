@@ -14,7 +14,7 @@
 # define MAP_HPP
 # include <iostream>
 # include "map_utils.hpp"
-
+#include "iterator.hpp"
 namespace ft
 {
 		template <typename _Tp>
@@ -29,6 +29,10 @@ namespace ft
 	> class map
 	{
 		public:
+		// typedef __map_iterator<typename __base::iterator>	           iterator;
+		// typedef __map_const_iterator<typename __base::const_iterator> const_iterator;
+		// typedef _VSTD::reverse_iterator<iterator>               reverse_iterator;
+		// typedef _VSTD::reverse_iterator<const_iterator>         const_reverse_iterator;
 			typedef Key												key_type;
 			typedef T												mapped_type;
 			typedef ft::pair<const key_type, mapped_type>			value_type;
@@ -41,10 +45,9 @@ namespace ft
 			typedef typename	allocator_type::size_type			size_type;
 			typedef				value_type&							tmp_iterator;
 			typedef typename ft::Node<key_type, mapped_type>		tree;
-		
 			tree							*_tree;
-		protected:
-			key_compare						keycomp;
+			protected:
+			key_compare						comp;
 			allocator_type					allocator;
 			tree							sentinile;
 			
@@ -53,51 +56,86 @@ namespace ft
 		public:
 			map(const key_compare& comp = key_compare()
 				, const allocator_type& alloc = allocator_type()):_tree(NULL),
-					keycomp(comp), allocator(alloc)
+					comp(comp), allocator(alloc)
 			{
-				// _tree.parent = &sentinile;
-				// _tree.left = &sentinile;
-				// _tree.right = &sentinile;
+				sentinile.is_sentinel = 1;
 			};
 			~map()
 			{
 			};
 
-			//-----------------------MODIFIERES------------------------------------//
+			//---------------------------MODIFIERES------------------------------------//
 	private:
-	//--------------------------------Moves_UTILS-----------------------------------//
+			typedef typename	std::allocator<tree>	tree_alloc;
+			tree_alloc						tree_allocator;
+			//---------------------------Moves_UTILS-----------------------------------//
 		
-		// key_compare comp;
+
 		tree	*new_node(const value_type &val)
 		{
-			// comp()
-			//use allocator instead of new here;
-			tree	*inserted = new tree;
+			tree	*inserted = tree_allocator.allocate(1);
 			inserted->key_val = val;
-			
 			return (inserted);
 		}
 
-		tree	*right_rotate(tree *y)
+		tree	*RR_rotate(tree *y)
 		{
 			tree	*x = y->left;
-			tree	*T2 = x->right;
 
+			y->left = x->right;
 			x->right = y;
-			y->left = T2;
+			x->parent = y->parent;
+			y->parent = x; 
 			y->height = max_height(height(y->left), height(y->right)) + 1;
 			x->height = max_height(height(x->left), height(x->right)) + 1;
 			return (x);
 		}
-		tree	*left_rotate(tree *x)
+		tree	*LR_rotate(tree *y)
 		{
-			tree	*y = x->right;
-			tree	*T2 = x->left;
+			tree *new_root = y->left->right;
+			tree *middle = y->left;
 
-			y->left = x;
-			x->right = T2;
+			middle->right = new_root->left;
+			new_root->left = middle;
+			y->left = new_root->right;
+			new_root->right = y;
+			new_root->parent = y->parent;
+			middle->parent = new_root;
+			y->parent = new_root;
 			y->height = max_height(height(y->left), height(y->right)) + 1;
+			middle->height = max_height(height(middle->left), height(middle->right)) + 1;
+			new_root->height = max_height(height(new_root->left), height(middle->right)) + 1;
+			return (new_root);
+		}
+		
+		tree	*RL_rotate(tree *x)
+		{
+			tree	*new_root = x->right->left;
+			tree	*middle = x->right;
+
+			middle->left = new_root->right;
+			x->right = new_root->left;
+			new_root->left = x;
+			new_root->right = middle;
+			new_root->parent = x->parent;
+			x->parent = new_root;
+			middle->parent = new_root;
 			x->height = max_height(height(x->left), height(x->right)) + 1;
+			middle->height = max_height(height(middle->left), height(middle->right)) + 1;
+			new_root->height = max_height(height(new_root->left), height(middle->right)) + 1;
+			return (new_root);
+		}
+
+		tree	*LL_rotate(tree *x)
+		{
+			tree *y = x->right;
+
+			x->right = y->left;
+			y->left = x;
+			y->parent = x->parent;
+			x->parent = y;
+			x->height = max_height(height(x->left), height(x->right)) + 1;
+			y->height = max_height(height(y->left), height(y->right)) + 1;
 			return (y);
 		}
 
@@ -108,45 +146,63 @@ namespace ft
 			return (height(N->left) - height(N->right));
 		}
 		tree	*do_insert(
-			tree *node, const value_type &val)
+			tree *node, const value_type &val, tree *parent)
 		{
-			// std::cout << "inserting " << val.first << " : " << val.second << std::endl;
 			if (!node)
-				return (new_node(val));
-			if (val.first < node->key_val.first)
-				node->left = do_insert(node->left, val);
-			if (val.first > node->key_val.first)
-				node->right = do_insert(node->right, val);
+			{
+				// std::cout << "makeing new node" << std::endl;
+				tree *tmp = new_node(val);
+				tmp->parent = parent;
+				return (tmp);
+			}
+			else if (comp(val.first, node->key_val.first))
+			{
+				node->left = do_insert(node->left, val, node);
+			}
+			// else if (val.first > node->key_val.first)
+			else if (comp(node->key_val.first, val.first))
+			{
+				node->right = do_insert(node->right, val, node);
+			}
 			else
 				return (node);
-			node->height = 1 + max_height(height(node->left), height(node->right));
-			int balance_factor = getBalanceFactor(node);
-			if (balance_factor > 1)
+			node->height = max_height(height(node->left), height(node->right)) + 1;
+			int	balance_factor = getBalanceFactor(node);
+			if (balance_factor < -1)
 			{
-				if (val.first < node->left->key_val.first)
-					return (right_rotate(node));
-				else if (val.first > node->left->key_val.first)
+				if (comp(node->right->key_val.first, val.first))
 				{
-					node->left = left_rotate(node->left);
-					return (right_rotate(node));
+					return (LL_rotate(node));
+				}
+				else if (comp(val.first, node->right->key_val.first))
+				{
+					std::cout << "RL Rotating node with val = " << node->key_val.first << ", val = " << val.first<< std::endl;
+					// node->right = RR_rotate(node->right);
+					// return (LL_rotate(node));
+					return (RL_rotate(node));
 				}
 			}
-			else if (balance_factor < -1)
+			else if (balance_factor > 1)
 			{
-				if (val.first > node->right->key_val.first)
-					return (left_rotate(node));
-				else if (val.first < node->right->key_val.first)
+				if (comp(val.first, node->left->key_val.first))
 				{
-					node->right = right_rotate(node->right);
-					return (left_rotate(node));
+					return (RR_rotate(node));
+				
+				}
+				else if (comp(node->left->key_val.first, val.first))
+				{
+					return (LR_rotate(node));
+				// 	node->left = LL_rotate(node->left);
+				// 	return (RR_rotate(node));
 				}
 			}
 			return (node);
 		}
 	public:
+
 		tree	*insert(const value_type &val)
 		{
-			_tree = do_insert(_tree, val);
+			_tree = do_insert(_tree, val, NULL);
 			return (_tree);
 		};
 		
@@ -161,7 +217,4 @@ namespace ft
 	// template <class InputIterator>  map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
 		// //copy const
 	// map (const map& x);
-	// 	 typedef __map_iterator<typename __base::iterator>	           iterator;
-	// typedef __map_const_iterator<typename __base::const_iterator> const_iterator;
-	// typedef _VSTD::reverse_iterator<iterator>               reverse_iterator;
-	// typedef _VSTD::reverse_iterator<const_iterator>         const_reverse_iterator;
+	

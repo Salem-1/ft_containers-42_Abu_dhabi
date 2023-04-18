@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:30:31 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/16 12:34:40 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/18 13:08:41 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void	test_insert()
 {
 	ft::map<int, std::string> fruits;
 	ft::pair<int, std::string> apple;
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		apple.first = i;
 		apple.second = "apple";
@@ -141,9 +141,10 @@ void	test_insert()
 		fruits.insert(apple);
 		// print2D(fruits._tree);
 		// std::cout << "\n----------------------------------------\n" << std::endl;
-		printTree(fruits._tree, "  ", true) ;
 		// sleep(i);
 	}
+	// fruits.test_less();
+		printTree(fruits._tree, "  ", true) ;
 		// apple.first = 40;
 		// fruits.insert(apple);
 		// apple.first = 50;
