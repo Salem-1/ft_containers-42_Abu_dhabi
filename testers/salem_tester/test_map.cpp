@@ -6,17 +6,17 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:30:31 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/18 13:08:41 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/18 18:34:31 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../srcs/map/map.hpp"
 #include <map>
 
-#include <utility>
-#include <cassert>
-#include <string>
-
+# include <utility>
+# include <cassert>
+# include <string>
+# include <iterator>
 int testpair()
 {
 	// Test default initialization:
@@ -133,18 +133,18 @@ void	test_insert()
 {
 	ft::map<int, std::string> fruits;
 	ft::pair<int, std::string> apple;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		apple.first = i;
 		apple.second = "apple";
 		std::cout << std::endl;
 		fruits.insert(apple);
-		// print2D(fruits._tree);
 		// std::cout << "\n----------------------------------------\n" << std::endl;
 		// sleep(i);
 	}
+	// printTree(fruits._tree, " ", true);
+		print2D(fruits._tree);
 	// fruits.test_less();
-		printTree(fruits._tree, "  ", true) ;
 		// apple.first = 40;
 		// fruits.insert(apple);
 		// apple.first = 50;
@@ -155,9 +155,28 @@ void	test_insert()
 		// fruits.insert(apple);
 }
 
+void	test_iterators()
+{
+	std::map<int, std::string> fruits;
+	std::pair<int, std::string> apple;
+	for (int i = 0; i < 10; i++)
+	{
+		apple.first = i;
+		apple.second = "apple";
+		std::cout << std::endl;
+		fruits.insert(apple);
+	}
+	
+	for(std::map<int, std::string>::iterator it = fruits.begin();
+		it != fruits.end();
+		++it)
+	{
+		std::cout << it->second << std::endl;
+	}
+}
 
 int main()
 {
+	// test_iterators();
 	test_insert();
-
 }

@@ -20,7 +20,6 @@ clean:
 fclean: clean
 	@rm -rf $(NAME)
 test: re
-	@echo "\n\n"
 	@./salem_tester
 
 mem: re
