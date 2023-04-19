@@ -76,15 +76,17 @@ namespace ft
 		{
 			tree	*inserted = tree_allocator.allocate(1);
 			inserted->key_val = val;
+			inserted->height = 1;
 			return (inserted);
 		}
 
 		tree	*RR_rotate(tree *y)
 		{
 			tree	*x = y->left;
+			tree	*T2 = x->right;
 
-			y->left = x->right;
 			x->right = y;
+			y->left = T2;
 			x->parent = y->parent;
 			y->parent = x;
 			y->height = max_height(height(y->left), height(y->right)) + 1;
@@ -129,10 +131,11 @@ namespace ft
 
 		tree	*LL_rotate(tree *x)
 		{
-			tree *y = x->right;
+						tree	*y = x->right;
+			tree	*T2 = x->left;
 
-			x->right = y->left;
 			y->left = x;
+			x->right = T2;
 			y->parent = x->parent;
 			x->parent = y;
 			x->height = max_height(height(x->left), height(x->right)) + 1;
@@ -169,34 +172,44 @@ namespace ft
 				return (node);
 			node->height = max_height(height(node->left), height(node->right)) + 1;
 			int	balance_factor = getBalanceFactor(node);
+			// std::cout << "for node " << node->key_val.first << "  Blance factor = " << balance_factor << std::endl;
 			if (balance_factor < -1)
 			{
 				if (comp(node->right->key_val.first, val.first))
 				{
+			std::cout << "\nrotating around " << node->key_val.first;
+					std::cout << " LL Rotate val = " << val.first << std::endl;
 					return (LL_rotate(node));
 				}
 				else if (comp(val.first, node->right->key_val.first))
 				{
-					std::cout << "RL Rotating node with val = " << node->key_val.first << ", val = " << val.first<< std::endl;
-					// node->right = RR_rotate(node->right);
-					// return (LL_rotate(node));
-					return (RL_rotate(node));
+					std::cout << "\n\nRL Rotating node with val = " << node->key_val.first << ", val = " << val.first<< std::endl;
+					node->right = RR_rotate(node->right);
+					return (LL_rotate(node));
+					// return (RL_rotate(node));
 				}
 			}
 			else if (balance_factor > 1)
 			{
 				if (comp(val.first, node->left->key_val.first))
 				{
+					std::cout << "RR Rotate val = " << val.first << std::endl;
+
 					return (RR_rotate(node));
 				
 				}
 				else if (comp(node->left->key_val.first, val.first))
 				{
-					return (LR_rotate(node));
-				// 	node->left = LL_rotate(node->left);
-				// 	return (RR_rotate(node));
+					std::cout << "LR Rotate val = " << val.first << std::endl;
+					
+					// return (LR_rotate(node));
+					node->left = LL_rotate(node->left);
+					return (RR_rotate(node));
 				}
 			}
+			if (node->parent)
+				std::cout << " parent = " << node->parent->key_val.first << " ";
+			
 			return (node);
 		}
 //----------ITERATOR_UTILS----------//
@@ -221,7 +234,11 @@ namespace ft
 
 		tree	*insert(const value_type &val)
 		{
+			if (_tree)
+				std::cout << "root = " << _tree->key_val.first <<" inserting val " << val.first << std::endl;
+
 			_tree = do_insert(_tree, val, NULL);
+			std::cout << std::endl;
 			return (_tree);
 		};
 		iterator	begin()

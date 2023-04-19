@@ -115,7 +115,7 @@ template <class Key, class T>
 	for (int i = 10; i < space; i++)
 		std::cout << " ";
 	// std::cout << root->key_val.first  << " , h = " << root->height <<  std::endl;
-	std::cout << root->key_val.first  <<  std::endl;
+	std::cout << root->key_val.first  << " , height = " << root->height <<   std::endl;
 	for (int i = 10; i < space; i++)
 		std::cout << " ";
 	if (root->parent)
@@ -173,14 +173,17 @@ void	test_iterators()
 {
 	ft::map<int, std::string> fruits;
 	ft::pair<int, std::string> apple;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		apple.first = i;
 		apple.second = "apple";
 		std::cout << std::endl;
 		fruits.insert(apple);
+	// my_map_print(fruits._tree);
+
 	}
 	my_map_print(fruits._tree);
+	print2D(fruits._tree);
 	// ft::map<int, std::string>::iterator it;
 	// it = fruits.begin();
 	// std::cout << "Begining is " << fruits.begin()->key_val.first<< std::endl;
