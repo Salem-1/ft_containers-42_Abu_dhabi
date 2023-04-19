@@ -109,7 +109,7 @@ template <class Key, class T>
 {
 	if (root == NULL)
 		return;
-		space += 10;
+	space += 10;
 	print2DUtil(root->right, space);
 	std::cout << std::endl;
 	for (int i = 10; i < space; i++)
@@ -118,8 +118,8 @@ template <class Key, class T>
 	std::cout << root->key_val.first  <<  std::endl;
 	for (int i = 10; i < space; i++)
 		std::cout << " ";
-		if (root->parent)
-			std::cout << "Parent: " << root->parent->key_val.first << std::endl;
+	if (root->parent)
+		std::cout << "Parent: " << root->parent->key_val.first << std::endl;
 	print2DUtil(root->left, space);
 }
 template <class Key, class T>
@@ -156,7 +156,18 @@ void	test_insert()
 		// fruits.insert(apple);
 }
 
-
+template <class Key, class T>
+void my_map_print(ft::Node<Key, T> *root) 
+{
+	if (!root)
+		return;
+	my_map_print(root->left);
+	my_map_print(root->right);
+	std::cout << "key = " << root->key_val.first;
+	if (root->parent)
+		std::cout << " parent = " << root->parent->key_val.first << std::endl;
+		
+}
 
 void	test_iterators()
 {
@@ -169,10 +180,14 @@ void	test_iterators()
 		std::cout << std::endl;
 		fruits.insert(apple);
 	}
-	ft::map<int, std::string>::iterator it;
+	my_map_print(fruits._tree);
+	// ft::map<int, std::string>::iterator it;
 	// it = fruits.begin();
 	// std::cout << "Begining is " << fruits.begin()->key_val.first<< std::endl;
-	
+	// it = fruits.end();
+	// std::cout << "End is " << fruits.end()->key_val.first<< std::endl;
+
+	// it++;
 	// for(std::map<int, std::string>::iterator it = fruits.begin();
 	// 	it != fruits.end();
 	// 	++it)
@@ -184,5 +199,6 @@ void	test_iterators()
 int main()
 {
 	test_iterators();
+
 	// test_insert();
 }

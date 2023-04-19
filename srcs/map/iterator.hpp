@@ -19,30 +19,30 @@
 namespace ft
 {
 	template <
-		class Category,
-		class T,
+		class tree,
+		class Category = std::random_access_iterator_tag,
 		class Distance = ptrdiff_t,
-		class Pointer = T*,
-		class Reference = T&
+		class Pointer = tree*,
+		class Reference = tree&
 	> class iterator
 	{
 		public:
-	    	typedef T			value_type;
+	    	typedef tree			value_type;
 	    	typedef Distance 	difference_type;
-	    	typedef T*			pointer;
-	    	typedef T&			reference;
+	    	typedef tree		*pointer;
+	    	typedef tree&			reference;
 	    	typedef Category	iterator_category;
 		
 		protected:
-			pointer	_ptr;
+			pointer	_node;
 		public:
-			iterator(): _ptr(NULL){};
-			iterator(pointer ptr) : _ptr(ptr){};
+			iterator(): _node(NULL){};
+			iterator(pointer ptr) : _node(ptr){};
 			~iterator(){};
 
 			pointer	operator->() const
 			{
-				return (_ptr);
+				return (_node);
 			}
  	};
 }

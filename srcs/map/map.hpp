@@ -45,8 +45,8 @@ namespace ft
 			typedef typename	allocator_type::size_type			size_type;
 			typedef				value_type&							tmp_iterator;
 			typedef typename ft::Node<key_type, mapped_type>		tree;
-			typedef	typename	ft::iterator<tree>							iterator;
 			tree							*_tree;
+			typedef	typename	ft::iterator<tree>							iterator;
 			protected:
 			key_compare						comp;
 			allocator_type					allocator;
@@ -86,7 +86,7 @@ namespace ft
 			y->left = x->right;
 			x->right = y;
 			x->parent = y->parent;
-			y->parent = x; 
+			y->parent = x;
 			y->height = max_height(height(y->left), height(y->right)) + 1;
 			x->height = max_height(height(x->left), height(x->right)) + 1;
 			return (x);
@@ -199,6 +199,24 @@ namespace ft
 			}
 			return (node);
 		}
+//----------ITERATOR_UTILS----------//
+	private:
+		tree	*get_min(tree *min_node)
+		{
+			if (!min_node)
+				return (NULL);
+			while (min_node->left)
+				min_node = min_node->left;
+			return (min_node);			
+		}
+		tree	*get_max(tree *max_node)
+		{
+			if (!max_node)
+				return (NULL);
+			while (max_node->right)
+				max_node = max_node->right;
+			return (max_node);			
+		}
 	public:
 
 		tree	*insert(const value_type &val)
@@ -209,7 +227,13 @@ namespace ft
 		iterator	begin()
 		{
 			//returning the smallest pointer
-			return (iterator(_tree));
+			
+			return (iterator(get_min(_tree)));
+		}
+
+		iterator	end()
+		{			
+			return (iterator(get_max(_tree)->right));
 		}
 	};
 }
