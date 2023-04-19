@@ -6,7 +6,7 @@
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:30:31 by ahsalem           #+#    #+#             */
-/*   Updated: 2023/04/18 18:34:31 by ahsalem          ###   ########.fr       */
+/*   Updated: 2023/04/19 06:40:03 by ahsalem          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ void	test_insert()
 {
 	ft::map<int, std::string> fruits;
 	ft::pair<int, std::string> apple;
+
 	for (int i = 0; i < 20; i++)
 	{
 		apple.first = i;
@@ -155,10 +156,12 @@ void	test_insert()
 		// fruits.insert(apple);
 }
 
+
+
 void	test_iterators()
 {
-	std::map<int, std::string> fruits;
-	std::pair<int, std::string> apple;
+	ft::map<int, std::string> fruits;
+	ft::pair<int, std::string> apple;
 	for (int i = 0; i < 10; i++)
 	{
 		apple.first = i;
@@ -166,17 +169,20 @@ void	test_iterators()
 		std::cout << std::endl;
 		fruits.insert(apple);
 	}
+	ft::map<int, std::string>::iterator it;
+	// it = fruits.begin();
+	// std::cout << "Begining is " << fruits.begin()->key_val.first<< std::endl;
 	
-	for(std::map<int, std::string>::iterator it = fruits.begin();
-		it != fruits.end();
-		++it)
-	{
-		std::cout << it->second << std::endl;
-	}
+	// for(std::map<int, std::string>::iterator it = fruits.begin();
+	// 	it != fruits.end();
+	// 	++it)
+	// {
+	// 	std::cout << it->second << std::endl;
+	// }
 }
 
 int main()
 {
-	// test_iterators();
-	test_insert();
+	test_iterators();
+	// test_insert();
 }

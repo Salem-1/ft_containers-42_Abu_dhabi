@@ -34,11 +34,16 @@ namespace ft
 	    	typedef Category	iterator_category;
 		
 		protected:
-			pointer	_pair;
+			pointer	_ptr;
 		public:
-			iterator(): _pair(NULL){};
-			iterator(pointer ptr) : _pair(ptr){};
+			iterator(): _ptr(NULL){};
+			iterator(pointer ptr) : _ptr(ptr){};
 			~iterator(){};
-	};
+
+			pointer	operator->() const
+			{
+				return (_ptr);
+			}
+ 	};
 }
 #endif

@@ -45,6 +45,7 @@ namespace ft
 			typedef typename	allocator_type::size_type			size_type;
 			typedef				value_type&							tmp_iterator;
 			typedef typename ft::Node<key_type, mapped_type>		tree;
+			typedef	typename	ft::iterator<tree>							iterator;
 			tree							*_tree;
 			protected:
 			key_compare						comp;
@@ -205,7 +206,11 @@ namespace ft
 			_tree = do_insert(_tree, val, NULL);
 			return (_tree);
 		};
-		
+		iterator	begin()
+		{
+			//returning the smallest pointer
+			return (iterator(_tree));
+		}
 	};
 }
 #endif
