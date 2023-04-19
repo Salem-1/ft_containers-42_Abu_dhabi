@@ -92,7 +92,7 @@ namespace ft
 			y->height = max_height(height(y->left), height(y->right)) + 1;
 			x->height = max_height(height(x->left), height(x->right)) + 1;
 			return (x);
-		}
+		}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
 		tree	*LR_rotate(tree *y)
 		{
 			tree *new_root = y->left->right;
@@ -131,11 +131,24 @@ namespace ft
 
 		tree	*LL_rotate(tree *x)
 		{
-						tree	*y = x->right;
-			tree	*T2 = x->left;
+			tree*	y = x->right;
+	x->right = y->left;
+	if (y->left != NULL)
+		y->left->parent = x;
+	// y->parent = x->parent;
+	// if (x.parent == T.nill) //if x was root, change the root to be y
+	// 	T.root = y;
+	// if (x == x->parent->left) //x was the left child
+	// 	x->parent->left = y; //change the parent of y to be x's parent
+	// else	//other wise x was the right child to it's parent
+	// 	x.parent.right = y;
+	y->left = x;
+	// x->parent = y;
+			// tree	*y = x->right;
+			// tree	*T2 = x->left;
 
-			y->left = x;
-			x->right = T2;
+			// y->left = x;
+			// x->right = T2;
 			y->parent = x->parent;
 			x->parent = y;
 			x->height = max_height(height(x->left), height(x->right)) + 1;

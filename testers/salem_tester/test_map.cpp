@@ -173,7 +173,7 @@ void	test_iterators()
 {
 	ft::map<int, std::string> fruits;
 	ft::pair<int, std::string> apple;
-	for (int i = 0; i < 6; i++)
+	for (int i = 6; i > 0; i--)
 	{
 		apple.first = i;
 		apple.second = "apple";

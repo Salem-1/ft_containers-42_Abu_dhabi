@@ -244,7 +244,7 @@ struct	red_black_tree
 //for each node all simple pathes to nodes below have same number of black
 
 //rotate left
-
+rotate
 void	left-rotate(T, x)
 {
 	y = x.right;
@@ -303,7 +303,6 @@ void	red_black_insert_fixup(T, z)
 				if (z == z.p.right)
 				{
 					z = z.p;
-					left_rotate(T,z);
 				}
 
 				z.parent.color = black;
