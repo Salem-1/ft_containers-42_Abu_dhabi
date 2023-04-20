@@ -92,7 +92,7 @@ namespace ft
 			y->height = max_height(height(y->left), height(y->right)) + 1;
 			x->height = max_height(height(x->left), height(x->right)) + 1;
 			return (x);
-		}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
+		}
 		tree	*LR_rotate(tree *y)
 		{
 			tree *new_root = y->left->right;

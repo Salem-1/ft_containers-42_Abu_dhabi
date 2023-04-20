@@ -227,7 +227,7 @@ tree	*new_node(const value_type &val)
 			y->left = T2;
 			y->height = max_height(height(y->left), height(y->right)) + 1;
 			x->height = max_height(height(x->left), height(x->right)) + 1;
-			return (x);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
+			return (x);
 		}
 		tree	*left_rotate(tree *x)
 		{
