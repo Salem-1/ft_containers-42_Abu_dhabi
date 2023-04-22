@@ -383,13 +383,13 @@ insert(node, key):
     if balance > 1 and key < node.left.key:
         # Left-left case
         return right_rotate(node)
-    else if balance < -1 and key > node.right.key:
-        # Right-right case
-        return left_rotate(node)
     else if balance > 1 and key > node.left.key:
         # Left-right case
         node.left = left_rotate(node.left)
         return right_rotate(node)
+    else if balance < -1 and key > node.right.key:
+        # Right-right case
+        return left_rotate(node)
     else if balance < -1 and key < node.right.key:
         # Right-left case
         node.right = right_rotate(node.right)

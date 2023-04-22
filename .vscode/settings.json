@@ -59,6 +59,20 @@
 		"map": "cpp",
 		"__node_handle": "cpp",
 		"__tree": "cpp",
-		"optional": "cpp"
+		"optional": "cpp",
+		"__bits": "cpp",
+		"__hash_table": "cpp",
+		"__verbose_abort": "cpp",
+		"array": "cpp",
+		"clocale": "cpp",
+		"cmath": "cpp",
+		"complex": "cpp",
+		"deque": "cpp",
+		"sstream": "cpp",
+		"stack": "cpp",
+		"unordered_map": "cpp",
+		"variant": "cpp",
+		"compare": "cpp",
+		"concepts": "cpp"
 	}
 }

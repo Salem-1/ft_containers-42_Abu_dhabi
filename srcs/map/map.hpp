@@ -71,7 +71,40 @@ namespace ft
 			tree_alloc						tree_allocator;
 			//---------------------------Moves_UTILS-----------------------------------//
 		
+		void	visualize_node(tree *y, std::string name, std::string indent)
 
+		{
+			std::cout << indent;
+			std::cout << "    " << name << std::endl;
+			std::cout << indent;
+			if (y->parent)
+				std ::cout << "    " << y->parent->key_val.first << std::endl;
+			else
+				std::cout << "   root" << std::endl;
+			std::cout << indent;
+			
+			std::cout << "    ^" << std::endl;
+			std::cout << indent;
+			
+			std::cout << "    | " << std::endl;
+			std::cout << indent;
+			
+			std::cout << "    "<< y->key_val.first << std::endl;
+			std::cout << indent;
+			
+			std::cout << " /    \\" << std::endl;
+			std::cout << indent;
+			
+			if (y->left)
+				std::cout  << y->left->key_val.first;
+			else
+				std::cout <<"(null)";
+			std::cout << "      ";
+			if (y->right)
+				std::cout << y->right->key_val.first << std::endl;
+			else
+				std::cout << "(null)" << std::endl;
+		}
 		tree	*new_node(const value_type &val)
 		{
 			tree	*inserted = tree_allocator.allocate(1);
@@ -80,19 +113,6 @@ namespace ft
 			return (inserted);
 		}
 
-		tree	*RR_rotate(tree *y)
-		{
-			tree	*x = y->left;
-			tree	*T2 = x->right;
-
-			x->right = y;
-			y->left = T2;
-			x->parent = y->parent;
-			y->parent = x;
-			y->height = max_height(height(y->left), height(y->right)) + 1;
-			x->height = max_height(height(x->left), height(x->right)) + 1;
-			return (x);
-		}
 		tree	*LR_rotate(tree *y)
 		{
 			tree *new_root = y->left->right;
@@ -128,27 +148,35 @@ namespace ft
 			new_root->height = max_height(height(new_root->left), height(middle->right)) + 1;
 			return (new_root);
 		}
+		tree	*RR_rotate(tree *y)
+		{
+			tree	*x = y->left;
+			tree	*T2 = x->right;
+			std::cout << "Before Rotation" << std::cout;
+			visualize_node(y, "y", "   ");
+			visualize_node(x, "x", "   ");
+			x->right = y;
+			y->left = T2;
+			x->parent = y->parent;
+			y->parent = x;
+			
+			y->height = max_height(height(y->left), height(y->right)) + 1;
+			x->height = max_height(height(x->left), height(x->right)) + 1;
+			std::cout << "After  Rotation" << std::cout;
+			visualize_node(y, "y", "   ");
+			visualize_node(x, "x", "   ");
+			if (y->left)
+					y->left->parent = y;
+			return (x);
+		}
 
 		tree	*LL_rotate(tree *x)
 		{
 			tree*	y = x->right;
-	x->right = y->left;
-	if (y->left != NULL)
-		y->left->parent = x;
-	// y->parent = x->parent;
-	// if (x.parent == T.nill) //if x was root, change the root to be y
-	// 	T.root = y;
-	// if (x == x->parent->left) //x was the left child
-	// 	x->parent->left = y; //change the parent of y to be x's parent
-	// else	//other wise x was the right child to it's parent
-	// 	x.parent.right = y;
-	y->left = x;
-	// x->parent = y;
-			// tree	*y = x->right;
-			// tree	*T2 = x->left;
-
-			// y->left = x;
-			// x->right = T2;
+			x->right = y->left;
+			if (y->left != NULL)
+				y->left->parent = x;
+			y->left = x;
 			y->parent = x->parent;
 			x->parent = y;
 			x->height = max_height(height(x->left), height(x->right)) + 1;
@@ -204,6 +232,9 @@ namespace ft
 			}
 			else if (balance_factor > 1)
 			{
+std::cout << "\nBalance factor " << balance_factor << " (val, node->left->val)  = ";
+std::cout << val.first << "  " << node->left->key_val.first << std::endl;
+	 
 				if (comp(val.first, node->left->key_val.first))
 				{
 					std::cout << "RR Rotate val = " << val.first << std::endl;
