@@ -22,6 +22,7 @@ namespace ft
 	class Node
 	{
 		public:
+			typedef pair<Key, T> value_type;
 			pair<Key, T> key_val;
 			Node	*left;
 			Node	*right;

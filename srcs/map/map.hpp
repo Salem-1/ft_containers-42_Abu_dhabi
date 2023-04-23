@@ -152,9 +152,9 @@ namespace ft
 		{
 			tree	*x = y->left;
 			tree	*T2 = x->right;
-			std::cout << "Before Rotation" << std::cout;
-			visualize_node(y, "y", "   ");
-			visualize_node(x, "x", "   ");
+			// std::cout << "Before Rotation" << std::cout;
+			// visualize_node(y, "y", "   ");
+			// visualize_node(x, "x", "   ");
 			x->right = y;
 			y->left = T2;
 			x->parent = y->parent;
@@ -162,9 +162,9 @@ namespace ft
 			
 			y->height = max_height(height(y->left), height(y->right)) + 1;
 			x->height = max_height(height(x->left), height(x->right)) + 1;
-			std::cout << "After  Rotation" << std::cout;
-			visualize_node(y, "y", "   ");
-			visualize_node(x, "x", "   ");
+			// std::cout << "After  Rotation" << std::cout;
+			// visualize_node(y, "y", "   ");
+			// visualize_node(x, "x", "   ");
 			if (y->left)
 					y->left->parent = y;
 			return (x);
@@ -218,13 +218,13 @@ namespace ft
 			{
 				if (comp(node->right->key_val.first, val.first))
 				{
-			std::cout << "\nrotating around " << node->key_val.first;
-					std::cout << " LL Rotate val = " << val.first << std::endl;
+			// std::cout << "\nrotating around " << node->key_val.first;
+			// 		std::cout << " LL Rotate val = " << val.first << std::endl;
 					return (LL_rotate(node));
 				}
 				else if (comp(val.first, node->right->key_val.first))
 				{
-					std::cout << "\n\nRL Rotating node with val = " << node->key_val.first << ", val = " << val.first<< std::endl;
+					// std::cout << "\n\nRL Rotating node with val = " << node->key_val.first << ", val = " << val.first<< std::endl;
 					node->right = RR_rotate(node->right);
 					return (LL_rotate(node));
 					// return (RL_rotate(node));
@@ -232,27 +232,27 @@ namespace ft
 			}
 			else if (balance_factor > 1)
 			{
-std::cout << "\nBalance factor " << balance_factor << " (val, node->left->val)  = ";
-std::cout << val.first << "  " << node->left->key_val.first << std::endl;
+// std::cout << "\nBalance factor " << balance_factor << " (val, node->left->val)  = ";
+// std::cout << val.first << "  " << node->left->key_val.first << std::endl;
 	 
 				if (comp(val.first, node->left->key_val.first))
 				{
-					std::cout << "RR Rotate val = " << val.first << std::endl;
+					// std::cout << "RR Rotate val = " << val.first << std::endl;
 
 					return (RR_rotate(node));
 				
 				}
 				else if (comp(node->left->key_val.first, val.first))
 				{
-					std::cout << "LR Rotate val = " << val.first << std::endl;
+					// std::cout << "LR Rotate val = " << val.first << std::endl;
 					
 					// return (LR_rotate(node));
 					node->left = LL_rotate(node->left);
 					return (RR_rotate(node));
 				}
 			}
-			if (node->parent)
-				std::cout << " parent = " << node->parent->key_val.first << " ";
+			// if (node->parent)
+			// 	std::cout << " parent = " << node->parent->key_val.first << " ";
 			
 			return (node);
 		}
@@ -278,8 +278,8 @@ std::cout << val.first << "  " << node->left->key_val.first << std::endl;
 
 		tree	*insert(const value_type &val)
 		{
-			if (_tree)
-				std::cout << "root = " << _tree->key_val.first <<" inserting val " << val.first << std::endl;
+			// if (_tree)
+			// 	std::cout << "root = " << _tree->key_val.first <<" inserting val " << val.first << std::endl;
 
 			_tree = do_insert(_tree, val, NULL);
 			std::cout << std::endl;
@@ -293,7 +293,9 @@ std::cout << val.first << "  " << node->left->key_val.first << std::endl;
 		}
 
 		iterator	end()
-		{			
+		{
+			if (!_tree)
+				return (iterator(_tree));	
 			return (iterator(get_max(_tree)->right));
 		}
 	};

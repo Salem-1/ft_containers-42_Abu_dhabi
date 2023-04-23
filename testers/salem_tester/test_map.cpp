@@ -177,26 +177,22 @@ void	test_iterators()
 	{
 		apple.first = i;
 		apple.second = "apple";
-		std::cout << std::endl;
+		// std::cout << std::endl;
 		fruits.insert(apple);
 	// my_map_print(fruits._tree);
 
 	}
-	my_map_print(fruits._tree);
-	print2D(fruits._tree);
-	// ft::map<int, std::string>::iterator it;
-	// it = fruits.begin();
-	// std::cout << "Begining is " << fruits.begin()->key_val.first<< std::endl;
-	// it = fruits.end();
-	// std::cout << "End is " << fruits.end()->key_val.first<< std::endl;
+	// my_map_print(fruits._tree);
+	// print2D(fruits._tree);
+	ft::map<int, std::string>::iterator it;
+	it = fruits.begin();
+	std::cout << "Begin add " << &it << std::endl;
+	++it; 
+	std::cout << "it++ " << it->first << std::endl; 
+	it = fruits.end();
+	std::cout << "end add " << &it << std::endl ;
+	// ++it;
 
-	// it++;
-	// for(std::map<int, std::string>::iterator it = fruits.begin();
-	// 	it != fruits.end();
-	// 	++it)
-	// {
-	// 	std::cout << it->second << std::endl;
-	// }
 }
 
 int main()

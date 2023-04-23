@@ -27,23 +27,34 @@ namespace ft
 	> class iterator
 	{
 		public:
-	    	typedef tree			value_type;
-	    	typedef Distance 	difference_type;
-	    	typedef tree		*pointer;
-	    	typedef tree&			reference;
-	    	typedef Category	iterator_category;
+	    	typedef typename tree::value_type		value_type;
+	    	typedef Distance 				difference_type;
+	    	typedef tree					*pointer;
+	    	typedef tree&					reference;
+	    	typedef Category				iterator_category;
 		
 		protected:
-			pointer	_node;
+			pointer						_node;
 		public:
 			iterator(): _node(NULL){};
 			iterator(pointer ptr) : _node(ptr){};
 			~iterator(){};
 
-			pointer	operator->() const
+			inline value_type	*operator->() const
 			{
-				return (_node);
+				return &(_node->key_val);
 			}
+			iterator &operator++() 
+			{
+				if (!_node)
+					_node++;
+				return (*this);
+			}
+			// iterator operator++(int)
+			// {
+			// 	iterator tmp(*this);
+			// 	return (*this);
+			// };
  	};
 }
 #endif
