@@ -173,7 +173,7 @@ void	test_iterators()
 {
 	ft::map<int, std::string> fruits;
 	ft::pair<int, std::string> apple;
-	for (int i = 10; i > 0; i--)
+	for (int i = 0; i < 10; i++)
 	{
 		apple.first = i;
 		apple.second = "apple";
@@ -183,12 +183,16 @@ void	test_iterators()
 
 	}
 	// my_map_print(fruits._tree);
-	// print2D(fruits._tree);
+	print2D(fruits._tree);
 	ft::map<int, std::string>::iterator it;
 	it = fruits.begin();
 	std::cout << "Begin add " << &it << std::endl;
-	++it; 
-	std::cout << "it++ " << it->first << std::endl; 
+	std::cout << "Begin add " << it->first << std::endl;
+	for (int i = 0; i < 10; i++)
+	{
+		std::cout << it->first << std::endl; 
+		++it; 
+	}
 	it = fruits.end();
 	std::cout << "end add " << &it << std::endl ;
 	// ++it;
