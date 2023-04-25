@@ -296,7 +296,7 @@ namespace ft
 		{
 			if (!_tree)
 				return (iterator(_tree));	
-			return (iterator(get_max(_tree)->right));
+			return (iterator(get_max(_tree) + 1));
 		}
 	};
 }
