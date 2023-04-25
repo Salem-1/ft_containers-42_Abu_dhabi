@@ -187,17 +187,17 @@ void	test_iterators()
 	print2D(fruits._tree);
 	ft::map<int, std::string>::iterator it;
 	it = fruits.end();
-	// std::cout << "Begin add " << &it << std::endl;
-	// // std::cout << "Begin add " << it->first << std::endl;
-	// 	// std::cout << it->first << std::endl; 
+	std::cout << "Begin add " << &it << std::endl;
+	std::cout << "Begin add " << it->first << std::endl;
+		// std::cout << it->first << std::endl; 
 	for (int i = 0; i < n - 1 ; i++)
 	{
-		--it;
-		std::cout << (it)->first << std::endl; 
+		std::cout << (--it)->first << std::endl; 
 		// std::cout << (it)->first << std::endl; 
 	}
-	// it = fruits.end();
-	// std::cout << "end add " << &it << std::endl ;
+	it = fruits.begin();
+	--it;
+	// // std::cout << "end add " << &it << std::endl ;
 	// ++it;
 
 }
