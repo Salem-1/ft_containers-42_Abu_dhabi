@@ -17,35 +17,37 @@
 # include <cassert>
 # include <string>
 # include <iterator>
+# define TESTED_TYPE ft
+# define N 10
 int testpair()
 {
 	// Test default initialization:
-	ft::pair<int, float> p;
+	TESTED_TYPE::pair<int, float> p;
 	assert(p.first == 0);
 	assert(p.second == 0.0f);
 
 	// Test initialization with values:
-	ft::pair<int, std::string> p2(42, "hello");
+	TESTED_TYPE::pair<int, std::string> p2(42, "hello");
 	assert(p2.first == 42);
 	assert(p2.second == "hello");
 
 	// Test copy construction:
-	ft::pair<int, float> p3(42, 3.14f);
-	ft::pair<int, float> p4(p3);
+	TESTED_TYPE::pair<int, float> p3(42, 3.14f);
+	TESTED_TYPE::pair<int, float> p4(p3);
 	assert(p4.first == 42);
 	assert(p4.second == 3.14f);
 
 	// Test assignment:
-	ft::pair<int, float> p5(42, 3.14f);
-	ft::pair<int, float> p6;
+	TESTED_TYPE::pair<int, float> p5(42, 3.14f);
+	TESTED_TYPE::pair<int, float> p6;
 	p6 = p5;
 	assert(p6.first == 42);
 	assert(p6.second == 3.14f);
 
 	// Test comparison:
-	ft::pair<int, float> p7(42, 3.14f);
-	ft::pair<int, float> p8(42, 3.14f);
-	ft::pair<int, float> p9(42, 2.71f);
+	TESTED_TYPE::pair<int, float> p7(42, 3.14f);
+	TESTED_TYPE::pair<int, float> p8(42, 3.14f);
+	TESTED_TYPE::pair<int, float> p9(42, 2.71f);
 	assert(p7 == p8);
 	assert(p7 != p9);
 
@@ -55,8 +57,8 @@ int testpair()
 
 void test_mypair()
 {
-	ft::pair<int, float> a(10, 11.2f);
-	ft::pair<int, float> b(9, 11.2f);
+	TESTED_TYPE::pair<int, float> a(10, 11.2f);
+	TESTED_TYPE::pair<int, float> b(9, 11.2f);
 	std::cout << "first = " << a.first << std::endl;
 	std::cout << "second = " << a.second << std::endl;
 	std::cout << "b  < a =  " << (b < a) << std::endl;
@@ -65,18 +67,18 @@ void test_mypair()
 
 void test_make_pair()
 {
-	ft::pair<int, int> foo;
-	ft::pair<int, int> bar;
+	TESTED_TYPE::pair<int, int> foo;
+	TESTED_TYPE::pair<int, int> bar;
 
-	foo = ft::make_pair(10, 20);
-	bar = ft::make_pair(10.5, 'A'); // ok: implicit conversion from pair<double,char>
+	foo = TESTED_TYPE::make_pair(10, 20);
+	bar = TESTED_TYPE::make_pair(10.5, 'A'); // ok: implicit conversion from pair<double,char>
 
 	std::cout << "foo: " << foo.first << ", " << foo.second << '\n';
 	std::cout << "bar: " << bar.first << ", " << bar.second << '\n';
 }
 
 template <class Key, class T>
-void	print_tree(ft::Node<Key, T> *print_me)
+void	print_tree(TESTED_TYPE::Node<Key, T> *print_me)
 {
 	if (print_me->empty)
 		return ;
@@ -87,7 +89,7 @@ void	print_tree(ft::Node<Key, T> *print_me)
 }
 
 template <class Key, class T>
-void printTree(ft::Node<Key, T>  *root, std::string indent, bool last) 
+void printTree(TESTED_TYPE::Node<Key, T>  *root, std::string indent, bool last) 
 {
   if (root != NULL) {
     std::cout << indent;
@@ -105,7 +107,7 @@ void printTree(ft::Node<Key, T>  *root, std::string indent, bool last)
   
 }
 template <class Key, class T>
-	 void print2DUtil(ft::Node<Key, T>*root, int space) 
+	 void print2DUtil(TESTED_TYPE::Node<Key, T>*root, int space) 
 {
 	if (root == NULL)
 		return;
@@ -123,7 +125,7 @@ template <class Key, class T>
 	print2DUtil(root->left, space);
 }
 template <class Key, class T>
-void print2D(ft::Node<Key, T>  *node) {
+void print2D(TESTED_TYPE::Node<Key, T>  *node) {
 	std::cout << "Tree:" << std::endl;
 	print2DUtil(node, 0);
 }
@@ -131,10 +133,10 @@ void print2D(ft::Node<Key, T>  *node) {
 #include <unistd.h>
 void	test_insert()
 {
-	ft::map<int, std::string> fruits;
-	ft::pair<int, std::string> apple;
+	TESTED_TYPE::map<int, std::string> fruits;
+	TESTED_TYPE::pair<int, std::string> apple;
 
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < N; i++)
 	{
 		apple.first = i;
 		apple.second = "apple";
@@ -157,7 +159,7 @@ void	test_insert()
 }
 
 template <class Key, class T>
-void my_map_print(ft::Node<Key, T> *root) 
+void my_map_print(TESTED_TYPE::Node<Key, T> *root) 
 {
 	if (!root)
 		return;
@@ -171,10 +173,9 @@ void my_map_print(ft::Node<Key, T> *root)
 
 void	test_iterators()
 {
-	ft::map<int, std::string> fruits;
-	ft::pair<int, std::string> apple;
-	int	n = 10;
-	for (int i = 0; i < n; i++)
+	TESTED_TYPE::map<int, std::string> fruits;
+	TESTED_TYPE::pair<int, std::string> apple;
+	for (int i = 0; i < N; i++)
 	{
 		apple.first = i;
 		apple.second = "apple";
@@ -185,26 +186,226 @@ void	test_iterators()
 	}
 	// my_map_print(fruits._tree);
 	print2D(fruits._tree);
-	ft::map<int, std::string>::iterator it;
-	it = fruits.end();
+	TESTED_TYPE::map<int, std::string>::iterator it;
+	it = fruits.begin();
 	std::cout << "Begin add " << &it << std::endl;
 	std::cout << "Begin add " << it->first << std::endl;
 		// std::cout << it->first << std::endl; 
-	for (int i = 0; i < n - 1 ; i++)
+	for (int i = 0; i < N - 1 ; i++)
 	{
-		std::cout << (--it)->first << std::endl; 
+		std::cout << (++it)->first << std::endl; 
 		// std::cout << (it)->first << std::endl; 
 	}
-	it = fruits.begin();
-	--it;
-	// // std::cout << "end add " << &it << std::endl ;
+	// it = fruits.begin();
+	// --it;
+	it -= 3;
+	 std::cout << "end add " << it->first << std::endl ;
+	it -= -3;
+	 std::cout << "end add " << it->first << std::endl ;
 	// ++it;
 
 }
 
+void 	test_iterators_operators()
+{
+	TESTED_TYPE::map<int, std::string> fruits;
+	TESTED_TYPE::map<int, std::string> veg;
+	TESTED_TYPE::pair<int, std::string> apple;
+	TESTED_TYPE::pair<int, std::string> carrot;
+	for (int i = 0; i < N; i++)
+	{
+		apple.first = i;
+		carrot.first = i;
+		apple.second = "apple";
+		carrot.second = "Tomato";
+		// std::cout << std::endl;
+		fruits.insert(apple);
+		veg.insert(carrot);
+	// my_map_print(fruits._tree);
+
+	}
+	// my_map_print(fruits._tree);
+	// print2D(fruits._tree);
+	TESTED_TYPE::map<int, std::string>::iterator it;
+	it = fruits.begin();
+	TESTED_TYPE::map<int, std::string>::iterator it2;
+	it2 = veg.begin();
+	// std::cout << "Begin add " << &it << std::endl;
+	// std::cout << "Begin add " << it->first << std::endl;
+		// std::cout << it->first << std::endl; 
+	// std::cout << "it [] " << it[3]->first << std::endl;
+	for (int i = 0; i < N - 1 ; i++)
+	{
+		++ it2;
+		// TESTED_TYPE::map<int, std::string>::iterator tmp = it + it2;
+		// std::cout << tmp->first << std::endl; 
+		++it; 
+		// std::cout << (it)->first << std::endl; 
+	}
+}
+
+void	original_insert_test()
+{
+	TESTED_TYPE::map<char,int> mymap;
+
+	// first insert function version (single parameter):
+	mymap.insert ( TESTED_TYPE::pair<char,int>('a',100) );
+	mymap.insert ( TESTED_TYPE::pair<char,int>('z',200) );	
+	TESTED_TYPE::pair<TESTED_TYPE::map<char,int>::iterator,bool> ret;
+	ret = mymap.insert ( TESTED_TYPE::pair<char,int>('z',500) );
+	if (ret.second==false) {
+	  std::cout << "element 'z' already existed";
+	  std::cout << " with a value of " << ret.first->second << '\n';
+	}	
+	// second insert function version (with hint position):
+	TESTED_TYPE::map<char,int>::iterator it = mymap.begin();
+	mymap.insert (it, TESTED_TYPE::pair<char,int>('b',300));  // max efficiency inserting
+	mymap.insert (it, TESTED_TYPE::pair<char,int>('c',400));  // no max efficiency inserting	
+	TESTED_TYPE::map<char,int> anothermap;
+	anothermap.insert(mymap.begin(), mymap.find('c'));	
+	it = mymap.begin();
+	for (it=mymap.begin(); it != mymap.end(); ++it)
+	  std::cout << it->first << " => " << it->second << '\n';	
+	std::cout << "anothermap contains:\n";
+	for (it=anothermap.begin(); it!=anothermap.end(); ++it)
+	  std::cout << it->first << " => " << it->second << '\n';
+}
+void	test_access_operator()
+{
+	TESTED_TYPE::map<char,int> mymap;
+
+	// first insert function version (single parameter):
+	mymap.insert ( TESTED_TYPE::pair<char,int>('a',100) );
+	mymap.insert ( TESTED_TYPE::pair<char,int>('z',200) );	
+	TESTED_TYPE::pair<TESTED_TYPE::map<char,int>::iterator,bool> ret;
+	ret = mymap.insert ( TESTED_TYPE::pair<char,int>('z',500) );
+	// second insert function version (with hint position):
+	TESTED_TYPE::map<char,int>::iterator it = mymap.begin();
+	mymap.insert (it, TESTED_TYPE::pair<char,int>('b',300));  // max efficiency inserting
+	mymap.insert (it, TESTED_TYPE::pair<char,int>('c',400));  // no max efficiency inserting	
+	TESTED_TYPE::map<char,int> anothermap;
+	anothermap.insert(mymap.begin(), mymap.find('c'));	
+	it = mymap.begin();
+	mymap['x'] = 1;
+	std::cout << "second of x = " << mymap['x'] << std::endl;
+	for (it=mymap.begin(); it != mymap.end(); ++it)
+	  std::cout << it->first << " => " << it->second << '\n';	
+	std::cout << "anothermap contains:\n";
+	for (it=anothermap.begin(); it!=anothermap.end(); ++it)
+	  std::cout << it->first << " => " << it->second << '\n';
+}
+
+void	test_copy_constructor()
+{
+	TESTED_TYPE::map<char,int> first;
+  	TESTED_TYPE::map<char,int> second;
+
+  	first['x']=8;
+  	first['y']=16;
+  	first['z']=32;
+
+  	second=first;                // second now contains 3 ints
+  	first=TESTED_TYPE::map<char,int>();  // and first is now empty
+
+  	std::cout << "Size of first: " << first.size() << '\n';
+  	std::cout << "Size of second: " << second.size() << '\n';
+}
+
+void test_begin()
+{
+	TESTED_TYPE::map<char,int> mymap;
+
+  mymap['b'] = 100;
+  mymap['a'] = 200;
+  mymap['c'] = 300;
+
+  // show content:
+  for (TESTED_TYPE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+    std::cout << it->first << " => " << it->second << '\n';
+}
+
+void test_end()
+{
+ TESTED_TYPE::map<char,int> mymap;
+
+  mymap['b'] = 100;
+  mymap['a'] = 200;
+  mymap['c'] = 300;
+
+  // show content:
+  for (TESTED_TYPE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+    std::cout << it->first << " => " << it->second << '\n';
+
+}
+
+void	test_rbegin()
+{
+	 
+	TESTED_TYPE::map<char,int> mymap;
+
+	mymap['x'] = 100;
+	mymap['y'] = 200;
+	mymap['z'] = 300;	
+	// show content:
+	TESTED_TYPE::map<char,int>::reverse_iterator rit;
+	for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit)
+	  std::cout << rit->first << " => " << rit->second << '\n';	
+}
+
 int main()
 {
-	test_iterators();
-
-	// test_insert();
+    // std::cout << " -- " << std::endl;
+    // std::cout << " -    original_insert_test();- " << std::endl;
+	// original_insert_test();;
+    std::cout << " -    test_insert();- " << std::endl;
+	test_insert();;
+    // std::cout << " -    test_iterators();- " << std::endl;
+	// test_iterators();;
+    // std::cout << " -    test_iterators_operators();- " << std::endl;
+	// test_iterators_operators();;
+    // std::cout << " -    test_access_operator();- " << std::endl;
+	// test_access_operator();;
+    // std::cout << " -    test_copy_constructor();- " << std::endl;
+	// test_copy_constructor();;
+    // std::cout << " -    test_begin();- " << std::endl;
+	// test_begin();;
+    // std::cout << " -    test_end();- " << std::endl;
+	// test_end();;
+    // std::cout << " -    test_copy_constructor();- " << std::endl;
+	// test_copy_constructor();;
+    // std::cout << " -    test_rbegin();- " << std::endl;
+	// test_rbegin();;
+    // std::cout << " -    test_rend();- " << std::endl;
+	// test_rend();;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

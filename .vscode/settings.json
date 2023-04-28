@@ -73,6 +73,7 @@
 		"unordered_map": "cpp",
 		"variant": "cpp",
 		"compare": "cpp",
-		"concepts": "cpp"
+		"concepts": "cpp",
+		"version": "cpp"
 	}
 }

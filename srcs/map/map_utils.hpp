@@ -30,6 +30,39 @@ namespace ft
  			return 0;
 		return (root.left->height - root.right->height);
 	}
-
+	template< class tree>
+	void	visualize_node(tree *y, std::string name, std::string indent)
+	{
+		std::cout << indent;
+		std::cout << "    " << name << std::endl;
+		std::cout << indent;
+		if (y->parent)
+			std ::cout << "    " << y->parent->key_val.first << std::endl;
+		else
+			std::cout << "   root" << std::endl;
+		std::cout << indent;
+		
+		std::cout << "    ^" << std::endl;
+		std::cout << indent;
+		
+		std::cout << "    | " << std::endl;
+		std::cout << indent;
+		
+		std::cout << "    "<< y->key_val.first << std::endl;
+		std::cout << indent;
+		
+		std::cout << " /    \\" << std::endl;
+		std::cout << indent;
+		
+		if (y->left)
+			std::cout  << y->left->key_val.first;
+		else
+			std::cout <<"(null)";
+		std::cout << "      ";
+		if (y->right)
+			std::cout << y->right->key_val.first << std::endl;
+		else
+			std::cout << "(null)" << std::endl;
+	}
 }
 #endif

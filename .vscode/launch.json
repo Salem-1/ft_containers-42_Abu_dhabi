@@ -8,7 +8,7 @@
 			"name": "(lldb) Launch",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "/Users/ahsalem/projects/ft_container/testers/salem_tester/salem_tester",
+			"program": "/Users/ahsalem/projects/cursus/ft_containers/testers/salem_tester/salem_tester",
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${fileDirname}",
@@ -16,6 +16,8 @@
 			"externalConsole": false,
 			"MIMode": "lldb"
 		}
+		
+	
 
 	]
 }

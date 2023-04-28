@@ -22,14 +22,14 @@ namespace ft
 	class Node
 	{
 		public:
-			typedef pair<Key, T> value_type;
-			pair<Key, T> key_val;
-			Node	*left;
-			Node	*right;
-			Node	*parent;
-			int		height;
-			int		is_sentinel;
-			int		empty;
+			typedef pair<Key, T> 	value_type;        
+			pair<Key, T>			key_val;        
+			Node					*left;        
+			Node					*right;        
+			Node					*parent;        
+			int						height;        
+			int						is_sentinel;        
+			int						empty;        
 	
 			Node(pair<Key, T> given_key_val, Node *l, Node *r, Node *p) 
 			:  left(l), right(r), parent(p), height(1), is_sentinel(0), empty(0)
@@ -40,7 +40,20 @@ namespace ft
 			{};
 			Node(pair<Key, T> val):key_val(val), left(NULL), right(NULL), parent(NULL), height(1), is_sentinel(0), empty(0)
 			{};
-			
+			Node	&operator=(Node const &obj2)
+			{
+				if (this != &obj2)
+				{
+					key_val = obj2.key_val;        
+					left = obj2.left;            
+					right = obj2.right;          
+					parent = obj2.parent;        
+					height = obj2.height;          
+					is_sentinel = obj2.is_sentinel;
+					empty = obj2.empty;            
+				}
+				return (*this);
+			}
 			~Node(){
 			};
 	};
@@ -73,6 +86,9 @@ namespace ft
 		// {
 		// }
 		pair(const first_type &a, const second_type &b) : first(a), second(b)
+		{
+		}
+		pair(const first_type &a) : first(a)
 		{
 		}
 		pair& operator= (const pair& pr)

@@ -14,7 +14,8 @@
 # define MAP_HPP
 # include <iostream>
 # include "map_utils.hpp"
-#include "iterator.hpp"
+# include "iterator.hpp"
+# include "../vector/reverse_iterator.hpp"
 namespace ft
 {
 		template <typename _Tp>
@@ -29,10 +30,6 @@ namespace ft
 	> class map
 	{
 		public:
-		// typedef __map_iterator<typename __base::iterator>	           iterator;
-		// typedef __map_const_iterator<typename __base::const_iterator> const_iterator;
-		// typedef _VSTD::reverse_iterator<iterator>               reverse_iterator;
-		// typedef _VSTD::reverse_iterator<const_iterator>         const_reverse_iterator;
 			typedef Key												key_type;
 			typedef T												mapped_type;
 			typedef ft::pair<const key_type, mapped_type>			value_type;
@@ -47,64 +44,56 @@ namespace ft
 			typedef typename ft::Node<key_type, mapped_type>		tree;
 			tree							*_tree;
 			typedef	typename	ft::iterator<tree>							iterator;
+		// typedef __map_const_iterator<typename __base::const_iterator> const_iterator;
+			typedef reverse_iterator<iterator>               reverse_iterator;
+		// typedef _VSTD::reverse_iterator<const_iterator>         const_reverse_iterator;
 			protected:
 			key_compare						comp;
 			allocator_type					allocator;
 			tree							sentinile;
+		private:	
+			tree										*_root;
+			size_t										_size;
 			
-		
-		//empty
+			tree *get_root() const
+			{
+				tree *root = _tree;
+				if (!root)
+					return (NULL);
+				while (root->parent)
+					root = root->parent;
+				return (root);
+			}
 		public:
-			map(const key_compare& comp = key_compare()
-				, const allocator_type& alloc = allocator_type()):_tree(NULL),
-					comp(comp), allocator(alloc)
-			{
-				sentinile.is_sentinel = 1;
-			};
-			~map()
-			{
-			};
-
-			//---------------------------MODIFIERES------------------------------------//
-	private:
-			typedef typename	std::allocator<tree>	tree_alloc;
-			tree_alloc						tree_allocator;
-			//---------------------------Moves_UTILS-----------------------------------//
-		
-		void	visualize_node(tree *y, std::string name, std::string indent)
-
+		key_compare get_comp() const
 		{
-			std::cout << indent;
-			std::cout << "    " << name << std::endl;
-			std::cout << indent;
-			if (y->parent)
-				std ::cout << "    " << y->parent->key_val.first << std::endl;
-			else
-				std::cout << "   root" << std::endl;
-			std::cout << indent;
-			
-			std::cout << "    ^" << std::endl;
-			std::cout << indent;
-			
-			std::cout << "    | " << std::endl;
-			std::cout << indent;
-			
-			std::cout << "    "<< y->key_val.first << std::endl;
-			std::cout << indent;
-			
-			std::cout << " /    \\" << std::endl;
-			std::cout << indent;
-			
-			if (y->left)
-				std::cout  << y->left->key_val.first;
-			else
-				std::cout <<"(null)";
-			std::cout << "      ";
-			if (y->right)
-				std::cout << y->right->key_val.first << std::endl;
-			else
-				std::cout << "(null)" << std::endl;
+			return (comp);
 		}
+		allocator_type get_allocator() const
+		{
+			return (allocator);
+		}
+		size_t	size() const
+		{
+			return (_size);
+		}
+			//---------------------------MODIFIERES------------------------------------//
+		private:
+			typedef typename	std::allocator<tree>	tree_alloc;
+			tree_alloc									tree_allocator;
+			tree *search(const value_type &val, tree *root)
+			{
+				
+				if (!root || val.first == root->key_val.first)
+					return (root);
+				else if (val.first < root->key_val.first)
+					return (search(val, root->left));
+				else
+					return (search(val, root->right));
+
+			}
+		//---------------------------Moves_UTILS-----------------------------------//
+		
 		tree	*new_node(const value_type &val)
 		{
 			tree	*inserted = tree_allocator.allocate(1);
@@ -148,7 +137,7 @@ namespace ft
 			new_root->height = max_height(height(new_root->left), height(middle->right)) + 1;
 			return (new_root);
 		}
-		tree	*RR_rotate(tree *y)
+		tree	*RR_rotate(tree *y) 
 		{
 			tree	*x = y->left;
 			tree	*T2 = x->right;
@@ -258,7 +247,7 @@ namespace ft
 		}
 //----------ITERATOR_UTILS----------//
 	private:
-		tree	*get_min(tree *min_node)
+		tree	*get_min(tree *min_node) const
 		{
 			if (!min_node)
 				return (NULL);
@@ -266,7 +255,7 @@ namespace ft
 				min_node = min_node->left;
 			return (min_node);			
 		}
-		tree	*get_max(tree *max_node)
+		tree	*get_max(tree *max_node) const
 		{
 			if (!max_node)
 				return (NULL);
@@ -276,28 +265,135 @@ namespace ft
 		}
 	public:
 
-		tree	*insert(const value_type &val)
+		ft::pair<iterator, bool> 
+		insert(const value_type &val)
 		{
-			// if (_tree)
-			// 	std::cout << "root = " << _tree->key_val.first <<" inserting val " << val.first << std::endl;
-
+			ft::pair<iterator, bool>  result;
+			tree 	*seek_val = search(val, get_root());
+			if (seek_val)
+			{
+				result.first = iterator(seek_val);
+				result.second = false;
+				return (result);
+			}
 			_tree = do_insert(_tree, val, NULL);
-			std::cout << std::endl;
-			return (_tree);
-		};
-		iterator	begin()
+			tree *searched_node = search(val, get_root());
+			iterator tmp(searched_node);
+			result.first = tmp;
+			result.second = true;
+			_size++;
+			return (result);
+		}
+		iterator insert (iterator position, const value_type& val)
 		{
-			//returning the smallest pointer
-			
+			tree	*tmp = search(val, get_root());
+			if (tmp)
+				return (iterator(tmp));
+			_tree = do_insert(_tree, val, NULL);
+			_size++;
+			(void)position; 
+			return (iterator(search(val, get_root())));
+		}
+
+		template <class InputIterator>
+		void	insert(InputIterator first, InputIterator last)
+		{
+			while (first != last)
+			{
+				insert (first, first.base()->key_val);
+				first++;
+			}
+		}
+		tree	*do_find(const key_type &k, tree *root)
+		{
+			if (!root || k == root->key_val.first)
+				return (root);
+			else if (k < root->key_val.first)
+				return (do_find(k, root->left));
+			else
+				return (do_find(k, root->right));
+		}
+		iterator find (const key_type& k)
+		{
+
+			tree *searched_node = do_find(k, get_root());
+			if (!searched_node)
+				return (end());
+			return (iterator(searched_node));
+		};
+		mapped_type	&operator[](key_type const &k)
+		{
+			tree *searched_node = do_find(k, get_root());
+			// std::cout << "seg" << std::endl;
+			if (!searched_node)
+			{
+				value_type	insert_me(k);
+				insert(insert_me);
+				searched_node = do_find(k, get_root());
+			}
+			return (searched_node->key_val.second);
+		} 
+		// const_iterator find (const key_type& k) const;
+		iterator	begin() const
+		{			
 			return (iterator(get_min(_tree)));
 		}
 
-		iterator	end()
+		iterator	end() const
 		{
-			if (!_tree)
-				return (iterator(_tree));	
-			return (iterator(get_max(_tree) + 1));
+			iterator after_max(get_max(get_root()));
+			return (NULL);
 		}
+		reverse_iterator rend()
+		{
+			return (begin());
+		}
+		//TBC
+		reverse_iterator rbegin()
+		{
+			reverse_iterator before_begin(get_min(get_root()));
+			return --before_begin;
+		}
+		void	clear()
+		{
+			_size = 0;
+			//while _tree: delete(node);
+		}
+		public:
+		//------------------CONSTRUCTOR-------------------------------------------//
+			map(const key_compare& comp = key_compare()
+				, const allocator_type& alloc = allocator_type()):_tree(NULL),
+					comp(comp), allocator(alloc), _root(get_root()), _size(0)
+			{
+				sentinile.is_sentinel = 1;
+			};
+			template <class InputIterator> 
+			map (InputIterator first, InputIterator last, 
+				const key_compare& comp = key_compare(),
+				const allocator_type& alloc = allocator_type()):_tree(NULL),
+					comp(comp), allocator(alloc), _root(get_root()), _size(0)
+				{
+					insert(first, last);
+				};
+			map& operator= (const map& x)
+			{
+				if (this != &x)
+				{
+					// if (!x.size())
+					// 	retu
+					clear();
+					_tree = NULL;
+					comp = x.get_comp();
+					allocator = x.get_allocator();
+					insert(x.begin(), x.end());
+					_root = get_root();
+				}
+				return (*this);
+			}
+
+			~map()
+			{
+			};
 	};
 }
 #endif

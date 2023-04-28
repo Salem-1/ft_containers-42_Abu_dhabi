@@ -16,6 +16,7 @@
 
 #include "iterator_traits.hpp"
 
+//modify the max++ and min-- and min-- then ++ and max ++ then --
 namespace ft
 {
 	template <
@@ -35,6 +36,22 @@ namespace ft
 		
 		protected:
 			pointer						_node;
+		public:
+			pointer	base() const
+			{
+				return (_node);
+			}
+			iterator(): _node(NULL){};
+			iterator(pointer ptr) : _node(ptr){};
+			iterator &operator= (iterator const &ptr)
+			{
+				if (this != &ptr)
+				{
+					this->_node = ptr.base();
+				}
+				return (*this);
+			};
+			~iterator(){};
 		private:
 			tree	*get_min(tree *min_node)
 			{
@@ -196,7 +213,8 @@ namespace ft
 				else
 				{
 					if (_node == get_max())
-						return (_node++);
+						return (NULL);
+						// return (_node++);
 					return (seek_parent_of_first_left(_node));
 				}
 			}
@@ -223,10 +241,6 @@ namespace ft
 					return (seek_right_most(root->left));
 			}
 		public:
-			iterator(): _node(NULL){};
-			iterator(pointer ptr) : _node(ptr){};
-			~iterator(){};
-
 			inline value_type	*operator->() const
 			{
 				return &(_node->key_val);
@@ -270,11 +284,135 @@ namespace ft
 				*this = decrement;
 				return (tmp);
 			}
-			// iterator operator++(int)
+			iterator	&operator +=(int inc)
+			{
+				if (inc == 0)
+					return (*this);
+				iterator	tmp(*this);
+				if (inc > 0)
+				{
+					while (inc > 0)
+					{
+						++tmp;
+						inc--;
+					}
+				}
+				else
+				{
+					while (inc < 0)
+					{
+						--tmp;
+						inc++;
+					}
+				}
+				*this = tmp;
+				return (*this);
+			}
+			iterator &operator-= (int dec)
+			{
+				if (dec == 0)
+					return (*this);
+				iterator	tmp(*this);
+				if (dec > 0)
+				{
+					while (dec > 0)
+					{
+						--tmp;
+						dec--;
+					}
+				}
+				else
+				{
+					while (dec < 0)
+					{
+						++tmp;
+						dec++;
+					}
+				}
+				*this = tmp;
+				return (*this);
+			}
+			// bool	operator==(iterator &b)
 			// {
-			// 	iterator tmp(*this);
-			// 	return (*this);
-			// };
+			// 	if (!_node && !b.base())
+			// 		return (true);
+			// 	else if (!_node || !b.base())
+			// 		return (false);
+			// 	return (_node->key_val.first == b->first);
+			// }
+			// bool	operator!=(iterator &b)
+			// {
+			// 	if (!_node && !b.base())
+			// 		return (false);
+			// 	else if (!_node || !b.base())
+			// 		return (true);
+			// 	return (_node->key_val.first != b->first);
+			// }
+
  	};
+
+	template < class iter1, class iter2>
+	bool operator==(const iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	{
+		if (!lhs.base() && !rhs.base())
+			return (true);
+		else if (!lhs.base() || !rhs.base())
+			return (false);
+		return (lhs.base() == rhs.base());
+	};
+	template < class iter1, class iter2>
+	bool operator!=(const iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	{
+		return (!(lhs == rhs));
+	}
+	template < class iter1, class iter2>
+	bool operator< (const iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	{
+		return (lhs->first < rhs->first);
+	};
+	
+	template < class iter1, class iter2>
+	bool operator> (const iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	{
+		return (lhs->first > rhs->first);
+	};
+	template < class iter1, class iter2>
+	bool operator>= (const iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	{
+		return (lhs->first >= rhs->first);
+	};
+	template < class iter1, class iter2>
+	bool operator<= (const iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	{
+		if (lhs == rhs)
+			return (true);
+		return (lhs < rhs);
+	};
+	
+
+	// template < class iter1, class iter2>
+	// std::ptrdiff_t operator-(const iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	// {
+	// 	return (lhs.base() - rhs.base());
+	// }
+	// template < class iter1>
+	// iterator<iter1> operator+ (
+	// 	typename iterator<iter1>::difference_type d, const iterator<iter1>& lhs)
+	// {
+	// 	return (lhs.base() + d);
+	// }
+
+	template < class iter1>
+	iterator<iter1> operator+ (const iterator<iter1>& lhs,
+		int d)
+	{
+		return (lhs += d);
+	}
+	template < class iter1>
+	iterator<iter1>  operator- (const iterator<iter1>& lhs,
+		typename iterator<iter1>::difference_type d)
+	{
+		return (lhs -= d);
+	}
 }
 #endif
