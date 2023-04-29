@@ -335,14 +335,15 @@ namespace ft
 		} 
 		// const_iterator find (const key_type& k) const;
 		iterator	begin() const
-		{			
+		{
 			return (iterator(get_min(_tree)));
 		}
 
 		iterator	end() const
 		{
 			iterator after_max(get_max(get_root()));
-			return (NULL);
+			after_max.set_max(1);
+			return (after_max);
 		}
 		reverse_iterator rend()
 		{

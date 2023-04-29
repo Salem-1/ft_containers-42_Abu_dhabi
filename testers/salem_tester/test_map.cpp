@@ -17,7 +17,7 @@
 # include <cassert>
 # include <string>
 # include <iterator>
-# define TESTED_TYPE ft
+# define TESTED_TYPE std
 # define N 10
 int testpair()
 {
@@ -77,58 +77,58 @@ void test_make_pair()
 	std::cout << "bar: " << bar.first << ", " << bar.second << '\n';
 }
 
-template <class Key, class T>
-void	print_tree(TESTED_TYPE::Node<Key, T> *print_me)
-{
-	if (print_me->empty)
-		return ;
-	print_tree(print_me->left);
-	print_tree(print_me->right);
-	std::cout << print_me->key_val.first << " : ";
-	std::cout << print_me->key_val.second << std::endl;
-}
+// template <class Key, class T>
+// void	print_tree(TESTED_TYPE::Node<Key, T> *print_me)
+// {
+// 	if (print_me->empty)
+// 		return ;
+// 	print_tree(print_me->left);
+// 	print_tree(print_me->right);
+// 	std::cout << print_me->key_val.first << " : ";
+// 	std::cout << print_me->key_val.second << std::endl;
+// }
 
-template <class Key, class T>
-void printTree(TESTED_TYPE::Node<Key, T>  *root, std::string indent, bool last) 
-{
-  if (root != NULL) {
-    std::cout << indent;
-    if (last) {
-      std::cout << "R----";
-      indent += "   ";
-    } else {
-     std:: cout << "L----";
-      indent += "|  ";
-    }
-    std::cout << root->key_val.first << std::endl;
-    printTree(root->left, indent, false);
-    printTree(root->right, indent, true);
-  }
+// template <class Key, class T>
+// void printTree(TESTED_TYPE::Node<Key, T>  *root, std::string indent, bool last) 
+// {
+//   if (root != NULL) {
+//     std::cout << indent;
+//     if (last) {
+//       std::cout << "R----";
+//       indent += "   ";
+//     } else {
+//      std:: cout << "L----";
+//       indent += "|  ";
+//     }
+//     std::cout << root->key_val.first << std::endl;
+//     printTree(root->left, indent, false);
+//     printTree(root->right, indent, true);
+//   }
   
-}
-template <class Key, class T>
-	 void print2DUtil(TESTED_TYPE::Node<Key, T>*root, int space) 
-{
-	if (root == NULL)
-		return;
-	space += 10;
-	print2DUtil(root->right, space);
-	std::cout << std::endl;
-	for (int i = 10; i < space; i++)
-		std::cout << " ";
-	// std::cout << root->key_val.first  << " , h = " << root->height <<  std::endl;
-	std::cout << root->key_val.first  << " , height = " << root->height <<   std::endl;
-	for (int i = 10; i < space; i++)
-		std::cout << " ";
-	if (root->parent)
-		std::cout << "Parent: " << root->parent->key_val.first << std::endl;
-	print2DUtil(root->left, space);
-}
-template <class Key, class T>
-void print2D(TESTED_TYPE::Node<Key, T>  *node) {
-	std::cout << "Tree:" << std::endl;
-	print2DUtil(node, 0);
-}
+// }
+// template <class Key, class T>
+// 	 void print2DUtil(TESTED_TYPE::Node<Key, T>*root, int space) 
+// {
+// 	if (root == NULL)
+// 		return;
+// 	space += 10;
+// 	print2DUtil(root->right, space);
+// 	std::cout << std::endl;
+// 	for (int i = 10; i < space; i++)
+// 		std::cout << " ";
+// 	// std::cout << root->key_val.first  << " , h = " << root->height <<  std::endl;
+// 	std::cout << root->key_val.first  << " , height = " << root->height <<   std::endl;
+// 	for (int i = 10; i < space; i++)
+// 		std::cout << " ";
+// 	if (root->parent)
+// 		std::cout << "Parent: " << root->parent->key_val.first << std::endl;
+// 	print2DUtil(root->left, space);
+// }
+// template <class Key, class T>
+// void print2D(TESTED_TYPE::Node<Key, T>  *node) {
+// 	std::cout << "Tree:" << std::endl;
+// 	print2DUtil(node, 0);
+// }
 
 #include <unistd.h>
 void	test_insert()
@@ -146,7 +146,7 @@ void	test_insert()
 		// sleep(i);
 	}
 	// printTree(fruits._tree, " ", true);
-		print2D(fruits._tree);
+		// print2D(fruits._tree);
 	// fruits.test_less();
 		// apple.first = 40;
 		// fruits.insert(apple);
@@ -158,53 +158,53 @@ void	test_insert()
 		// fruits.insert(apple);
 }
 
-template <class Key, class T>
-void my_map_print(TESTED_TYPE::Node<Key, T> *root) 
-{
-	if (!root)
-		return;
-	my_map_print(root->left);
-	my_map_print(root->right);
-	std::cout << "key = " << root->key_val.first;
-	if (root->parent)
-		std::cout << " parent = " << root->parent->key_val.first << std::endl;
+// template <class Key, class T>
+// void my_map_print(TESTED_TYPE::Node<Key, T> *root) 
+// {
+// 	if (!root)
+// 		return;
+// 	my_map_print(root->left);
+// 	my_map_print(root->right);
+// 	std::cout << "key = " << root->key_val.first;
+// 	if (root->parent)
+// 		std::cout << " parent = " << root->parent->key_val.first << std::endl;
 		
-}
+// }
 
-void	test_iterators()
-{
-	TESTED_TYPE::map<int, std::string> fruits;
-	TESTED_TYPE::pair<int, std::string> apple;
-	for (int i = 0; i < N; i++)
-	{
-		apple.first = i;
-		apple.second = "apple";
-		// std::cout << std::endl;
-		fruits.insert(apple);
-	// my_map_print(fruits._tree);
+// void	test_iterators()
+// {
+// 	TESTED_TYPE::map<int, std::string> fruits;
+// 	TESTED_TYPE::pair<int, std::string> apple;
+// 	for (int i = 0; i < N; i++)
+// 	{
+// 		apple.first = i;
+// 		apple.second = "apple";
+// 		// std::cout << std::endl;
+// 		fruits.insert(apple);
+// 	// my_map_print(fruits._tree);
 
-	}
-	// my_map_print(fruits._tree);
-	print2D(fruits._tree);
-	TESTED_TYPE::map<int, std::string>::iterator it;
-	it = fruits.begin();
-	std::cout << "Begin add " << &it << std::endl;
-	std::cout << "Begin add " << it->first << std::endl;
-		// std::cout << it->first << std::endl; 
-	for (int i = 0; i < N - 1 ; i++)
-	{
-		std::cout << (++it)->first << std::endl; 
-		// std::cout << (it)->first << std::endl; 
-	}
-	// it = fruits.begin();
-	// --it;
-	it -= 3;
-	 std::cout << "end add " << it->first << std::endl ;
-	it -= -3;
-	 std::cout << "end add " << it->first << std::endl ;
-	// ++it;
+// 	}
+// 	// my_map_print(fruits._tree);
+// 	print2D(fruits._tree);
+// 	TESTED_TYPE::map<int, std::string>::iterator it;
+// 	it = fruits.begin();
+// 	std::cout << "Begin add " << &it << std::endl;
+// 	std::cout << "Begin add " << it->first << std::endl;
+// 		// std::cout << it->first << std::endl; 
+// 	for (int i = 0; i < N - 1 ; i++)
+// 	{
+// 		std::cout << (++it)->first << std::endl; 
+// 		// std::cout << (it)->first << std::endl; 
+// 	}
+// 	// it = fruits.begin();
+// 	// --it;
+// 	it -= 3;
+// 	 std::cout << "end add " << it->first << std::endl ;
+// 	it -= -3;
+// 	 std::cout << "end add " << it->first << std::endl ;
+// 	// ++it;
 
-}
+// }
 
 void 	test_iterators_operators()
 {
@@ -250,7 +250,7 @@ void	original_insert_test()
 
 	// first insert function version (single parameter):
 	mymap.insert ( TESTED_TYPE::pair<char,int>('a',100) );
-	mymap.insert ( TESTED_TYPE::pair<char,int>('z',200) );	
+	mymap.insert ( TESTED_TYPE::pair<char,int>('b',200) );	
 	TESTED_TYPE::pair<TESTED_TYPE::map<char,int>::iterator,bool> ret;
 	ret = mymap.insert ( TESTED_TYPE::pair<char,int>('z',500) );
 	if (ret.second==false) {
@@ -259,16 +259,26 @@ void	original_insert_test()
 	}	
 	// second insert function version (with hint position):
 	TESTED_TYPE::map<char,int>::iterator it = mymap.begin();
-	mymap.insert (it, TESTED_TYPE::pair<char,int>('b',300));  // max efficiency inserting
-	mymap.insert (it, TESTED_TYPE::pair<char,int>('c',400));  // no max efficiency inserting	
-	TESTED_TYPE::map<char,int> anothermap;
-	anothermap.insert(mymap.begin(), mymap.find('c'));	
+	mymap.insert (it, TESTED_TYPE::pair<char,int>('c',300));  // max efficiency inserting
+	mymap.insert (it, TESTED_TYPE::pair<char,int>('d',400));  // no max efficiency inserting	
+	// TESTED_TYPE::map<char,int> anothermap;
+	// anothermap.insert(mymap.begin(), mymap.find('c'));	
+	// it = mymap.begin();
+	// for (it=mymap.begin(); it != mymap.end(); ++it)
+	//   std::cout << it->first << " => " << it->second << '\n';	
+	// std::cout << "anothermap contains:\n";
+	// for (it=anothermap.begin(); it!=anothermap.end(); ++it)
+	//   std::cout << it->first << " => " << it->second << '\n';
+	std::cout << "outliars play ground\n" << std::endl;
+	it = mymap.end();
+	it--;
+	  std::cout<< "Should be last item  "  << it->first << " => " << it->second << '\n';
 	it = mymap.begin();
-	for (it=mymap.begin(); it != mymap.end(); ++it)
-	  std::cout << it->first << " => " << it->second << '\n';	
-	std::cout << "anothermap contains:\n";
-	for (it=anothermap.begin(); it!=anothermap.end(); ++it)
-	  std::cout << it->first << " => " << it->second << '\n';
+	it--;
+	it++;
+	  std::cout << "should be the beigin  " <<it->first << " => " << it->second << '\n';
+	// it++;
+	//   std::cout << it->first << " => " << it->second << '\n';
 }
 void	test_access_operator()
 {
@@ -347,18 +357,19 @@ void	test_rbegin()
 	mymap['y'] = 200;
 	mymap['z'] = 300;	
 	// show content:
-	TESTED_TYPE::map<char,int>::reverse_iterator rit;
-	for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit)
+	TESTED_TYPE::map<char,int>::reverse_iterator rit = mymap.rend();
+	// for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit)
+	//   std::cout << rit->first << " => " << rit->second << '\n';	
 	  std::cout << rit->first << " => " << rit->second << '\n';	
 }
 
 int main()
 {
-    // std::cout << " -- " << std::endl;
-    // std::cout << " -    original_insert_test();- " << std::endl;
-	// original_insert_test();;
-    std::cout << " -    test_insert();- " << std::endl;
-	test_insert();;
+    std::cout << " -- " << std::endl;
+    std::cout << " -    original_insert_test();- " << std::endl;
+	original_insert_test();;
+    // std::cout << " -    test_insert();- " << std::endl;
+	// test_insert();;
     // std::cout << " -    test_iterators();- " << std::endl;
 	// test_iterators();;
     // std::cout << " -    test_iterators_operators();- " << std::endl;
@@ -377,6 +388,7 @@ int main()
 	// test_rbegin();;
     // std::cout << " -    test_rend();- " << std::endl;
 	// test_rend();;
+
 }
 
 

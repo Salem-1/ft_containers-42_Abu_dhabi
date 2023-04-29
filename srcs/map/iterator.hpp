@@ -36,18 +36,38 @@ namespace ft
 		
 		protected:
 			pointer						_node;
+			int							min;
+			int							max;
 		public:
+			int	get_min()	const
+			{
+				return (min);
+			}
+			int	get_max()	const
+			{
+				return (max);
+			}
+			void	set_min(int val)
+			{
+				this->min = val;
+			}
+			void	set_max(int val)
+			{
+				this->max = val;
+			}
 			pointer	base() const
 			{
 				return (_node);
 			}
-			iterator(): _node(NULL){};
-			iterator(pointer ptr) : _node(ptr){};
+			iterator(): _node(NULL), min(0), max(0){};
+			iterator(pointer ptr) : _node(ptr), min(0), max(0){};
 			iterator &operator= (iterator const &ptr)
 			{
 				if (this != &ptr)
 				{
 					this->_node = ptr.base();
+					this->min = ptr.get_min();
+					this->max = ptr.get_max();
 				}
 				return (*this);
 			};
@@ -109,24 +129,6 @@ namespace ft
 				}
 				return (right_most);
 			}
-			tree	*increment_of_left_child(void)
-			{
-				if (!_node->right)
-					return (_node->parent);
-				if (!_node->right->left)
-					return (_node->right);
-				return seek_left_most(_node->right);
-			}
-			tree	*decrement_of_right_child(void)
-			{
-				if (!_node->left)
-					return (_node->parent);
-				if (!_node->left->right)
-					return (_node->left);
-				return seek_right_most(_node->left);
-			}
-
-
 			tree*	seek_parent_of_first_left(tree	*seek_me)
 			{
 				tree	*tmp = NULL;
@@ -184,6 +186,16 @@ namespace ft
 					root = root->right;
 				return (root);			
 			}
+	//-----------------DECREMENT UTILS---------------//
+			tree	*decrement_root(tree *root)
+			{
+				if (!root || !root->left)
+					return (--root);
+				else if (root->left && !root->left->right)
+					return (root->left);
+				else
+					return (seek_right_most(root->left));
+			}
 
 			tree	*decrement_of_left_child()
 			{
@@ -197,9 +209,26 @@ namespace ft
 				else
 				{
 					if (_node == get_min())
-						return (_node--);
+						return (--_node);
 					return (seek_parent_of_first_right(_node));
 				}
+			}
+			tree	*decrement_of_right_child(void)
+			{
+				if (!_node->left)
+					return (_node->parent);
+				if (!_node->left->right)
+					return (_node->left);
+				return seek_right_most(_node->left);
+			}
+		//-------------------INCREMETING UTILS-----------------------//
+			tree	*increment_of_left_child(void)
+			{
+				if (!_node->right)
+					return (_node->parent);
+				if (!_node->right->left)
+					return (_node->right);
+				return seek_left_most(_node->right);
 			}
 			tree	*increment_of_right_child(void)
 			{
@@ -213,8 +242,10 @@ namespace ft
 				else
 				{
 					if (_node == get_max())
-						return (NULL);
-						// return (_node++);
+					{
+						max = 1;
+						return (_node);
+					}	
 					return (seek_parent_of_first_left(_node));
 				}
 			}
@@ -231,28 +262,45 @@ namespace ft
 					return (seek_left_most(root->right));
 				}
 			}
-			tree	*decrement_root(tree *root)
+	//---------------------------END INCREMENTS--------------------------//
+			int  at_end()
 			{
-				if (!root || !root->left)
-					return (--root);
-				else if (root->left && !root->left->right)
-					return (root->left);
-				else
-					return (seek_right_most(root->left));
+				if (!_node)
+					return (0);
+				if (max)
+					return (1);
+				return (0);
 			}
 		public:
 			inline value_type	*operator->() const
 			{
+				if (max)
+					return (NULL);
 				return &(_node->key_val);
 			}
 			iterator &operator++()
 			{
-				if (is_root())
+				//do the at begin stuff
+				if (min)
+				{
+					min = 0;
+					return (*this);
+				}
+				if (max)
+				{
+					max = 0;
+					*this = NULL;
+				}
+				else if (is_root())
 					*this = iterator(increment_root(_node));
 				else if (is_left_child_and_has_parent())
 					*this = iterator(increment_of_left_child());
 				else if (is_right_child_and_has_parent())
 					*this = iterator(increment_of_right_child());
+				if (!max && this->_node == get_max())
+				{
+					max = 1;
+				}
 				return (*this);
 			}
 			iterator operator++(int)
@@ -266,7 +314,8 @@ namespace ft
 			}
 			iterator	&operator--()
 			{
-				if (is_root())
+				// if (min)
+				else if (is_root())
 					*this = iterator(decrement_root(_node));
 				else if (is_left_child_and_has_parent())
 					*this = iterator(decrement_of_left_child());
@@ -274,6 +323,21 @@ namespace ft
 					*this = iterator(decrement_of_right_child());
 				
 				return (*this);
+				// {
+				// 	min = 0;
+				// 	*this = NULL;
+				// 	return (*this);
+				// }
+				// if (max && at_end())
+				// {
+				// 	max = 0;
+				// 	return (*this);
+				// }
+				// if (this->_node == get_min())
+				// {
+				// 	min = 1;
+				// 	return (*this);
+				// }
 			}
 			iterator operator--(int)
 			{
