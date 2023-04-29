@@ -50,7 +50,8 @@ namespace ft
 			protected:
 			key_compare						comp;
 			allocator_type					allocator;
-			tree							sentinile;
+			// tree							min_left;
+			// tree							max_right;
 		private:	
 			tree										*_root;
 			size_t										_size;
@@ -99,6 +100,8 @@ namespace ft
 			tree	*inserted = tree_allocator.allocate(1);
 			inserted->key_val = val;
 			inserted->height = 1;
+			// inserted->left = &min_left;
+			// inserted->right = &max_right;
 			return (inserted);
 		}
 
@@ -342,17 +345,16 @@ namespace ft
 		iterator	end() const
 		{
 			iterator after_max(get_max(get_root()));
-			return (NULL);
+			after_max++;
+ 			return (after_max);
 		}
 		reverse_iterator rend()
 		{
 			return (begin());
 		}
-		//TBC
 		reverse_iterator rbegin()
 		{
-			reverse_iterator before_begin(get_min(get_root()));
-			return --before_begin;
+			return (end());
 		}
 		void	clear()
 		{
@@ -365,7 +367,6 @@ namespace ft
 				, const allocator_type& alloc = allocator_type()):_tree(NULL),
 					comp(comp), allocator(alloc), _root(get_root()), _size(0)
 			{
-				sentinile.is_sentinel = 1;
 			};
 			template <class InputIterator> 
 			map (InputIterator first, InputIterator last, 

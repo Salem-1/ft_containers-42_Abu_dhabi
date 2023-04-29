@@ -31,7 +31,7 @@ template <class iterator>
 			reverse_iterator(pointer_type ptr): _ptr(ptr) {};
 			// reverse_iterator(const_pointer_type cptr): _ptr(cptr) {};
 			reverse_iterator(const reverse_iterator& it): _ptr(it.base()) {};
-			reverse_iterator(const iterator& it): _ptr(it.base()) {};
+			reverse_iterator(const iterator& it): _ptr(it) {};
 			
 			template <class T>
 			reverse_iterator(const reverse_iterator<T>& it): _ptr(it.base()) {};

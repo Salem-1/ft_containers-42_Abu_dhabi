@@ -244,6 +244,7 @@ void 	test_iterators_operators()
 	}
 }
 
+
 void	original_insert_test()
 {
 	TESTED_TYPE::map<char,int> mymap;
@@ -253,22 +254,33 @@ void	original_insert_test()
 	mymap.insert ( TESTED_TYPE::pair<char,int>('z',200) );	
 	TESTED_TYPE::pair<TESTED_TYPE::map<char,int>::iterator,bool> ret;
 	ret = mymap.insert ( TESTED_TYPE::pair<char,int>('z',500) );
-	if (ret.second==false) {
-	  std::cout << "element 'z' already existed";
-	  std::cout << " with a value of " << ret.first->second << '\n';
-	}	
+	// if (ret.second==false) {
+	//   std::cout << "element 'z' already existed";
+	//   std::cout << " with a value of " << ret.first->second << '\n';
+	// }	
 	// second insert function version (with hint position):
 	TESTED_TYPE::map<char,int>::iterator it = mymap.begin();
 	mymap.insert (it, TESTED_TYPE::pair<char,int>('b',300));  // max efficiency inserting
 	mymap.insert (it, TESTED_TYPE::pair<char,int>('c',400));  // no max efficiency inserting	
-	TESTED_TYPE::map<char,int> anothermap;
-	anothermap.insert(mymap.begin(), mymap.find('c'));	
-	it = mymap.begin();
+	// TESTED_TYPE::map<char,int> anothermap;
+	// anothermap.insert(mymap.begin(), mymap.find('c'));	
+	// it = mymap.begin();
 	for (it=mymap.begin(); it != mymap.end(); ++it)
 	  std::cout << it->first << " => " << it->second << '\n';	
-	std::cout << "anothermap contains:\n";
-	for (it=anothermap.begin(); it!=anothermap.end(); ++it)
-	  std::cout << it->first << " => " << it->second << '\n';
+	// std::cout << "anothermap contains:\n";
+	// for (it=anothermap.begin(); it!=anothermap.end(); ++it)
+	//   std::cout << it->first << " => " << it->second << '\n';
+	it = mymap.end();
+	std::cout << "end (end, start)" << it.get_end() << ", " << it.get_before_start() <<  std::endl;
+	it--;
+	std::cout << "before decrement (end, start)" << it.get_end() << ", " << it.get_before_start() <<  std::endl;
+	std::cout << "last item = "<< it->first << " => " << it->second << '\n';	
+	it = mymap.begin();
+	it--;
+	std::cout << "before Begin (end, start)" << it.get_end() << ", " << it.get_before_start() <<  std::endl;
+	it++;
+	std::cout << "after increment (end, start)" << it.get_end() << ", " << it.get_before_start() <<  std::endl;
+	std::cout << "first item = "<< it->first << " => " << it->second << '\n';	
 }
 void	test_access_operator()
 {
@@ -341,15 +353,17 @@ void test_end()
 void	test_rbegin()
 {
 	 
-	TESTED_TYPE::map<char,int> mymap;
+	  ft::map<char,int> mymap;
 
-	mymap['x'] = 100;
-	mymap['y'] = 200;
-	mymap['z'] = 300;	
-	// show content:
-	TESTED_TYPE::map<char,int>::reverse_iterator rit;
-	for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit)
-	  std::cout << rit->first << " => " << rit->second << '\n';	
+  mymap['x'] = 100;
+  mymap['y'] = 200;
+  mymap['z'] = 300;
+
+  // show content:
+  ft::map<char,int>::reverse_iterator rit;
+  for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit)
+    std::cout << rit->first << " => " << rit->second << '\n';
+
 }
 
 int main()
@@ -357,8 +371,8 @@ int main()
     // std::cout << " -- " << std::endl;
     // std::cout << " -    original_insert_test();- " << std::endl;
 	// original_insert_test();;
-    std::cout << " -    test_insert();- " << std::endl;
-	test_insert();;
+    // std::cout << " -    test_insert();- " << std::endl;
+	// test_insert();;
     // std::cout << " -    test_iterators();- " << std::endl;
 	// test_iterators();;
     // std::cout << " -    test_iterators_operators();- " << std::endl;
@@ -373,8 +387,8 @@ int main()
 	// test_end();;
     // std::cout << " -    test_copy_constructor();- " << std::endl;
 	// test_copy_constructor();;
-    // std::cout << " -    test_rbegin();- " << std::endl;
-	// test_rbegin();;
+    std::cout << " -    test_rbegin();- " << std::endl;
+	test_rbegin();;
     // std::cout << " -    test_rend();- " << std::endl;
 	// test_rend();;
 }

@@ -16,7 +16,7 @@
 
 #include "iterator_traits.hpp"
 
-//modify the max++ and min-- and min-- then ++ and max ++ then --
+
 namespace ft
 {
 	template <
@@ -36,21 +36,45 @@ namespace ft
 		
 		protected:
 			pointer						_node;
+			int							is_end;
+			int							before_start;
 		public:
 			pointer	base() const
 			{
 				return (_node);
 			}
-			iterator(): _node(NULL){};
-			iterator(pointer ptr) : _node(ptr){};
+			int	get_end() const
+			{
+				return (is_end);
+			}
+			int	get_before_start() const
+			{
+				return (before_start);
+			}
+			void	set_end(int input)
+			{
+				is_end = input;
+			}
+			void	set_before_start(int input)
+			{
+				before_start = input;
+			}
+			iterator(): _node(NULL), is_end(0), before_start(0){};
+			iterator(pointer ptr) : _node(ptr), is_end(0), before_start(0){};
 			iterator &operator= (iterator const &ptr)
 			{
 				if (this != &ptr)
 				{
 					this->_node = ptr.base();
+					this->is_end = ptr.get_end();
+					this->before_start = ptr.get_before_start();
 				}
 				return (*this);
 			};
+			iterator(iterator const &ptr)
+			{
+				*this = ptr;
+			}
 			~iterator(){};
 		private:
 			tree	*get_min(tree *min_node)
@@ -109,24 +133,7 @@ namespace ft
 				}
 				return (right_most);
 			}
-			tree	*increment_of_left_child(void)
-			{
-				if (!_node->right)
-					return (_node->parent);
-				if (!_node->right->left)
-					return (_node->right);
-				return seek_left_most(_node->right);
-			}
-			tree	*decrement_of_right_child(void)
-			{
-				if (!_node->left)
-					return (_node->parent);
-				if (!_node->left->right)
-					return (_node->left);
-				return seek_right_most(_node->left);
-			}
-
-
+			
 			tree*	seek_parent_of_first_left(tree	*seek_me)
 			{
 				tree	*tmp = NULL;
@@ -184,7 +191,15 @@ namespace ft
 					root = root->right;
 				return (root);			
 			}
-
+		//-----------------DECREMENTER----------------------//
+			tree	*decrement_of_right_child(void)
+			{
+				if (!_node->left)
+					return (_node->parent);
+				if (!_node->left->right)
+					return (_node->left);
+				return seek_right_most(_node->left);
+			}
 			tree	*decrement_of_left_child()
 			{
 				if (_node->left)
@@ -197,10 +212,39 @@ namespace ft
 				else
 				{
 					if (_node == get_min())
-						return (_node--);
+					{
+						before_start = 1;
+						return (_node);
+					}
 					return (seek_parent_of_first_right(_node));
 				}
 			}
+			tree	*decrement_root(tree *root)
+			{
+				if (!root)
+					return (--root);
+				else if(!root->left)
+				{
+					before_start = 1;
+					return (root);
+				}
+				else if (root->left && !root->left->right)
+					return (root->left);
+				else
+					return (seek_right_most(root->left));
+			}
+			tree	*decrement_end()
+			{
+				is_end = 0;
+				return (_node);
+			}
+			tree	*decrement_first_node()
+			{
+				before_start = 1;
+				return (_node);
+			}
+			//------------------END-DECREMENTER---------------//
+			//-----------------INCREMENTERS-------------------//
 			tree	*increment_of_right_child(void)
 			{
 				if (_node->right)
@@ -213,41 +257,69 @@ namespace ft
 				else
 				{
 					if (_node == get_max())
-						return (NULL);
-						// return (_node++);
+					{
+						is_end = 1;
+						return (_node);
+					}	// return (_node++);
 					return (seek_parent_of_first_left(_node));
 				}
 			}
+			
+			tree	*increment_of_left_child(void)
+			{
+				if (!_node->right)
+					return (_node->parent);
+				if (!_node->right->left)
+					return (_node->right);
+				return seek_left_most(_node->right);
+			}
+
 			tree	*increment_root(tree *root)
 			{
+				tree	*result = NULL;
 				if (!root)
 					return (++root);
 				if (!root->right)
-					return (++root);
+					result = root;;
 				if (!root->right->left)
-					return (root->right);
+					result = root->right;
 				else
 				{
 					return (seek_left_most(root->right));
 				}
+				if (result == get_max())
+					is_end = 1;
+				return(result);
 			}
-			tree	*decrement_root(tree *root)
+			iterator	increment_after_end()
 			{
-				if (!root || !root->left)
-					return (--root);
-				else if (root->left && !root->left->right)
-					return (root->left);
-				else
-					return (seek_right_most(root->left));
+				iterator after_last;
+				after_last.set_end(0);
+				return (after_last);
 			}
+			tree	*increment_before_start()
+			{
+				before_start = 0;
+				return (_node);
+			}
+			//-----------------END-INCREMENTERS-------------------//
+			//-----------------OPERATORS------------------------//
 		public:
 			inline value_type	*operator->() const
 			{
+				if (is_end || before_start)
+					return (NULL);
 				return &(_node->key_val);
 			}
 			iterator &operator++()
 			{
-				if (is_root())
+				if (before_start)
+					*this  = iterator(increment_before_start());
+				else if (is_end)
+					*this = increment_after_end();
+				else if (_node == get_max())
+					is_end = 1;
+				else if (is_root())
 					*this = iterator(increment_root(_node));
 				else if (is_left_child_and_has_parent())
 					*this = iterator(increment_of_left_child());
@@ -266,7 +338,14 @@ namespace ft
 			}
 			iterator	&operator--()
 			{
-				if (is_root())
+				if (is_end)
+					is_end = 0;
+				else if (_node == get_min())
+				{
+					*this =  iterator(decrement_first_node());
+					before_start = 1;
+				}
+				else if (is_root())
 					*this = iterator(decrement_root(_node));
 				else if (is_left_child_and_has_parent())
 					*this = iterator(decrement_of_left_child());
