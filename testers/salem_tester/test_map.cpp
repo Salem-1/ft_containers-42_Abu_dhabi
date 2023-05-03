@@ -463,8 +463,8 @@ void	test_delete()
 {
 	TESTED_TYPE::map<int, std::string> fruits;
 	TESTED_TYPE::pair<int, std::string> apple;
-
-	for (int i = 0; i < 10; i++)
+	int n = 3;
+	for (int i = 0; i < n; i++)
 	{
 		apple.first = i;
 		apple.second = "apple";
@@ -480,33 +480,31 @@ void	test_delete()
 
 	// TESTED_TYPE::map<int, std::string>::iterator it;
 		TESTED_TYPE::map<int, std::string>::iterator it;
-	for (int i = 1; i < 10; i++)
+	while (!fruits.empty())
 	{
-		
-		//---------------//
-		it = fruits.find(i);
-		std::cout << "-------------------------------------------------\ndeleting " << it->first << std::endl;
-		fruits.erase(it);
-		print2D(fruits._tree);
-		iterator_vis<int, std::string>(fruits);
+		std::cout << "map empty = " << fruits.empty() << std::endl;
+		for (int i = 0; i < n; i++)
+		{
+
+			//---------------//
+			std::cout << "finding " << i << std::endl; 
+			it = fruits.find(i);
+			std::cout << "found " << i << std::endl; 
+			if (it == fruits.end())
+				std::cout << "item not in the map " << std::endl;
+			if (it != fruits.end())
+			{
+				if (!it.base()->parent)
+				{sleep(1);
+				fruits.erase(it);
+				print2D(fruits._tree);
+				}
+			// iterator_vis<int, std::string>(fruits);
+			}
+			else
+				std::cout << i << " is not root, will not delete it for now" << std::endl;
+		}
 	}
-		it = fruits.find(0);
-		std::cout << "-------------------------------------------------\ndeleting " << it->first << std::endl;
-		fruits.erase(it);
-		// // print2D(fruits._tree);
-		// //---------------//
-		// it = fruits.find(2);
-		// std::cout << "-------------------------------------------------\ndeleting " << it->first << std::endl;
-		// fruits.erase(it);
-		// // print2D(fruits._tree);
-		// // //---------------//
-		// // it = fruits.find(0);
-		// // std::cout << "-------------------------------------------------\ndeleting " << it->first << std::endl;
-		// // fruits.erase(it);
-		// // print2D(fruits._tree);
-		// print2D(fruits._tree);
-		// iterator_vis<int, std::string>(fruits);
-	// }
 }
 int main()
 {

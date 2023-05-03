@@ -77,7 +77,7 @@ namespace ft
 		};
 		bool empty() const
 		{
-			if (!_size || !_tree)
+			if (!_size)
 				return (1);
 			return (0);
 		}
@@ -360,7 +360,7 @@ namespace ft
 				tree_allocator.destroy(root);
 				tree_allocator.deallocate(root, 1);
 				root = NULL;
-				_size--;
+				--_size;
 			}
 		}
 		int	is_root(tree *root)
@@ -401,7 +401,7 @@ namespace ft
 					std::cout << _tree->key_val.first << std::endl;
 					successor->left = root->left;
 					root->left->parent = successor;
-					successor->parent = NULL;
+					successor->parent = root->parent;
 				}
 				else
 				{
@@ -412,9 +412,9 @@ namespace ft
 					}
 					else
 					{
-						successor->parent->left = NULL;
+						successor->parent->left = root->parent;
 					}
-					successor->parent = NULL;
+					successor->parent = root->parent;
 					successor->left = root->left;
 					successor->left->parent = successor;
 					successor->right = root->right;
@@ -596,6 +596,7 @@ namespace ft
 					allocator = x.get_allocator();
 					insert(x.begin(), x.end());
 					_root = get_root();
+					_size = x.size();
 				}
 				return (*this);
 			}
