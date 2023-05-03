@@ -31,13 +31,17 @@ namespace ft
 			int						is_sentinel;        
 			int						empty;        
 	
+
+
+
+
+			Node() :key_val(value_type()), left(NULL), right(NULL), parent(NULL), height(1), is_sentinel(1), empty(1)
+			{};
 			Node(pair<Key, T> given_key_val, Node *l, Node *r, Node *p) 
 			:  left(l), right(r), parent(p), height(1), is_sentinel(0), empty(0)
 			{
-				this>key_val = given_key_val;
+				this->key_val = given_key_val;
 			};
-			Node() :left(NULL), right(NULL), parent(NULL), height(1), is_sentinel(1), empty(1)
-			{};
 			Node(pair<Key, T> val):key_val(val), left(NULL), right(NULL), parent(NULL), height(1), is_sentinel(0), empty(0)
 			{};
 			Node	&operator=(Node const &obj2)
@@ -73,7 +77,7 @@ namespace ft
 		typedef T2 second_type;
 		first_type first;
 		second_type second;
-		pair()
+		pair():first(first_type()), second(second_type())
 		{
 		}
 		template <class first_type, class second_type>
@@ -88,15 +92,17 @@ namespace ft
 		pair(const first_type &a, const second_type &b) : first(a), second(b)
 		{
 		}
-		pair(const first_type &a) : first(a)
+		pair(const first_type &a) : first(a), second(second_type())
 		{
 		}
 		pair& operator= (const pair& pr)
 		{
 			if (this != &pr)
 			{
+				std::cout << "this->second = " << this->second << std::endl;
 				this->first = pr.first;
 				this->second = pr.second;
+				std::cout << "pr->second = " << pr.second << std::endl;
 			}
 			return (*this);
 		}

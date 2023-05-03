@@ -59,7 +59,7 @@ namespace ft
 			{
 				before_start = input;
 			}
-			iterator(): _node(NULL), is_end(0), before_start(0){};
+			iterator(): _node(pointer()), is_end(0), before_start(0){};
 			iterator(pointer ptr) : _node(ptr), is_end(0), before_start(0){};
 			iterator &operator= (iterator const &ptr)
 			{
@@ -339,7 +339,11 @@ namespace ft
 			iterator	&operator--()
 			{
 				if (is_end)
+				{
+					// std::cout << "case print after end "<< std::endl;
 					is_end = 0;
+					// *this = iterator(decrement_end());
+				}
 				else if (_node == get_min())
 				{
 					*this =  iterator(decrement_first_node());
@@ -437,7 +441,9 @@ namespace ft
 			return (true);
 		else if (!lhs.base() || !rhs.base())
 			return (false);
-		return (lhs.base() == rhs.base());
+		return (lhs.get_before_start() == rhs.get_before_start()
+				&& lhs.get_end() == rhs.get_end()
+			 	&& lhs.base() == rhs.base());
 	};
 	template < class iter1, class iter2>
 	bool operator!=(const iterator<iter1>& lhs, const iterator<iter2>& rhs)

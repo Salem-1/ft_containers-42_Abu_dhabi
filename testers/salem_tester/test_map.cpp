@@ -120,7 +120,7 @@ template <class Key, class T>
 	std::cout << root->key_val.first  << " , height = " << root->height <<   std::endl;
 	for (int i = 10; i < space; i++)
 		std::cout << " ";
-	if (root->parent)
+	if (root && root->parent)
 		std::cout << "Parent: " << root->parent->key_val.first << std::endl;
 	print2DUtil(root->left, space);
 }
@@ -325,27 +325,29 @@ void	test_copy_constructor()
 
 void test_begin()
 {
-	TESTED_TYPE::map<char,int> mymap;
+  ft::map<char,int> mymap;
 
   mymap['b'] = 100;
   mymap['a'] = 200;
   mymap['c'] = 300;
 
   // show content:
-  for (TESTED_TYPE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+  for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
     std::cout << it->first << " => " << it->second << '\n';
+
 }
 
 void test_end()
 {
- TESTED_TYPE::map<char,int> mymap;
+  ft::map<char,int> mymap;
 
   mymap['b'] = 100;
   mymap['a'] = 200;
   mymap['c'] = 300;
 
   // show content:
-  for (TESTED_TYPE::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+  ft::map<char,int>::iterator it=mymap.begin();
+  for (it=mymap.begin(); it!=mymap.end(); ++it)
     std::cout << it->first << " => " << it->second << '\n';
 
 }
@@ -353,19 +355,159 @@ void test_end()
 void	test_rbegin()
 {
 	 
-	  ft::map<char,int> mymap;
+ std::map<char,int> mymap;
 
   mymap['x'] = 100;
   mymap['y'] = 200;
   mymap['z'] = 300;
 
   // show content:
-  ft::map<char,int>::reverse_iterator rit;
+  std::map<char,int>::reverse_iterator rit;
   for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit)
     std::cout << rit->first << " => " << rit->second << '\n';
 
 }
 
+void	test_rend()
+{
+	std::map<char,int> mymap;
+
+  mymap['x'] = 100;
+  mymap['y'] = 200;
+  mymap['z'] = 300;
+
+  // show content:
+  std::map<char,int>::reverse_iterator rit;
+  for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit)
+    std::cout << rit->first << " => " << rit->second << '\n';
+}
+
+void	test_empty()
+{
+	 ft::map<char,int> mymap;
+
+  mymap['a']=10;
+  mymap['b']=20;
+  mymap['c']=30;
+
+  while (!mymap.empty())
+  {
+    std::cout << mymap.begin()->first << " => " << mymap.begin()->second << '\n';
+    // mymap.erase(mymap.begin());
+  }
+
+}
+
+void	test_size()
+{
+	ft::map<char,int> mymap;
+  mymap['a']=101;
+  mymap['b']=202;
+  mymap['c']=302;
+
+  std::cout << "mymap.size() is " << mymap.size() << '\n';
+
+}
+
+void	test_max_size()
+{
+  int i;
+  std::map<int,int> mymap;
+
+	std::cout << "max size is " << mymap.max_size() << std::endl;
+  if (mymap.max_size()>1000)
+  {
+    for (i=0; i<1000; i++) mymap[i]=0;
+    std::cout << "The map contains 1000 elements.\n";
+  }
+  else std::cout << "The map could not hold 1000 elements.\n";
+
+}
+
+void	test_original_delete()
+{
+	 std::map<char,int> mymap;
+  std::map<char,int>::iterator it;
+
+  // insert some values:
+  mymap['a']=10;
+  mymap['b']=20;
+  mymap['c']=30;
+  mymap['d']=40;
+  mymap['e']=50;
+  mymap['f']=60;
+
+  it=mymap.find('b');
+  mymap.erase (it);                   // erasing by iterator
+
+  mymap.erase ('c');                  // erasing by key
+
+  it=mymap.find ('e');
+  
+  mymap.erase(it);
+  mymap.erase ( it, mymap.end() );    // erasing by range
+
+  // show content:
+  for (it=mymap.begin(); it!=mymap.end(); ++it)
+    std::cout << it->first << " => " << it->second << '\n';
+
+}
+
+template <class k, class t>
+void	iterator_vis(typename ft::map<k, t> &vis)
+{
+	for (typename ft::map<k, t>::iterator it = vis.begin(); it != vis.end(); it++)
+		std::cout << it->first << "  =>  " << it->second << std::endl;
+}
+void	test_delete()
+{
+	TESTED_TYPE::map<int, std::string> fruits;
+	TESTED_TYPE::pair<int, std::string> apple;
+
+	for (int i = 0; i < 10; i++)
+	{
+		apple.first = i;
+		apple.second = "apple";
+		std::cout << std::endl;
+		fruits.insert(apple);
+		// std::cout << "\n----------------------------------------\n" << std::endl;
+		// sleep(i);
+	}
+	// std::cout <<"before deletion" << std::endl;
+	// printTree(fruits._tree, " ", false);
+	// std::cout << "\n\n\n";
+	print2D(fruits._tree);
+
+	// TESTED_TYPE::map<int, std::string>::iterator it;
+		TESTED_TYPE::map<int, std::string>::iterator it;
+	for (int i = 1; i < 10; i++)
+	{
+		
+		//---------------//
+		it = fruits.find(i);
+		std::cout << "-------------------------------------------------\ndeleting " << it->first << std::endl;
+		fruits.erase(it);
+		print2D(fruits._tree);
+		iterator_vis<int, std::string>(fruits);
+	}
+		it = fruits.find(0);
+		std::cout << "-------------------------------------------------\ndeleting " << it->first << std::endl;
+		fruits.erase(it);
+		// // print2D(fruits._tree);
+		// //---------------//
+		// it = fruits.find(2);
+		// std::cout << "-------------------------------------------------\ndeleting " << it->first << std::endl;
+		// fruits.erase(it);
+		// // print2D(fruits._tree);
+		// // //---------------//
+		// // it = fruits.find(0);
+		// // std::cout << "-------------------------------------------------\ndeleting " << it->first << std::endl;
+		// // fruits.erase(it);
+		// // print2D(fruits._tree);
+		// print2D(fruits._tree);
+		// iterator_vis<int, std::string>(fruits);
+	// }
+}
 int main()
 {
     // std::cout << " -- " << std::endl;
@@ -385,12 +527,25 @@ int main()
 	// test_begin();;
     // std::cout << " -    test_end();- " << std::endl;
 	// test_end();;
-    // std::cout << " -    test_copy_constructor();- " << std::endl;
-	// test_copy_constructor();;
-    std::cout << " -    test_rbegin();- " << std::endl;
-	test_rbegin();;
+    // // std::cout << " -    test_copy_constructor();- " << std::endl;
+	// // test_copy_constructor();;
+    // std::cout << " -    test_rbegin();- " << std::endl;
+	// test_rbegin();;
     // std::cout << " -    test_rend();- " << std::endl;
 	// test_rend();;
+    // std::cout << " -    test_empty();- " << std::endl;
+	// test_empty();
+
+    // std::cout << " -    test_size();- " << std::endl;
+	// test_size();
+
+//     std::cout << " -    test_max_size();- " << std::endl;
+// 	test_max_size();
+	
+    std::cout << " -    test_delete();- " << std::endl;
+	test_delete();
+    // std::cout << " -    test_original_delete();- " << std::endl;
+	// test_original_delete();
 }
 
 

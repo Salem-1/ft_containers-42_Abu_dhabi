@@ -23,5 +23,5 @@ test: re
 	@./salem_tester
 
 mem: re
-	valgrind --track-origins=yes ./salem_tester
+	valgrind --track-origins=yes --leak-check=full ./salem_tester
 re: fclean all 

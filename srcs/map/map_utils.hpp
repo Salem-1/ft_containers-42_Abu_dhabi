@@ -33,6 +33,11 @@ namespace ft
 	template< class tree>
 	void	visualize_node(tree *y, std::string name, std::string indent)
 	{
+		if (!y)
+		{
+			std::cout << ":(empty node";
+			return ;
+		}
 		std::cout << indent;
 		std::cout << "    " << name << std::endl;
 		std::cout << indent;
