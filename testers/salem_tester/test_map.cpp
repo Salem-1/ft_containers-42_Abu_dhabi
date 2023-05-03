@@ -463,7 +463,7 @@ void	test_delete()
 {
 	TESTED_TYPE::map<int, std::string> fruits;
 	TESTED_TYPE::pair<int, std::string> apple;
-	int n = 3;
+	int n = 20;
 	for (int i = 0; i < n; i++)
 	{
 		apple.first = i;
