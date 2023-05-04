@@ -463,7 +463,7 @@ void	test_delete()
 {
 	TESTED_TYPE::map<int, std::string> fruits;
 	TESTED_TYPE::pair<int, std::string> apple;
-	int n = 20;
+	int n = 1000;
 	for (int i = 0; i < n; i++)
 	{
 		apple.first = i;
@@ -480,12 +480,12 @@ void	test_delete()
 
 	// TESTED_TYPE::map<int, std::string>::iterator it;
 		TESTED_TYPE::map<int, std::string>::iterator it;
-	while (!fruits.empty())
-	{
-		std::cout << "map empty = " << fruits.empty() << std::endl;
+	// while (!fruits.empty())
+	// {
+	// 	std::cout << "map empty = " << fruits.empty() << std::endl;
 		for (int i = 0; i < n; i++)
 		{
-
+			// int i = -2;
 			//---------------//
 			std::cout << "finding " << i << std::endl; 
 			it = fruits.find(i);
@@ -494,17 +494,21 @@ void	test_delete()
 				std::cout << "item not in the map " << std::endl;
 			if (it != fruits.end())
 			{
-				if (!it.base()->parent)
-				{sleep(1);
-				fruits.erase(it);
-				print2D(fruits._tree);
+					// sleep(2);
+				if (1)
+				{
+					std::cout << "Deleting " << i << std::endl;
+					fruits.erase(it);
+					usleep(1000);
+					if (i > n - 5)
+						print2D(fruits._tree);
 				}
 			// iterator_vis<int, std::string>(fruits);
 			}
 			else
 				std::cout << i << " is not root, will not delete it for now" << std::endl;
 		}
-	}
+	// }
 }
 int main()
 {

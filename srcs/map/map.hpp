@@ -16,7 +16,7 @@
 # include "map_utils.hpp"
 # include "iterator.hpp"
 # include "../vector/reverse_iterator.hpp"
-
+# include <unistd.h>
 namespace ft
 {
 		template <typename _Tp>
@@ -166,7 +166,13 @@ namespace ft
 			y->left = T2;
 			x->parent = y->parent;
 			y->parent = x;
-			
+			if (y->parent)
+			{
+				if (x == x->parent->left)
+					x->parent->left = x;
+				else
+					x->parent->right = x;
+			}
 			y->height = max_height(height(y->left), height(y->right)) + 1;
 			x->height = max_height(height(x->left), height(x->right)) + 1;
 			// std::cout << "After  Rotation" << std::cout;
@@ -185,6 +191,13 @@ namespace ft
 				y->left->parent = x;
 			y->left = x;
 			y->parent = x->parent;
+			if (x->parent)
+			{
+				if (x == x->parent->left)
+					x->parent->left = y;
+				else
+					x->parent->right = y;
+			}
 			x->parent = y;
 			x->height = max_height(height(x->left), height(x->right)) + 1;
 			y->height = max_height(height(y->left), height(y->right)) + 1;
@@ -375,22 +388,56 @@ namespace ft
 			if (!root->left && !root->right)
 			{
 				// std::cout << "deleting bold root" << std::endl;
+				if (!root->parent)
+				{
+					delete_node(root);
+					root = NULL;
+					_tree = NULL;
+					return ;
+				}
+				_tree = get_root();
+				if (root->parent)
+				{
+					if (root == root->parent->left)
+						root->parent->left = NULL;
+					else
+						root->parent->right = NULL;
+					_tree = root->parent;
+				}
 				delete_node(root);
-				_tree = NULL;
 			}
 			else if (!root->right)
 			{
-				_tree = root->left;
-				root->left->parent = NULL;
+				tree *successor = root->left;
+				root->left->parent = root->parent;
+				if (root->parent)
+				{
+					if (root == root->parent->left)
+						root->parent->left = root->left;
+					else
+						root->parent->right = root->left;
+				}
 				delete_node(root);
+				_tree = successor;
 				root = NULL;
 			}
 			else if (!root->left)
 			{
-				_tree = root->right;
-				root->right->parent = NULL;
+				tree *successor = root->right;
+				// visualize_node(root, "node to be deleted", "      ");
+				root->right->parent = root->parent;
+				if (root->parent)
+				{
+					if (root == root->parent->left)
+						root->parent->left = root->right;
+					else
+						root->parent->right = root->right;
+				}
 				delete_node(root);
-				root = NULL;
+				_tree = successor;
+				std::cout << "-----------------------" << std::endl;
+				_tree = successor;
+				// root = NULL;
 			}
 			else
 			{
@@ -419,6 +466,13 @@ namespace ft
 					successor->left->parent = successor;
 					successor->right = root->right;
 					successor->right->parent = successor;
+				}
+				if (root->parent)
+				{
+					if (root == root->parent->left)
+						root->parent->left = successor;
+					else
+						root->parent->right = successor;
 				}
 				delete_node(root);
 				root = NULL;
@@ -451,17 +505,23 @@ namespace ft
 			if (root == NULL)
     			return root;
   			if (key < root->key_val.first)
-    			root->left = do_delete(root->left, key);
+    			do_delete(root->left, key);
   			else if (key > root->key_val.first)
-    			root->right = do_delete(root->right, key);
+    			do_delete(root->right, key);
 			else
 			{
-				if (is_root(root))
-				{
+				// if (is_root(root))
+				// {
 					delete_root_node(root);
 
 					root = NULL;
-				}
+					// std::cout << "before balancing" << std::endl;
+					// if(_tree)
+					// 	visualize_node(_tree->parent, "successor->parent" , " ");
+					// visualize_node(_tree, "successor" , " ");
+					// std::cout << "------------------------------\n" << "after balancing\n"; 
+					
+				// }
 				// else if (tertiatry_node(root))
 				// {
 				// 	delete_tertiary_node(root);
@@ -497,6 +557,10 @@ namespace ft
 				// 	//founding the largest node in the left subtree
 		    	// 	root->right = do_delete(root->right, tmp->key_val.first);
 		  		// }
+				// visualize_node(_tree, "successor", "      ");
+				// visualize_node(_tree->parent, "successor new parent ", "      ");
+				// sleep(1);
+				// _tree = get_root();
 			}
 		  	if (root == NULL)
 		  	  return (root);
@@ -528,8 +592,11 @@ namespace ft
 		void erase (iterator position)
 		{
 			do_delete(get_root(), position->first);
-			// visualize_node(get_root()->right, "root->right" , " ");
-			// visualize_node(get_root(), "root" , " ");
+			// if (_tree)
+			// 	visualize_node(_tree->parent, "successor->parent" , " ");
+			// visualize_node(_tree, "successor" , " ");
+			// sleep(1);
+			_tree = get_root();
 		};
 		// size_type erase (const key_type& k);
 
@@ -626,7 +693,7 @@ namespace ft
 			~map()
 			{
 				std::cout << "Destructor called" << std::endl;
-				std::cout << "visualizing tree node by node" << std::endl;
+				// std::cout << "visualizing tree node by node" << std::endl;
 				vis_tree_node_by_node(get_root());
 				tree	*root = get_root();
 				clear_all(root);

@@ -35,7 +35,7 @@ namespace ft
 	{
 		if (!y)
 		{
-			std::cout << ":(empty node";
+			std::cout << name <<  " is empty node :(";
 			return ;
 		}
 		std::cout << indent;
