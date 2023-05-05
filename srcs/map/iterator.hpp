@@ -311,6 +311,12 @@ namespace ft
 					return (NULL);
 				return &(_node->key_val);
 			}
+			inline value_type	operator*() const
+			{
+				// if (is_end || before_start)
+				// 	return (NULL);
+				return _node->key_val;
+			}
 			iterator &operator++()
 			{
 				if (before_start)
@@ -499,5 +505,7 @@ namespace ft
 	{
 		return (lhs -= d);
 	}
+	
+	
 }
 #endif

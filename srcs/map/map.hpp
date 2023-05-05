@@ -424,7 +424,7 @@ namespace ft
 			else if (!root->left)
 			{
 				tree *successor = root->right;
-				// visualize_node(root, "node to be deleted", "      ");
+				visualize_node(root, "node to be deleted", "      ");
 				root->right->parent = root->parent;
 				if (root->parent)
 				{
@@ -435,9 +435,9 @@ namespace ft
 				}
 				delete_node(root);
 				_tree = successor;
-				std::cout << "-----------------------" << std::endl;
-				_tree = successor;
-				// root = NULL;
+				// std::cout << "-----------------------" << std::endl;
+				// _tree = successor;
+				root = NULL;
 			}
 			else
 			{
@@ -557,7 +557,7 @@ namespace ft
 				// 	//founding the largest node in the left subtree
 		    	// 	root->right = do_delete(root->right, tmp->key_val.first);
 		  		// }
-				// visualize_node(_tree, "successor", "      ");
+				visualize_node(_tree, "successor", "      ");
 				// visualize_node(_tree->parent, "successor new parent ", "      ");
 				// sleep(1);
 				// _tree = get_root();
@@ -592,11 +592,31 @@ namespace ft
 		void erase (iterator position)
 		{
 			do_delete(get_root(), position->first);
-			// if (_tree)
-			// 	visualize_node(_tree->parent, "successor->parent" , " ");
-			// visualize_node(_tree, "successor" , " ");
-			// sleep(1);
+			std::cout << "Delete done " << std::endl;
 			_tree = get_root();
+		};
+		size_type erase (const key_type& k)
+		{
+			tree *delete_me = do_find(k, get_root());
+			size_type erased = 0;
+			if (delete_me)
+			{
+				do_delete(get_root(), k);
+				++erased;
+			}
+			_tree = get_root();
+			return (erased);
+		};
+		void erase (iterator first, iterator last)
+		{
+			iterator tmp = first;
+			while(tmp != last)
+			{
+				
+				tmp++; 
+				erase(first);
+				first = tmp;;
+			}
 		};
 		// size_type erase (const key_type& k);
 
@@ -634,10 +654,22 @@ namespace ft
 		{
 			return (end());
 		}
-		void	clear()
+		//---------------------------------AT-----------------//
+		mapped_type& at (const key_type& k)
 		{
-			_size = 0;
-			//while _tree: delete(node);
+			tree *tmp = do_find(k, get_root());
+			if (!tmp)
+				throw (std::out_of_range("Index out of range"));
+			return (tmp->key_val.second);
+			
+		}
+		const mapped_type& at (const key_type& k) const
+		{
+			tree *tmp = do_find(k, get_root());
+			if (!tmp)
+				throw (std::out_of_range("Index out of range"));
+			return (tmp->key_val.second);
+			
 		}
 		public:
 		//------------------CONSTRUCTOR-------------------------------------------//
@@ -658,6 +690,7 @@ namespace ft
 			{
 				if (this != &x)
 				{
+					clear_all(get_root());
 					_tree = NULL;
 					comp = x.get_comp();
 					allocator = x.get_allocator();
@@ -680,6 +713,14 @@ namespace ft
 				tree_allocator.deallocate(root, 1);
 				root = NULL;
 			}
+			void clear()
+			{
+				tree	*root = get_root();
+				clear_all(root);
+				_tree= NULL;
+				_root = NULL;
+				_size = 0;
+			};
 			void	vis_tree_node_by_node(tree	*root)
 			{
 				if (!root)
@@ -688,16 +729,49 @@ namespace ft
 					vis_tree_node_by_node(root->right);
 				if (root->left)
 					vis_tree_node_by_node(root->left);
-				visualize_node(root, "node", " ");
+				// visualize_node(root, "node", " ");
 			};
 			~map()
 			{
-				std::cout << "Destructor called" << std::endl;
+				// std::cout << "Destructor called" << std::endl;
 				// std::cout << "visualizing tree node by node" << std::endl;
 				vis_tree_node_by_node(get_root());
 				tree	*root = get_root();
 				clear_all(root);
 			};
+			tree *base() const
+			{
+				return (get_root());
+			}
+			void	set_size(size_type input)
+			{
+				_size = input;
+			}
+			void 	set_base(tree *input)
+			{
+				_tree = input;
+			}
+			key_compare key_comp() const
+			{
+				return (comp);
+			}
+			void swap (map& x)
+			{
+				
+				tree				*tmp_tree = _tree;
+				key_compare			tmp_comp = comp;
+				size_type			tmp_size = size();
+
+				_tree = x.base();
+				comp =  x.key_comp();
+				_root = get_root();
+				_size = x.size();
+
+				x.set_base(tmp_tree);
+				x.get_comp() = tmp_comp;
+				x.set_size(tmp_size);
+
+			}
 	};
 }
 #endif

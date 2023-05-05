@@ -99,10 +99,10 @@ namespace ft
 		{
 			if (this != &pr)
 			{
-				std::cout << "this->second = " << this->second << std::endl;
+				// std::cout << "this->second = " << this->second << std::endl;
 				this->first = pr.first;
 				this->second = pr.second;
-				std::cout << "pr->second = " << pr.second << std::endl;
+				// std::cout << "pr->second = " << pr.second << std::endl;
 			}
 			return (*this);
 		}

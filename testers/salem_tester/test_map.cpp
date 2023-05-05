@@ -510,8 +510,156 @@ void	test_delete()
 		}
 	// }
 }
+
+void	original_test_erase()
+{
+ 	 std::map<char,int> mymap;
+ 	 std::map<char,int>::iterator it;
+
+ 	 // insert some values:
+ 	 mymap['a']=10;
+ 	 mymap['b']=20;
+ 	 mymap['c']=30;
+ 	 mymap['d']=40;
+ 	 mymap['e']=50;
+ 	 mymap['f']=60;
+
+ 	 it=mymap.find('b');
+ 	 mymap.erase (it);                   // erasing by iterator
+
+ 	 mymap.erase ('c');                  // erasing by key
+
+ 	 it=mymap.find ('e');
+ 	 mymap.erase ( it, mymap.end() );    // erasing by range
+
+ 	//  // show content:
+ 	 for (it=mymap.begin(); it!=mymap.end(); ++it)
+ 	   std::cout << it->first << " => " << it->second << '\n';
+
+
+}
+
+void	test_accessor()
+{
+	ft::map<char,std::string> mymap;
+
+  mymap['a']="an element";
+  mymap['b']="another element";
+  mymap['c']=mymap['b'];
+
+  std::cout << "mymap['a'] is " << mymap['a'] << '\n';
+  std::cout << "mymap['b'] is " << mymap['b'] << '\n';
+  std::cout << "mymap['c'] is " << mymap['c'] << '\n';
+  std::cout << "mymap['d'] is " << mymap['d'] << '\n';
+
+  std::cout << "mymap now contains " << mymap.size() << " elements.\n";
+}
+void	test_at()
+{
+ ft::map<std::string,int> mymap;
+ 
+	mymap["alpha"] = 0;
+	mymap["beta"] = 0;
+	mymap["gamma"] = 0;
+
+  mymap.at("alpha") = 10;
+  mymap.at("beta") = 20;
+  mymap.at("gamma") = 30;
+
+	ft::map<std::string,int>::iterator it = mymap.begin();
+
+  for (it = mymap.begin(); it != mymap.end(); it++) {
+    std::cout << it->first << ": " << it->second << '\n';
+  }
+
+}
+
+void	test_swap()
+{
+	ft::map<char,int> foo,bar;
+
+  	foo['x']=100;
+  	foo['y']=200;
+
+  	bar['a']=11;
+  	bar['b']=22;
+  	bar['c']=33;
+
+  	foo.swap(bar);
+
+  	std::cout << "foo contains:\n";
+  	for (ft::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+  	  std::cout << it->first << " => " << it->second << '\n';
+
+  	std::cout << "bar contains:\n";
+  	for (ft::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+  	  std::cout << it->first << " => " << it->second << '\n';
+}
+
+void	test_equal()
+{
+	ft::map<char,int> first;
+	ft::map<char,int> second;
+
+  	first['x']=8;
+  	first['y']=16;
+  	first['z']=32;
+
+  	second = first;                // second now contains 3 ints
+  	first = ft::map<char,int>();  // and first is now empty
+
+  	std::cout << "Size of first: " << first.size() << '\n';
+  	std::cout << "Size of second: " << second.size() << '\n';
+}
+
+void	test_clear()
+{
+	  std::map<char,int> mymap;
+
+  mymap['x']=100;
+  mymap['y']=200;
+  mymap['z']=300;
+
+  std::cout << "mymap contains:\n";
+  for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+    std::cout << it->first << " => " << it->second << '\n';
+
+  mymap.clear();
+  mymap['a']=1101;
+  mymap['b']=2202;
+
+  std::cout << "mymap contains:\n";
+  for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+    std::cout << it->first << " => " << it->second << '\n';
+}
+void	test_comp()
+{
+	 ft::map<char,int> mymap;
+
+  ft::map<char,int>::key_compare mycomp = mymap.key_comp();
+
+  mymap['a']=100;
+  mymap['b']=200;
+  mymap['c']=300;
+
+  std::cout << "mymap contains:\n";
+
+  char highest = mymap.rbegin()->first;     // key value of last element
+
+  ft::map<char,int>::iterator it = mymap.begin();
+  do {
+    std::cout << it->first << " => " << it->second << '\n';
+  } while ( mycomp((*it++).first, highest) );
+
+  std::cout << '\n';
+}
 int main()
 {
+	// test_accessor();
+	// test_equal();
+	// test_swap();
+	test_comp();
+	// original_test_erase();
     // std::cout << " -- " << std::endl;
     // std::cout << " -    original_insert_test();- " << std::endl;
 	// original_insert_test();;
@@ -544,8 +692,8 @@ int main()
 //     std::cout << " -    test_max_size();- " << std::endl;
 // 	test_max_size();
 	
-    std::cout << " -    test_delete();- " << std::endl;
-	test_delete();
+    // std::cout << " -    test_delete();- " << std::endl;
+	// test_delete();
     // std::cout << " -    test_original_delete();- " << std::endl;
 	// test_original_delete();
 }
