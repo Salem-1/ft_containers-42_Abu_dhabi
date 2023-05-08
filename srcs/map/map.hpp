@@ -15,8 +15,10 @@
 # include <iostream>
 # include "map_utils.hpp"
 # include "iterator.hpp"
+# include "const_iterator.hpp"
 # include "../vector/reverse_iterator.hpp"
 # include <unistd.h>
+
 namespace ft
 {
 		template <typename _Tp>
@@ -44,9 +46,13 @@ namespace ft
 			typedef				value_type&							tmp_iterator;
 			typedef typename ft::Node<key_type, mapped_type>		tree;
 			tree							*_tree;
-			typedef	typename	ft::iterator<tree>							iterator;
+			typedef	typename	ft::iterator<tree>					iterator;
+			typedef 	 ft::reverse_iterator<iterator>             reverse_iterator;
+			typedef typename	ft::const_iterator<tree>			const_iterator;
+			typedef 	ft::reverse_iterator<const_iterator>		const_reverse_iterator;	
+	//do the const iterator in the iterator class and here inshalla
+	
 		// typedef __map_const_iterator<typename __base::const_iterator> const_iterator;
-			typedef 	 ft::reverse_iterator<iterator>               reverse_iterator;
 		// typedef _VSTD::reverse_iterator<const_iterator>         const_reverse_iterator;
 			protected:
 			key_compare						comp;
@@ -100,7 +106,7 @@ namespace ft
 				
 				if (!root || val.first == root->key_val.first)
 					return (root);
-				else if (val.first < root->key_val.first)
+				else if (comp(val.first, root->key_val.first))
 					return (search(val, root->left));
 				else
 					return (search(val, root->right));
@@ -157,29 +163,43 @@ namespace ft
 		}
 		tree	*RR_rotate(tree *y) 
 		{
+			
 			tree	*x = y->left;
 			tree	*T2 = x->right;
-			// std::cout << "Before Rotation" << std::cout;
+			////std::cout << "y " << y->key_val.first << std::endl;
+			////std::cout << "Before Rotation" <<//std::cout;
 			// visualize_node(y, "y", "   ");
 			// visualize_node(x, "x", "   ");
+			////std::cout << "x " << x->key_val.first << std::endl;
+
 			x->right = y;
 			y->left = T2;
-			x->parent = y->parent;
-			y->parent = x;
 			if (y->parent)
 			{
-				if (x == x->parent->left)
-					x->parent->left = x;
-				else
-					x->parent->right = x;
+				if (y == y->parent->left)
+					y->parent->left = x;
+				else 
+					y->parent->right = x;
 			}
+			x->parent = y->parent;
+			y->parent = x;
+			// if (y->parent)
+			// {
+			// 	if (y == y->parent->left)
+			// 		y->parent->left = x;
+			// 	else
+			// 		y->parent->right = x;
+			// }
+
 			y->height = max_height(height(y->left), height(y->right)) + 1;
 			x->height = max_height(height(x->left), height(x->right)) + 1;
-			// std::cout << "After  Rotation" << std::cout;
+			////std::cout << "After  Rotation" <<//std::cout;
 			// visualize_node(y, "y", "   ");
 			// visualize_node(x, "x", "   ");
+			std::cout << " 4 insinde RR seg" << std::endl;
 			if (y->left)
 					y->left->parent = y;
+			std::cout << " 5 insinde RR seg" << std::endl;
 			return (x);
 		}
 
@@ -189,8 +209,6 @@ namespace ft
 			x->right = y->left;
 			if (y->left != NULL)
 				y->left->parent = x;
-			y->left = x;
-			y->parent = x->parent;
 			if (x->parent)
 			{
 				if (x == x->parent->left)
@@ -198,6 +216,8 @@ namespace ft
 				else
 					x->parent->right = y;
 			}
+			y->left = x;
+			y->parent = x->parent;
 			x->parent = y;
 			x->height = max_height(height(x->left), height(x->right)) + 1;
 			y->height = max_height(height(y->left), height(y->right)) + 1;
@@ -213,9 +233,10 @@ namespace ft
 		tree	*do_insert(
 			tree *node, const value_type &val, tree *parent)
 		{
+
 			if (!node)
 			{
-				// std::cout << "makeing new node" << std::endl;
+				////std::cout << "makeing new node" << std::endl;
 				tree *tmp = new_node(val);
 				tmp->parent = parent;
 				return (tmp);
@@ -233,18 +254,20 @@ namespace ft
 				return (node);
 			node->height = max_height(height(node->left), height(node->right)) + 1;
 			int	balance_factor = getBalanceFactor(node);
-			// std::cout << "for node " << node->key_val.first << "  Blance factor = " << balance_factor << std::endl;
+			////std::cout << "for node " << node->key_val.first << "  Blance factor = " << balance_factor << std::endl;
 			if (balance_factor < -1)
 			{
+				if (!node->right)
+					std::cout <<  "kief kief kief" << std::endl;
 				if (comp(node->right->key_val.first, val.first))
 				{
-			// std::cout << "\nrotating around " << node->key_val.first;
+			////std::cout << "\nrotating around " << node->key_val.first;
 			// 		std::cout << " LL Rotate val = " << val.first << std::endl;
 					return (LL_rotate(node));
 				}
 				else if (comp(val.first, node->right->key_val.first))
 				{
-					// std::cout << "\n\nRL Rotating node with val = " << node->key_val.first << ", val = " << val.first<< std::endl;
+					////std::cout << "\n\nRL Rotating node with val = " << node->key_val.first << ", val = " << val.first<< std::endl;
 					node->right = RR_rotate(node->right);
 					return (LL_rotate(node));
 					// return (RL_rotate(node));
@@ -252,19 +275,16 @@ namespace ft
 			}
 			else if (balance_factor > 1)
 			{
-// std::cout << "\nBalance factor " << balance_factor << " (val, node->left->val)  = ";
-// std::cout << val.first << "  " << node->left->key_val.first << std::endl;
-	 
 				if (comp(val.first, node->left->key_val.first))
 				{
-					// std::cout << "RR Rotate val = " << val.first << std::endl;
-
+					std::cout << "2-inserting "<< val.first << " => " << val.second << std::endl;
+					////std::cout << "RR Rotate val = " << val.first << std::endl;
 					return (RR_rotate(node));
 				
 				}
 				else if (comp(node->left->key_val.first, val.first))
 				{
-					// std::cout << "LR Rotate val = " << val.first << std::endl;
+					////std::cout << "LR Rotate val = " << val.first << std::endl;
 					
 					// return (LR_rotate(node));
 					node->left = LL_rotate(node->left);
@@ -331,7 +351,7 @@ namespace ft
 		{
 			while (first != last)
 			{
-				insert (first, first.base()->key_val);
+				insert (*first);
 				first++;
 			}
 		}
@@ -341,7 +361,7 @@ namespace ft
 		{
 			if (!root || k == root->key_val.first)
 				return (root);
-			else if (k < root->key_val.first)
+			else if (comp(k, root->key_val.first))
 				return (do_find(k, root->left));
 			else
 				return (do_find(k, root->right));
@@ -387,7 +407,7 @@ namespace ft
 		{
 			if (!root->left && !root->right)
 			{
-				// std::cout << "deleting bold root" << std::endl;
+				////std::cout << "deleting bold root" << std::endl;
 				if (!root->parent)
 				{
 					delete_node(root);
@@ -424,7 +444,7 @@ namespace ft
 			else if (!root->left)
 			{
 				tree *successor = root->right;
-				visualize_node(root, "node to be deleted", "      ");
+				// visualize_node(root, "node to be deleted", "      ");
 				root->right->parent = root->parent;
 				if (root->parent)
 				{
@@ -435,7 +455,7 @@ namespace ft
 				}
 				delete_node(root);
 				_tree = successor;
-				// std::cout << "-----------------------" << std::endl;
+				////std::cout << "-----------------------" << std::endl;
 				// _tree = successor;
 				root = NULL;
 			}
@@ -504,9 +524,9 @@ namespace ft
 		{
 			if (root == NULL)
     			return root;
-  			if (key < root->key_val.first)
+  			if (comp(key, root->key_val.first))
     			do_delete(root->left, key);
-  			else if (key > root->key_val.first)
+  			else if (comp(root->key_val.first, key))
     			do_delete(root->right, key);
 			else
 			{
@@ -515,11 +535,11 @@ namespace ft
 					delete_root_node(root);
 
 					root = NULL;
-					// std::cout << "before balancing" << std::endl;
+					////std::cout << "before balancing" << std::endl;
 					// if(_tree)
 					// 	visualize_node(_tree->parent, "successor->parent" , " ");
 					// visualize_node(_tree, "successor" , " ");
-					// std::cout << "------------------------------\n" << "after balancing\n"; 
+					////std::cout << "------------------------------\n" << "after balancing\n"; 
 					
 				// }
 				// else if (tertiatry_node(root))
@@ -592,7 +612,7 @@ namespace ft
 		void erase (iterator position)
 		{
 			do_delete(get_root(), position->first);
-			std::cout << "Delete done " << std::endl;
+			////std::cout << "Delete done " << std::endl;
 			_tree = get_root();
 		};
 		size_type erase (const key_type& k)
@@ -625,7 +645,6 @@ namespace ft
 		mapped_type	&operator[](key_type const &k)
 		{
 			tree *searched_node = do_find(k, get_root());
-			// std::cout << "seg" << std::endl;
 			if (!searched_node)
 			{
 				value_type	insert_me(k);
@@ -634,13 +653,12 @@ namespace ft
 			}
 			return (searched_node->key_val.second);
 		} 
-		// const_iterator find (const key_type& k) const;
-		iterator	begin() const
+		iterator	begin() 
 		{			
 			return (iterator(get_min(_tree)));
 		}
 
-		iterator	end() const
+		iterator	end() 
 		{
 			iterator after_max(get_max(get_root()));
 			after_max++;
@@ -654,6 +672,26 @@ namespace ft
 		{
 			return (end());
 		}
+		const_iterator	begin() const
+		{			
+			return (const_iterator(get_min(_tree)));
+		}
+
+		const_iterator	end() const
+		{
+			const_iterator after_max(get_max(get_root()));
+			after_max++;
+ 			return (after_max);
+		}
+		const_reverse_iterator rend() const
+		{
+			return (begin());
+		}
+		const_reverse_iterator rbegin() const
+		{
+			return (end());
+		}
+		// const_iterator find (const key_type& k) const;
 		//---------------------------------AT-----------------//
 		mapped_type& at (const key_type& k)
 		{
@@ -684,6 +722,7 @@ namespace ft
 				const allocator_type& alloc = allocator_type()):_tree(NULL),
 					comp(comp), allocator(alloc), _root(get_root()), _size(0)
 				{
+					////std::cout << "range constructor called" << std::endl;
 					insert(first, last);
 				};
 			map& operator= (const map& x)
@@ -733,8 +772,8 @@ namespace ft
 			};
 			~map()
 			{
-				// std::cout << "Destructor called" << std::endl;
-				// std::cout << "visualizing tree node by node" << std::endl;
+				////std::cout << "Destructor called" << std::endl;
+				////std::cout << "visualizing tree node by node" << std::endl;
 				vis_tree_node_by_node(get_root());
 				tree	*root = get_root();
 				clear_all(root);
@@ -772,6 +811,30 @@ namespace ft
 				x.set_size(tmp_size);
 
 			}
+		// size_type count (const key_type& k) const
+		// {
+		// 	_tree = get_root();
+		// 	tree *search_me = do_find(k, _tree);
+		// 	if (search_me)
+		// 		return (1);
+		// 	return (0);
+		// };
+		// class value_compare
+		// {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
+		//   friend class map;
+		// protected:
+		// 	Compare comp;
+		// 	value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
+		// public:
+		// 	typedef bool result_type;
+		// 	typedef value_type first_argument_type;
+		// 	typedef value_type second_argument_type;
+		// 	bool operator() (const value_type& x, const value_type& y) const
+		// 	{
+		// 	  return comp(x.first, y.first);
+		// 	}
+		// };
+		// 	value_compare value_comp() const;
 	};
 }
 #endif

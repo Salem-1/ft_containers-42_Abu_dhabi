@@ -44,6 +44,8 @@ namespace ft
 			};
 			Node(pair<Key, T> val):key_val(val), left(NULL), right(NULL), parent(NULL), height(1), is_sentinel(0), empty(0)
 			{};
+			// Node(const pair<Key, T> val):key_val(val), left(NULL), right(NULL), parent(NULL), height(1),  empty(0)
+			// {};
 			Node	&operator=(Node const &obj2)
 			{
 				if (this != &obj2)
@@ -85,6 +87,7 @@ namespace ft
 		{
 			
 		}
+		
 		// template <class first_type, class second_type>
 		// pair( pair<first_type, second_type> &pr) : first(pr.first), second(pr.second)
 		// {

@@ -2,7 +2,7 @@
 /*
                                                                    */
 /*                                                        :::      ::::::::   */
-/*   iterator.hpp                                       :+:      :+:    :+:   */
+/*   const_iterator.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahsalem <ahsalem@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,10 +11,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ITERATOR_HPP
-# define ITERATOR_HPP
+#ifndef CONST_ITERATOR_HPP
+# define CONST_ITERATOR_HPP
 
-#include "iterator_traits.hpp"
+#include "iterator.hpp"
+
 
 namespace ft
 {
@@ -24,7 +25,7 @@ namespace ft
 		class Distance = ptrdiff_t,
 		class Pointer = tree*,
 		class Reference = tree&
-	> class iterator
+	> class const_iterator
 	{
 		public:
 	    	typedef typename tree::value_type		value_type;
@@ -33,13 +34,13 @@ namespace ft
 	    	typedef tree					*pointer;
 			typedef pointer			const_pointer_type;
 	    	typedef tree&					reference;
-	    	typedef Category				iterator_category;
+	    	typedef Category				const_iterator_category;
 		
 		protected:
 			pointer						_node;
 			int							is_end;
 			int							before_start;
-			value_type					_val;
+			const_value_type			_val;
 		public:
 			pointer	base() const
 			{
@@ -61,47 +62,30 @@ namespace ft
 			{
 				before_start = input;
 			}
-			iterator(): _node(pointer()), is_end(0), before_start(0), _val(value_type()) {};
-			iterator(pointer ptr) : _node(ptr), is_end(0), before_start(0)
-			{
-				if (ptr)
-					_val = ptr->key_val;
-				else
-					_val = value_type();
-			};
-
-// //const iterator
-// 			iterator(const_pointer ptr): _node(ptr), is_end(0), before_start(0){};
-// 			iterator(const iterator& it): _node(it.base()), is_end(it.end), before {};
+			const_iterator(): _node(pointer()), is_end(0), before_start(0), _val(const_value_type()){};
+			const_iterator(pointer ptr) : _node(ptr), is_end(0), before_start(0), _val(ptr->key_val){};
+			template <typename input_const_iterator>		
+			const_iterator(const const_iterator<input_const_iterator>& it): _node(it.base()), is_end(0), before_start(0), _val(it.get_val()) {};
 			template <typename input_iterator>		
-			iterator(const iterator<input_iterator>& it): _node(it.base()), is_end(0), before_start(0)
+			const_iterator(const iterator<input_iterator>& it): _node(it.base()), is_end(0), before_start(0), _val(it.get_val())
 			{
-				if (it.base())
-					_val = it.base()->key_val;
-				else
-					_val = value_type();
 			};
 			
-			iterator &operator= (iterator const &ptr)
+			const_iterator &operator= (const_iterator const &ptr)
 			{
 				if (this != &ptr)
 				{
 					this->_node = ptr.base();
 					this->is_end = ptr.get_end();
 					this->before_start = ptr.get_before_start();
-					this->_val = ptr.get_val();
 				}
 				return (*this);
 			};
-			value_type get_val() const 
-			{
-				return (_val);
-			}
-			iterator(iterator const &ptr)
+			const_iterator(const_iterator const &ptr)
 			{
 				*this = ptr;
 			}
-			~iterator(){};
+			~const_iterator(){};
 		private:
 			tree	*get_min(tree *min_node)
 			{
@@ -317,9 +301,9 @@ namespace ft
 					is_end = 1;
 				return(result);
 			}
-			iterator	increment_after_end()
+			const_iterator	increment_after_end()
 			{
-				iterator after_last;
+				const_iterator after_last;
 				after_last.set_end(0);
 				return (after_last);
 			}
@@ -331,80 +315,80 @@ namespace ft
 			//-----------------END-INCREMENTERS-------------------//
 			//-----------------OPERATORS------------------------//
 		public:
-			inline value_type	*operator->() const
+			inline const_value_type	*operator->() const
 			{
 				if (is_end || before_start)
 					return (NULL);
+				// const_value_type tmp = _node->key_val;
 				return &(_node->key_val);
 			}
-			inline value_type	operator*() const
+			inline const_value_type	operator*() const
 			{
-				value_type trash;
-				if (is_end || before_start)
-					return (trash);
-				return _node->key_val;
+				// if (is_end || before_start)
+				// 	return (NULL);
+				return (_node->key_val);
 			}
-			iterator &operator++()
+			const_iterator &operator++()
 			{
 				if (before_start)
-					*this  = iterator(increment_before_start());
+					*this  = const_iterator(increment_before_start());
 				else if (is_end)
 					*this = increment_after_end();
 				else if (_node == get_max())
 					is_end = 1;
 				else if (is_root())
-					*this = iterator(increment_root(_node));
+					*this = const_iterator(increment_root(_node));
 				else if (is_left_child_and_has_parent())
-					*this = iterator(increment_of_left_child());
+					*this = const_iterator(increment_of_left_child());
 				else if (is_right_child_and_has_parent())
-					*this = iterator(increment_of_right_child());
+					*this = const_iterator(increment_of_right_child());
 				return (*this);
 			}
-			iterator operator++(int)
+			const_iterator operator++(int)
 			{
-				iterator tmp(*this);
-				iterator increment(*this);
+				const_iterator tmp(*this);
+				const_iterator increment(*this);
 
 				++increment;
 				*this = increment;
 				return (tmp);
 			}
-			iterator	&operator--()
+			const_iterator	&operator--()
 			{
 				if (is_end)
 				{
 					// std::cout << "case print after end "<< std::endl;
 					is_end = 0;
-					// *this = iterator(decrement_end());
+					// *this = const_iterator(decrement_end());
 				}
 				else if (_node == get_min())
 				{
-					*this =  iterator(decrement_first_node());
+					*this =  const_iterator(decrement_first_node());
 					before_start = 1;
 				}
 				else if (is_root())
-					*this = iterator(decrement_root(_node));
+					*this = const_iterator(decrement_root(_node));
 				else if (is_left_child_and_has_parent())
-					*this = iterator(decrement_of_left_child());
+					*this = const_iterator(decrement_of_left_child());
 				else if (is_right_child_and_has_parent())
-					*this = iterator(decrement_of_right_child());
+					*this = const_iterator(decrement_of_right_child());
 				
 				return (*this);
 			}
-			iterator operator--(int)
+			const_iterator operator--(int)
 			{
-				iterator tmp(*this);
-				iterator decrement(*this);
+				const_iterator tmp(*this);
+				const_iterator decrement(*this);
 
 				--decrement;
 				*this = decrement;
 				return (tmp);
 			}
-			iterator	&operator +=(int inc)
+			const_iterator	&operator +=(int inc)
 			{
 				if (inc == 0)
 					return (*this);
-				iterator	tmp(*this);
+				const_iterator	tmp(*this);
 				if (inc > 0)
 				{
 					while (inc > 0)
@@ -424,11 +408,11 @@ namespace ft
 				*this = tmp;
 				return (*this);
 			}
-			iterator &operator-= (int dec)
+			const_iterator &operator-= (int dec)
 			{
 				if (dec == 0)
 					return (*this);
-				iterator	tmp(*this);
+				const_iterator	tmp(*this);
 				if (dec > 0)
 				{
 					while (dec > 0)
@@ -448,7 +432,7 @@ namespace ft
 				*this = tmp;
 				return (*this);
 			}
-			// bool	operator==(iterator &b)
+			// bool	operator==(const_iterator &b)
 			// {
 			// 	if (!_node && !b.base())
 			// 		return (true);
@@ -456,7 +440,7 @@ namespace ft
 			// 		return (false);
 			// 	return (_node->key_val.first == b->first);
 			// }
-			// bool	operator!=(iterator &b)
+			// bool	operator!=(const_iterator &b)
 			// {
 			// 	if (!_node && !b.base())
 			// 		return (false);
@@ -466,9 +450,8 @@ namespace ft
 			// }
 
  	};
-
-	template < class iter1, class iter2>
-	bool operator==(const iterator<iter1>& lhs, const iterator<iter2>& rhs)
+		template < class iter1, class iter2>
+	bool operator==(const const_iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
 	{
 		if (!lhs.base() && !rhs.base())
 			return (true);
@@ -479,28 +462,28 @@ namespace ft
 			 	&& lhs.base() == rhs.base());
 	};
 	template < class iter1, class iter2>
-	bool operator!=(const iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	bool operator!=(const const_iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
 	{
 		return (!(lhs == rhs));
 	}
 	template < class iter1, class iter2>
-	bool operator< (const iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	bool operator< (const const_iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
 	{
 		return (lhs->first < rhs->first);
 	};
 	
 	template < class iter1, class iter2>
-	bool operator> (const iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	bool operator> (const const_iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
 	{
 		return (lhs->first > rhs->first);
 	};
 	template < class iter1, class iter2>
-	bool operator>= (const iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	bool operator>= (const const_iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
 	{
 		return (lhs->first >= rhs->first);
 	};
 	template < class iter1, class iter2>
-	bool operator<= (const iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	bool operator<= (const const_iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
 	{
 		if (lhs == rhs)
 			return (true);
@@ -509,30 +492,28 @@ namespace ft
 	
 
 	// template < class iter1, class iter2>
-	// std::ptrdiff_t operator-(const iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	// std::ptrdiff_t operator-(const const_iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
 	// {
 	// 	return (lhs.base() - rhs.base());
 	// }
 	// template < class iter1>
-	// iterator<iter1> operator+ (
-	// 	typename iterator<iter1>::difference_type d, const iterator<iter1>& lhs)
+	// const_iterator<iter1> operator+ (
+	// 	typename const_iterator<iter1>::difference_type d, const const_iterator<iter1>& lhs)
 	// {
 	// 	return (lhs.base() + d);
 	// }
 
 	template < class iter1>
-	iterator<iter1> operator+ (const iterator<iter1>& lhs,
+	const_iterator<iter1> operator+ (const const_iterator<iter1>& lhs,
 		int d)
 	{
 		return (lhs += d);
 	}
 	template < class iter1>
-	iterator<iter1>  operator- (const iterator<iter1>& lhs,
-		typename iterator<iter1>::difference_type d)
+	const_iterator<iter1>  operator- (const const_iterator<iter1>& lhs,
+		typename const_iterator<iter1>::difference_type d)
 	{
 		return (lhs -= d);
 	}
-	
-	
 }
 #endif

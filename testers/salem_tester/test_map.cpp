@@ -653,12 +653,98 @@ void	test_comp()
 
   std::cout << '\n';
 }
+
+// void	test_key_comp()
+// {
+// 	ft::map<char,int> mymap;
+
+//   	mymap['x']=1001;
+//   	mymap['y']=2002;
+//   	mymap['z']=3003;
+	
+//   	std::cout << "mymap contains:\n";
+	
+//   	ft::pair<char,int> highest = *mymap.rbegin();          // last element
+// 	(void)highest;
+//   	// ft::map<char,int>::iterator it = mymap.begin();
+//   	// do {
+//   	//   std::cout << it->first << " => " << it->second << '\n';
+//   	//  } while ( mymap.value_comp()(*it++, highest) );
+// }
+
+// void	test_count()
+// {
+// 	ft::map<char,int> mymap;
+//   char c;
+
+//   mymap ['a']=101;
+//   mymap ['c']=202;
+//   mymap ['f']=303;
+
+//   for (c='a'; c<'h'; c++)
+//   {
+//     std::cout << c;
+//     if (mymap.count(c)>0)
+//       std::cout << " is an element of mymap.\n";
+//     else 
+//       std::cout << " is not an element of mymap.\n";
+//   }
+// }
+
+void	test_allocator()
+{
+	int psize;
+  ft::map<char,int> mymap;
+  ft::pair<const char,int>* p;
+
+  // allocate an array of 5 elements using mymap's allocator:
+  p=mymap.get_allocator().allocate(5);
+
+  // assign some values to array
+  psize = sizeof(ft::map<char,int>::value_type)*5;
+
+  std::cout << "The allocated array has a size of " << psize << " bytes.\n";
+
+  mymap.get_allocator().deallocate(p,5);
+}
+
+void	test_square()
+{
+	ft::map<int, std::string> mp;
+
+	mp[42] = "fgzgxfn";
+	mp[25] = "funny";
+}
+
+#define T1 float
+#define T2 int
+#include <list>
+typedef ft::pair<const T1, T2> T3;
+void 	test_range_rev_iter_const()
+{
+
+
+	std::list<T3> lst;
+	unsigned int lst_size = 5;
+	for (unsigned int i = 0; i < lst_size; ++i)
+		lst.push_back(T3(2.5 - i, (i + 1) * 7));
+
+	ft::map<T1, T2> mp(lst.begin(), lst.end());
+	ft::map<T1, T2>::reverse_iterator it(mp.rbegin());
+	ft::map<T1, T2>::const_reverse_iterator ite(mp.rbegin());
+	it++;
+	ite++;
+
+}
 int main()
 {
+	// test_allocator();
+	test_square();
+	// test_count();
 	// test_accessor();
 	// test_equal();
 	// test_swap();
-	test_comp();
+	// test_key_comp();
 	// original_test_erase();
     // std::cout << " -- " << std::endl;
     // std::cout << " -    original_insert_test();- " << std::endl;

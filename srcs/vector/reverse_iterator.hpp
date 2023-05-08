@@ -95,12 +95,13 @@ template <class iterator>
 			{
 				return *(*this + n); 
 			}
-			refrence_type operator*()
+			refrence_type operator*() const
 			{
 				iterator tmp = _ptr;
-				return (*--tmp);
+				--tmp;
+				return (*tmp);
 			};
-			pointer_type operator->()
+			pointer_type operator->() const
 			{
 				iterator tmp = _ptr;
 				return ((--tmp).operator->());
