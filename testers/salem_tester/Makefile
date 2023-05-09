@@ -1,6 +1,7 @@
-NAME = salem_tester
+# NAME = salem_tester
+NAME = map_tester
 # SRC =  test_vectors.cpp 
-SRC =  test_map.cpp 
+SRC =  map_ft.cpp map_std.cpp 
 # MSRC = test_map.cpp
 CXXFLAGS= -Wall -Wextra -Werror -std=c++98 -g3
 # CXXFLAGS= 
@@ -11,9 +12,16 @@ OBJ =  $(SRC:.cpp=.o)
 all: $(NAME)
 
 
-$(NAME): $(OBJ)
-	@$(CXX)  $(CXXFLAGS) $(OBJ) -o $(NAME)
+# $(NAME): $(OBJ)
+# 	@$(CXX)  $(CXXFLAGS) $(OBJ) -o $(NAME)
 
+ft:
+	@$(CXX)  $(CXXFLAGS) map_ft.cpp -o ft_map
+std:
+	@$(CXX)  $(CXXFLAGS) map_std.cpp -o std_map
+
+map: ft std
+	./test_result.sh
 clean:
 	@rm -rf *.o
 

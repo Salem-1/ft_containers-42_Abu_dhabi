@@ -348,6 +348,7 @@ namespace ft
 		template <class InputIterator>
 		void	insert(InputIterator first, InputIterator last)
 		{
+			
 			while (first != last)
 			{
 				insert (*first);
@@ -734,14 +735,19 @@ namespace ft
 			map& operator= (const map& x)
 			{
 				if (this != &x)
-				{
+				{				
 					clear_all(get_root());
-					_tree = NULL;
 					comp = x.get_comp();
 					allocator = x.get_allocator();
-					insert(x.begin(), x.end());
-					_root = get_root();
-					_size = x.size();
+					if (x.size())
+						insert(x.begin(), x.end());
+					else
+					{
+						_tree = NULL;
+						_size = 0;
+					}
+					// _root = get_root();
+					// _size = x.size();
 				}
 				return (*this);
 			}
@@ -754,6 +760,7 @@ namespace ft
 					clear_all(root->right);
 				if (root->left)
 					clear_all(root->left);
+				_size--;
 				tree_allocator.destroy(root);
 				tree_allocator.deallocate(root, 1);
 				root = NULL;
