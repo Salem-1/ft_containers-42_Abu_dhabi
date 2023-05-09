@@ -14,10 +14,11 @@
 # define ITERATOR_HPP
 #include <iostream>
 # include <cstddef>
+#include "../map/iterator_traits.hpp"
 namespace ft
 {
 
-	template <typename T>
+	template <class T, class Category = ft::random_access_iterator_tag>
 	class Veciterator
 	{
 		public:
@@ -191,16 +192,16 @@ reference	iterator_traits<Iterator>::referenc
 //     typedef T* pointer;
 //     typedef T& reference;
 //     typedef random_access_iterator_tag iterator_category;
+// // };
+// template<class Iterator>
+// struct iterator_traits
+// {
+//     typedef typename Iterator::difference_type		difference_type;
+//     typedef typename Iterator::value_type			value_type;
+//     typedef typename Iterator::pointer				pointer;
+//     typedef typename Iterator::reference			reference;
+//     typedef typename Iterator::iterator_category	iterator_category;
 // };
-template<class Iterator>
-struct iterator_traits
-{
-    typedef typename Iterator::difference_type		difference_type;
-    typedef typename Iterator::value_type			value_type;
-    typedef typename Iterator::pointer				pointer;
-    typedef typename Iterator::reference			reference;
-    typedef typename Iterator::iterator_category	iterator_category;
-};
 
 // template <class _Iter>
 // struct __iterator_traits_impl

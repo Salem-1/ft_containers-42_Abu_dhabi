@@ -20,7 +20,7 @@
 namespace ft
 {
 
-template <typename vector> class Veciterator;
+// template <typename vector> class Veciterator;
 template <typename vector> class Vecreverse_iterator;
 // template <typename vector> class const_iterator;
 
