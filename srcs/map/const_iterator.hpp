@@ -466,6 +466,11 @@ namespace ft
 	{
 		return (!(lhs == rhs));
 	}
+	// template < class iter1, class iter2>
+	// bool operator!=(const iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
+	// {
+	// 	return (!(lhs == rhs));
+	// }
 	template < class iter1, class iter2>
 	bool operator< (const const_iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
 	{

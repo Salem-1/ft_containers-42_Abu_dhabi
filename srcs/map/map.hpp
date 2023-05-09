@@ -196,10 +196,10 @@ namespace ft
 			////std::cout << "After  Rotation" <<//std::cout;
 			// visualize_node(y, "y", "   ");
 			// visualize_node(x, "x", "   ");
-			std::cout << " 4 insinde RR seg" << std::endl;
+			// std::cout << " 4 insinde RR seg" << std::endl;
 			if (y->left)
 					y->left->parent = y;
-			std::cout << " 5 insinde RR seg" << std::endl;
+			// std::cout << " 5 insinde RR seg" << std::endl;
 			return (x);
 		}
 
@@ -257,8 +257,7 @@ namespace ft
 			////std::cout << "for node " << node->key_val.first << "  Blance factor = " << balance_factor << std::endl;
 			if (balance_factor < -1)
 			{
-				if (!node->right)
-					std::cout <<  "kief kief kief" << std::endl;
+				
 				if (comp(node->right->key_val.first, val.first))
 				{
 			////std::cout << "\nrotating around " << node->key_val.first;
@@ -277,7 +276,7 @@ namespace ft
 			{
 				if (comp(val.first, node->left->key_val.first))
 				{
-					std::cout << "2-inserting "<< val.first << " => " << val.second << std::endl;
+					// std::cout << "2-inserting "<< val.first << " => " << val.second << std::endl;
 					////std::cout << "RR Rotate val = " << val.first << std::endl;
 					return (RR_rotate(node));
 				
@@ -368,6 +367,13 @@ namespace ft
 		}
 	public:
 		iterator find (const key_type& k)
+		{
+			tree *searched_node = do_find(k, get_root());
+			if (!searched_node)
+				return (end());
+			return (iterator(searched_node));
+		};
+		const_iterator find (const key_type& k) const
 		{
 			tree *searched_node = do_find(k, get_root());
 			if (!searched_node)
@@ -465,7 +471,7 @@ namespace ft
 
 				if (successor == root->right)
 				{
-					std::cout << _tree->key_val.first << std::endl;
+					// std::cout << _tree->key_val.first << std::endl;
 					successor->left = root->left;
 					root->left->parent = successor;
 					successor->parent = root->parent;
@@ -577,7 +583,7 @@ namespace ft
 				// 	//founding the largest node in the left subtree
 		    	// 	root->right = do_delete(root->right, tmp->key_val.first);
 		  		// }
-				visualize_node(_tree, "successor", "      ");
+				// visualize_node(_tree, "successor", "      ");
 				// visualize_node(_tree->parent, "successor new parent ", "      ");
 				// sleep(1);
 				// _tree = get_root();
@@ -774,7 +780,7 @@ namespace ft
 			{
 				////std::cout << "Destructor called" << std::endl;
 				////std::cout << "visualizing tree node by node" << std::endl;
-				vis_tree_node_by_node(get_root());
+				// vis_tree_node_by_node(get_root());
 				tree	*root = get_root();
 				clear_all(root);
 			};
@@ -811,14 +817,118 @@ namespace ft
 				x.set_size(tmp_size);
 
 			}
-		// size_type count (const key_type& k) const
-		// {
-		// 	_tree = get_root();
-		// 	tree *search_me = do_find(k, _tree);
-		// 	if (search_me)
-		// 		return (1);
-		// 	return (0);
-		// };
+		tree	const *do_find_const(const key_type &k, tree *root) const
+		{
+			if (!root || k == root->key_val.first)
+				return (root);
+			else if (comp(k, root->key_val.first))
+				return (do_find_const(k, root->left));
+			else
+				return (do_find_const(k, root->right));
+		}
+		size_type count (const key_type& k) const
+		{
+			// _tree = get_root();
+			tree *search_me = get_root();
+			if (do_find_const(k, search_me))
+				return (1);
+			return (0);
+		};
+		iterator lower_bound (const key_type& k)
+		{
+			iterator lower = begin();
+			
+			while (lower != end())
+			{
+				if(!(comp(lower->first, k)))
+					return (lower);
+				++lower;
+			}
+			return (end());
+			// for (lower = get_max(get_root()); lower != begin(); lower--)
+			// {
+			// 	if((comp(lower->first, k)))
+			// 		return (lower);
+			// }
+			
+		};
+		const_iterator lower_bound (const key_type& k) const
+		{
+			const_iterator lower = begin();
+			
+			while (lower != end())
+			{
+				if(!(comp(lower->first, k)))
+					return (lower);
+				++lower;
+			}
+			return (end());
+			// for (lower = get_max(get_root()); lower != begin(); lower--)
+			// {
+			// 	if((comp(lower->first, k)))
+			// 		return (lower);
+			// }
+			
+		};
+		iterator upper_bound (const key_type& k)
+		{
+			iterator upper;
+			for (upper = begin(); upper != end(); upper++)
+			{
+				if((comp(k, upper->first)))
+					return (upper);
+			}
+			return (end());			
+		};
+		const_iterator upper_bound (const key_type& k) const
+		{
+			const_iterator upper;
+			for (upper = begin(); upper != end(); upper++)
+			{
+				if((comp(k, upper->first)))
+					return (upper);
+			}
+			return (end());
+		};
+		pair<iterator,iterator>             equal_range (const key_type& k)
+		{
+			pair<iterator, iterator> result;
+			result.first = lower_bound(k);
+			result.second = upper_bound(k);
+			return (result);
+		}
+		pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+		{
+			pair<const_iterator, const_iterator> result;
+			result.first = lower_bound(k);
+			result.second = upper_bound(k);
+			return (result);
+		}
+		
+		
+		class value_compare
+		{
+			friend class map;
+			
+			protected:
+				Compare comp;
+				value_compare(Compare c): comp(c) {};
+			public:
+				typedef bool 		result_type;
+				typedef value_type	first_argument;
+				typedef value_type	second_argument;
+				bool operator ()(const first_argument &x, const second_argument &y)
+				{
+					return (comp(x.first, y.first));
+				}
+		};
+		
+		value_compare value_comp() const
+		{
+			value_compare val_comp(comp);
+			return (val_comp);
+		};
+		
 		// class value_compare
 		// {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
 		//   friend class map;
@@ -834,7 +944,6 @@ namespace ft
 		// 	  return comp(x.first, y.first);
 		// 	}
 		// };
-		// 	value_compare value_comp() const;
 	};
 }
 #endif

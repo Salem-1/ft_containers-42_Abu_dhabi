@@ -104,7 +104,8 @@ template <class iterator>
 			pointer_type operator->() const
 			{
 				iterator tmp = _ptr;
-				return ((--tmp).operator->());
+				--tmp;
+				return ((tmp).operator->());
 			};
 			iterator_type	base() const
 			{
