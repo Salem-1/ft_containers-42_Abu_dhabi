@@ -905,8 +905,7 @@ namespace ft
 			return (result);
 		}
 		
-		
-		class value_compare
+class value_compare
 		{
 			friend class map;
 			
@@ -928,7 +927,6 @@ namespace ft
 			value_compare val_comp(comp);
 			return (val_comp);
 		};
-		
 		// class value_compare
 		// {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
 		//   friend class map;
