@@ -18,7 +18,13 @@
 
 namespace ft
 {
-	template <class Iterator> class iterator_traits
+	struct input_iterator_tag {};
+    struct output_iterator_tag {};
+    struct forward_iterator_tag : public input_iterator_tag {};
+    struct bidirectional_iterator_tag : public forward_iterator_tag {};
+    struct random_access_iterator_tag : public bidirectional_iterator_tag {};
+
+	template <class Iterator> struct iterator_traits
 	{
 	    typedef typename Iterator::T         value_type;
 	    typedef typename Iterator::Distance  difference_type;
@@ -27,21 +33,23 @@ namespace ft
 	    typedef typename Iterator::Category  iterator_category;
 	};
 	
-	template <class T> class iterator_traits<T*>
+	template <class T>
+	struct iterator_traits<T*>
 	{
 	    typedef T  value_type;
 	    typedef T *pointer;
 	    typedef T & reference;
 	    typedef std::ptrdiff_t  difference_type;
-	    typedef std::random_access_iterator_tag  iterator_category;
+	    typedef ft::random_access_iterator_tag  iterator_category;
 	};
-	template <class T> class iterator_traits<const T*>
+	template <class T>
+	struct iterator_traits<const T*>
 	{
 	    typedef T  value_type;
 	    typedef const T *pointer;
 	    typedef const T & reference;
 	    typedef std::ptrdiff_t  difference_type;
-	    typedef std::random_access_iterator_tag  iterator_category;
+	    typedef ft::random_access_iterator_tag  iterator_category;
 	};
 }
 

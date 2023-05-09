@@ -185,7 +185,7 @@ void	test_iterators()
 
 	}
 	// my_map_print(fruits._tree);
-	print2D(fruits._tree);
+	// print2D(fruits._tree);
 	TESTED_TYPE::map<int, std::string>::iterator it;
 	it = fruits.begin();
 	std::cout << "Begin add " << &it << std::endl;
@@ -805,7 +805,7 @@ int main()
 {
 	// test_allocator();
 	// test_find();
-	test_value_comp();
+	test_iterators();
 	// test_accessor();
 	// test_equal();
 	// test_swap();
