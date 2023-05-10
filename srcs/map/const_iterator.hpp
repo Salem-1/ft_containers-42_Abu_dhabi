@@ -68,8 +68,12 @@ namespace ft
 			const_iterator(): _node(pointer()), is_end(0), before_start(0), _val(const_value_type())
 			{
 			};
-			const_iterator(pointer ptr) : _node(ptr), is_end(0), before_start(0), _val(ptr->key_val)
+			const_iterator(pointer ptr) : _node(ptr), is_end(0), before_start(0)
 			{
+				// if (ptr)
+				// 	const_cast<const_value_type&>(_val) = ptr->key_val;
+				// else
+				// 	const_cast<const_value_type&>(_val) = const_value_type();
 			};
 			template <typename input_const_iterator>		
 			const_iterator(const const_iterator<input_const_iterator>& it): _node(it.base()), is_end(it.get_end()), before_start(it.get_before_start()), _val(it.get_val())

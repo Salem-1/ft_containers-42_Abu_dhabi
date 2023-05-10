@@ -741,21 +741,33 @@ namespace ft
 				if (this != &x)
 				{				
 					clear_all(get_root());
+					_tree = NULL;
+					_root = NULL;
 					comp = x.get_comp();
 					allocator = x.get_allocator();
 					if (x.size())
-						insert(x.begin(), x.end());
+					{
+						
+ 						insert(x.begin(), x.end());
+					}
 					else
 					{
 						_tree = NULL;
 						_size = 0;
 					}
+					_size = x.size();
 					// _root = get_root();
 					// _size = x.size();
 				}
 				return (*this);
 			}
-
+			map (const map& x)
+			{
+				if (_size)
+					_tree = NULL;
+				if (this != &x)
+					*this = x;
+			}
 			void	clear_all(tree *root)
 			{
 				if (!root)
@@ -1016,7 +1028,7 @@ template <class InputIterator1, class InputIterator2>
 		// y = tmp;
 	};
 	template < class iter1, class iter2>
-	bool operator==(const const_iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	bool operator==(const iterator<iter2>& rhs, const const_iterator<iter1>& lhs)
 	{
 			// 	if (lhs.get_before_start() == rhs.get_before_start()
 			// 	|| lhs.get_end() == rhs.get_end())
@@ -1039,11 +1051,6 @@ template <class InputIterator1, class InputIterator2>
 	{
 		return (!(lhs == rhs));
 	}
-	// template < class iter1, class iter2>
-	// bool operator!=(const iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
-	// {
-	// 	return (!(lhs == rhs));
-	// }
 	template < class iter1, class iter2>
 	bool operator< (const iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
 	{
@@ -1067,7 +1074,54 @@ template <class InputIterator1, class InputIterator2>
 			return (true);
 		return (lhs < rhs);
 	};
+	//------------------HORRIBLE HARD CODING AS PRICE FOR NOT USING ONE CLASS FOR CONST AND NORMAL ITERATOR----//
+		template < class iter1, class iter2>
+	bool operator==(const const_iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	{
+			// 	if (lhs.get_before_start() == rhs.get_before_start()
+			// 	|| lhs.get_end() == rhs.get_end())
+			// return (true);
+		if (!lhs.base() && !rhs.base())
+			return (true);
+			else if (!lhs.base() || !rhs.base())
+		{
+			if (lhs.get_before_start() == rhs.get_before_start()
+				&& lhs.get_end() == rhs.get_end())
+				return (true);
+			return (false);
+		}
+		return (lhs.get_before_start() == rhs.get_before_start()
+				&& lhs.get_end() == rhs.get_end()
+			 	&& lhs.base() == rhs.base());
+	};
+		template < class iter1, class iter2>
+	bool operator!=(const const_iterator<iter2>& rhs, const iterator<iter1>& lhs)
+	{
+		return (!(lhs == rhs));
+	}
+	template < class iter1, class iter2>
+	bool operator< (const const_iterator<iter2>& rhs, const iterator<iter1>& lhs)
+	{
+		return (lhs->first < rhs->first);
+	};
 	
+	template < class iter1, class iter2>
+	bool operator> (const const_iterator<iter2>& rhs, const iterator<iter1>& lhs)
+	{
+		return (lhs->first > rhs->first);
+	};
+	template < class iter1, class iter2>
+	bool operator>= (const const_iterator<iter2>& rhs, const iterator<iter1>& lhs)
+	{
+		return (lhs->first >= rhs->first);
+	};
+	template < class iter1, class iter2>
+	bool operator<= (const const_iterator<iter2>& rhs, const iterator<iter1>& lhs)
+	{
+		if (lhs == rhs)
+			return (true);
+		return (lhs < rhs);
+	};
 }
 #endif
 
