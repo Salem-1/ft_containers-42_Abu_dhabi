@@ -1,7 +1,7 @@
 IMAGE_NAME = my-app
 CONTAINER_NAME = my-app-container
 
-.PHONY: build run stop clean
+.PHONY: build run stop clean up re
 
 build:
 	docker build -t $(IMAGE_NAME) $(PWD)
@@ -15,4 +15,6 @@ stop:
 clean:
 	docker rmi $(IMAGE_NAME)
 
+up: build run
 
+re: stop clean up

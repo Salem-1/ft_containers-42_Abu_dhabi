@@ -665,13 +665,27 @@ namespace ft
 			return (iterator(get_min(_tree)));
 		}
 
+		const_iterator	begin() const
+		{			
+			return (const_iterator(get_min(_tree)));
+		}
 		iterator	end() 
 		{
 			iterator after_max(get_max(get_root()));
-			after_max++;
+			++after_max;
+ 			return (after_max);
+		}
+		const_iterator	end() const
+		{
+			const_iterator after_max(get_max(get_root()));
+			++after_max;
  			return (after_max);
 		}
 		reverse_iterator rend()
+		{
+			return (begin());
+		}
+		const_reverse_iterator rend() const
 		{
 			return (begin());
 		}
@@ -679,21 +693,7 @@ namespace ft
 		{
 			return (end());
 		}
-		const_iterator	begin() const
-		{			
-			return (const_iterator(get_min(_tree)));
-		}
 
-		const_iterator	end() const
-		{
-			const_iterator after_max(get_max(get_root()));
-			after_max++;
- 			return (after_max);
-		}
-		const_reverse_iterator rend() const
-		{
-			return (begin());
-		}
 		const_reverse_iterator rbegin() const
 		{
 			return (end());
@@ -934,21 +934,82 @@ class value_compare
 			value_compare val_comp(comp);
 			return (val_comp);
 		};
-		// class value_compare
-		// {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
-		//   friend class map;
-		// protected:
-		// 	Compare comp;
-		// 	value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
-		// public:
-		// 	typedef bool result_type;
-		// 	typedef value_type first_argument_type;
-		// 	typedef value_type second_argument_type;
-		// 	bool operator() (const value_type& x, const value_type& y) const
-		// 	{
-		// 	  return comp(x.first, y.first);
-		// 	}
-		// };
+	};
+template <class InputIterator1, class InputIterator2>
+  bool equal ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
+{
+	while (first1 != last1)
+	{
+		if (*first1 != *first2)
+			return (false);
+		first1++;
+		first2++;
+	}
+	return (true);
+}
+
+template <class InputIterator1, class InputIterator2>
+	bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,
+						InputIterator2 first2, InputIterator2 last2)
+{
+	while (first1 != last1)
+	{
+		if (first2 == last2 || *first2 < *first1)
+			return false;
+		else if (*first1<*first2)
+			return true;
+		first1++;
+		first2++;
+	}
+	return (first2!=last2);
+}
+
+	template <class T, class Alloc>
+	bool operator== (const map<T,Alloc>& lhs, const map<T,Alloc>& rhs)
+	{
+		if (lhs.size() != rhs.size())
+			return (false);
+		return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+	}
+
+	template <class T, class Alloc>
+	bool operator<  (const map<T,Alloc>& lhs, const map<T,Alloc>& rhs)
+	{
+
+		return (ft::lexicographical_compare(
+			lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+
+	template <class T, class Alloc>
+	bool operator!= (const map<T,Alloc>& lhs, const map<T,Alloc>& rhs)
+	{
+		return (!(lhs == rhs));
+	};
+
+	template <class T, class Alloc>
+	bool operator<= (const map<T,Alloc>& lhs, const map<T,Alloc>& rhs)
+	{
+		return (!(rhs < lhs));
+	};
+	template <class T, class Alloc>
+	bool operator>  (const map<T,Alloc>& lhs, const map<T,Alloc>& rhs)
+	{
+		return (rhs < lhs);
+	};
+	template <class T, class Alloc>
+	bool operator>= (const map<T,Alloc>& lhs, const map<T,Alloc>& rhs)
+	{
+		return (!(lhs < rhs));
+	};
+
+	template <class T, class Alloc>
+	void	swap(map<T,Alloc>& x, map<T,Alloc>& y)
+	{
+		x.swap(y);
+		// vector<T> tmp(x);
+
+		// x = y;
+		// y = tmp;
 	};
 }
 #endif

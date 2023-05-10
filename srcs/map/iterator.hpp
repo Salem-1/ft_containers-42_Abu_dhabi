@@ -333,16 +333,16 @@ namespace ft
 		public:
 			inline value_type	*operator->() const
 			{
-				if (is_end || before_start)
-					return (NULL);
+				// if (is_end || before_start)
+				// 	return (NULL);
 				return &(_node->key_val);
 			}
-			inline value_type	operator*() const
+			inline value_type	&operator*() const
 			{
-				value_type trash;
-				if (is_end || before_start)
-					return (trash);
-				return _node->key_val;
+				// value_type &trash;
+				// if (is_end || before_start)
+				// 	return (trash);
+				return (_node->key_val);
 			}
 			iterator &operator++()
 			{
@@ -388,7 +388,6 @@ namespace ft
 					*this = iterator(decrement_of_left_child());
 				else if (is_right_child_and_has_parent())
 					*this = iterator(decrement_of_right_child());
-				
 				return (*this);
 			}
 			iterator operator--(int)

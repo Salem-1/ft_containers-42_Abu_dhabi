@@ -28,19 +28,22 @@ namespace ft
 	> class const_iterator
 	{
 		public:
-	    	typedef typename tree::value_type		value_type;
-			typedef			const value_type		const_value_type;
-	    	typedef Distance 				difference_type;
-	    	typedef tree					*pointer;
-			typedef pointer			const_pointer_type;
-	    	typedef tree&					reference;
-	    	typedef Category				const_iterator_category;
+	    	typedef typename tree::value_type 		original_value_type;
+			typedef			const original_value_type		value_type;
+			typedef value_type					const_value_type;
+	    	typedef Distance 					difference_type;
+	    	typedef tree						*pointer;
+			typedef pointer						const_pointer_type;
+	    	typedef tree&						reference;
+	    	typedef Category					const_iterator_category;
 		
 		protected:
-			pointer						_node;
-			int							is_end;
-			int							before_start;
-			const_value_type			_val;
+			pointer								_node;
+			int									is_end;
+			int									before_start;
+			const_value_type					_val;
+			std::allocator<original_value_type>	pair_alloc;
+
 		public:
 			pointer	base() const
 			{
@@ -62,12 +65,18 @@ namespace ft
 			{
 				before_start = input;
 			}
-			const_iterator(): _node(pointer()), is_end(0), before_start(0), _val(const_value_type()){};
-			const_iterator(pointer ptr) : _node(ptr), is_end(0), before_start(0), _val(ptr->key_val){};
+			const_iterator(): _node(pointer()), is_end(0), before_start(0), _val(const_value_type())
+			{
+			};
+			const_iterator(pointer ptr) : _node(ptr), is_end(0), before_start(0), _val(ptr->key_val)
+			{
+			};
 			template <typename input_const_iterator>		
-			const_iterator(const const_iterator<input_const_iterator>& it): _node(it.base()), is_end(0), before_start(0), _val(it.get_val()) {};
+			const_iterator(const const_iterator<input_const_iterator>& it): _node(it.base()), is_end(it.get_end()), before_start(it.get_before_start()), _val(it.get_val())
+			{
+			};
 			template <typename input_iterator>		
-			const_iterator(const iterator<input_iterator>& it): _node(it.base()), is_end(0), before_start(0), _val(it.get_val())
+			const_iterator(const iterator<input_iterator>& it): _node(it.base()), is_end(it.get_end()), before_start(it.get_before_start()), _val(it.get_val())
 			{
 			};
 			
@@ -317,15 +326,15 @@ namespace ft
 		public:
 			inline const_value_type	*operator->() const
 			{
-				if (is_end || before_start)
-					return (NULL);
-				// const_value_type tmp = _node->key_val;
+				// if (is_end || before_start)
+				// 	return (tmp);
+				// // const_value_type tmp = _node->key_val;
 				return &(_node->key_val);
 			}
-			inline const_value_type	operator*() const
+			inline const_value_type	&operator*() const
 			{
 				// if (is_end || before_start)
-				// 	return (NULL);
+				// 	return (_node->key_val);
 				return (_node->key_val);
 			}
 			const_iterator &operator++()
@@ -359,7 +368,7 @@ namespace ft
 				{
 					// std::cout << "case print after end "<< std::endl;
 					is_end = 0;
-					// *this = const_iterator(decrement_end());
+					// *this = iterator(decrement_end());
 				}
 				else if (_node == get_min())
 				{
@@ -372,11 +381,11 @@ namespace ft
 					*this = const_iterator(decrement_of_left_child());
 				else if (is_right_child_and_has_parent())
 					*this = const_iterator(decrement_of_right_child());
-				
 				return (*this);
 			}
 			const_iterator operator--(int)
 			{
+				
 				const_iterator tmp(*this);
 				const_iterator decrement(*this);
 

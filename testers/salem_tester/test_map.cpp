@@ -803,9 +803,28 @@ void	test_equal_range()
 }
 int main()
 {
+	ft::map<char,int> mymap;
+
+  mymap['a']=10;
+  mymap['b']=20;
+  mymap['c']=30;
+
+  ft::map<char,int>::const_iterator it = mymap.begin();
+  it ++;
+  ft::map<char,int>::const_reverse_iterator cp = it;
+ 
+ std::cout << " was" << it->second << std::endl;
+// 	it->second = 4;
+	std::cout << "now" << cp->second << std::endl;
+
+	if (&*it == &*cp)
+	{
+		std::cout << "k" << std::endl;
+	}
 	// test_allocator();
 	// test_find();
-	test_iterators();
+	// test_iterators();
+
 	// test_accessor();
 	// test_equal();
 	// test_swap();
