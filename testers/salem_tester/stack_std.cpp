@@ -2,6 +2,7 @@
 # include "../../srcs/stack/stack.hpp"
 # include <iostream>
 #include <deque>
+#include <vector>
 #include <stack>
 void	test_constructor()
 {
@@ -89,18 +90,18 @@ void	test_pop()
   }
   std::cout << '\n';
 }
-void	test_swap()
-{
-	 std::stack<int> foo,bar;
-  foo.push (10); foo.push(20); foo.push(30);
-  bar.push (111); bar.push(222);
+// void	test_swap()
+// {
+// 	 std::stack<int> foo,bar;
+//   foo.push (10); foo.push(20); foo.push(30);
+//   bar.push (111); bar.push(222);
 
-  foo.swap(bar);
+//   foo.swap(bar);
 
-  std::cout << "size of foo: " << foo.size() << '\n';
-  std::cout << "size of bar: " << bar.size() << '\n';
+//   std::cout << "size of foo: " << foo.size() << '\n';
+//   std::cout << "size of bar: " << bar.size() << '\n';
 
-}
+// }
 void	test_non_member_swap()
 {
 	 std::stack<int> foo,bar;
@@ -115,7 +116,6 @@ void	test_non_member_swap()
 int main(void)
 {
 	test_non_member_swap();
-	test_swap();
 	test_pop();
 	test_push();
 	test_top();

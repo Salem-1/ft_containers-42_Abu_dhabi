@@ -14,6 +14,5 @@ start_time_std=$(date +%s.%N)
 end_time_std=$(date +%s.%N)
 execution_time_std=$(echo "$end_time_std - $start_time_std" | bc -l)
 echo  "std execution time : $execution_time_std"
-
 diff ft_out std_out
 echo "Test successeded :)"

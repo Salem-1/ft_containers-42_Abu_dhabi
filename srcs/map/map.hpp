@@ -45,7 +45,6 @@ namespace ft
 			typedef typename	allocator_type::size_type			size_type;
 			typedef				value_type&							tmp_iterator;
 			typedef typename ft::Node<key_type, mapped_type>		tree;
-			tree							*_tree;
 			typedef	typename	ft::iterator<tree>					iterator;
 			typedef 	 ft::reverse_iterator<iterator>             reverse_iterator;
 			typedef typename	ft::const_iterator<tree>			const_iterator;
@@ -54,6 +53,7 @@ namespace ft
 	
 		// typedef __map_const_iterator<typename __base::const_iterator> const_iterator;
 		// typedef _VSTD::reverse_iterator<const_iterator>         const_reverse_iterator;
+			tree							*_tree; 
 			protected:
 			key_compare						comp;
 			allocator_type					allocator;

@@ -35,26 +35,26 @@ template < class T, class Alloc = std::allocator<T> >
 class vector
 {
 	public:
+		typedef T											value_type;
 		typedef Alloc										allocator_type;
-		typedef allocator_traits<allocator_type>         __alloc_traits;
+		typedef allocator_traits<allocator_type>         	__alloc_traits;
 		typedef size_t										size_type;
 		typedef Veciterator< T>								iterator;
 		typedef Veciterator<const T>						const_iterator;
 		typedef typename ft::reverse_iterator< iterator >	reverse_iterator;
 		typedef ft::reverse_iterator< const_iterator >		const_reverse_iterator;
+		typedef  value_type&								reference;
+		typedef const value_type&							const_reference;
+		typedef typename allocator_type::pointer			pointer;
+		typedef typename allocator_type::const_pointer		const_pointer;
+		typedef typename allocator_type::difference_type	difference_type;
 		
 
 	protected:
 		allocator_type										allocator;
 		size_type											_capacity;
 		size_type											_size;
-		typedef T											value_type;
-		typedef typename allocator_type::pointer			pointer;
 		value_type											*arr;
-		typedef  value_type&								reference;
-		typedef typename allocator_type::const_pointer		const_pointer;
-		typedef const value_type&							const_reference;
-		typedef typename allocator_type::difference_type	difference_type;
 		size_type 											max_capacity;
 		size_type											old_capacity;
 		//---------------HELPER_FUNCTIONS--------------------//

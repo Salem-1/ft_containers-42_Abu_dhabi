@@ -14,7 +14,7 @@ all: $(NAME)
 
 # $(NAME): $(OBJ)
 # 	@$(CXX)  $(CXXFLAGS) $(OBJ) -o $(NAME)
-stack:
+stack_old:
 	@$(CXX)  $(CXXFLAGS) test_stack.cpp -o stack_test
 	./stack_test
 ft:
@@ -38,6 +38,10 @@ clean:
 
 fclean: clean
 	@rm -rf $(NAME)
+	@rm -rf ft_map ft_vector std_stack std_map std_vector ft_stack a.out
+
+
+	
 test: re
 	@./salem_tester
 
