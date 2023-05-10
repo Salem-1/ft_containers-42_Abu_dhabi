@@ -466,7 +466,12 @@ namespace ft
 		if (!lhs.base() && !rhs.base())
 			return (true);
 		else if (!lhs.base() || !rhs.base())
+		{
+			if (lhs.get_before_start() == rhs.get_before_start()
+				&& lhs.get_end() == rhs.get_end())
+				return (true);
 			return (false);
+		}
 		return (lhs.get_before_start() == rhs.get_before_start()
 				&& lhs.get_end() == rhs.get_end()
 			 	&& lhs.base() == rhs.base());

@@ -70,7 +70,7 @@ c => 30
  -	test_size();- 
 mymap.size() is 3
  -	test_max_size();- 
-max size is 461168601842738790
+max size is 230584300921369395
 The map contains 1000 elements.
  -	test_original_delete();- 
 a => 10

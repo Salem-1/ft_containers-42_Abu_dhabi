@@ -488,12 +488,7 @@ namespace ft
 			// std:: cout << "one without base" << std::endl;
 			return (false);
 		}
-		// if (lhs.get_before_start() == rhs.get_before_start()
-		// 		&& lhs.get_end() == rhs.get_end()
-		// 	 	&& lhs.base() == rhs.base())
-		// 	std::cout << "the are equal" << std::endl;
-		// else
-		// 	std::cout << "the are NOT equal" << std::endl;
+	
 			
 		return (lhs.get_before_start() == rhs.get_before_start()
 				&& lhs.get_end() == rhs.get_end()
