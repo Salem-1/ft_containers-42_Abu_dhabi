@@ -13,13 +13,13 @@ template <typename T>
 void	printSize(TESTED_NAMESPACE::vector<T> const &vct, bool print_content = true)
 {
 	const T_SIZE_TYPE size = vct.size();
-	const T_SIZE_TYPE capacity = vct.capacity();
-	const std::string isCapacityOk = (capacity >= size) ? "OK" : "KO";
+	// const T_SIZE_TYPE capacity = vct.capacity();
+	// const std::string isCapacityOk = (capacity >= size) ? "OK" : "KO";
 	// Cannot limit capacity's max value because it's implementation dependent
 
 	std::cout << "size: " << size << std::endl;
-	std::cout << "capacity: " << isCapacityOk << std::endl;
-	std::cout << "max_size: " << vct.max_size() << std::endl;
+	// std::cout << "capacity: " << isCapacityOk << std::endl;
+	// std::cout << "max_size: " << vct.max_size() << std::endl;
 	if (print_content)
 	{
 		typename TESTED_NAMESPACE::vector<T>::const_iterator it = vct.begin();
@@ -141,11 +141,11 @@ int		rev_mli_comp(void)
 }
 int		ret2(void)
 {
-	const int size = 5;
+	const int size = 100;
 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it = vct.rbegin();
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator ite = vct.rbegin();
-std::cout << "size, capacity = " << vct.size() << "   " <<vct.capacity() << std::endl;
+	std::cout << "size " << vct.size() << std::endl;
 	std::cout << "begin, end " << vct.begin().base() << " " << vct.end().base() << std::endl;
 	std::cout << "it , ite " << it.base().base() << ", " << ite.base().base() << std::endl; 
 	for (int i = 0; i < size; ++i)
@@ -156,10 +156,8 @@ std::cout << "size, capacity = " << vct.size() << "   " <<vct.capacity() << std:
 	std::cout << "address "<< it.base().base() << " it = " << *it << "   ,  it + 5 = ";
 	it = it + 5;
 	std::cout << *it << std::endl;
-	std::cout << "address "<< it.base().base() << " it = " << *it << "   ,  1 + it = ";
+	// std::cout << "address "<< it.base().base() << " it = " << *it << "   ,  1 + it = ";
 	it = 1 + it;
-	std::cout << *it << std::endl;
-	std::cout << "address "<< it.base().base() << " it = " << *it << "   ,  it - 4 = ";
 	it = it - 4;
 	std::cout << *it << std::endl;
 
@@ -251,6 +249,7 @@ void test_erase_mli(void)
 
 }
 
+
 void test_copy_constructor_mli()
 {
 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(5);
@@ -338,43 +337,38 @@ int		test_at_mli(void)
 }
 void	test_at()
 {
-	std::vector<int> original;
-	ft::vector<int>	mine;
+	ft::vector<int> original;
 
 	for (int i = 0; i < 100; i++)
 	{
 		original.push_back(i);
-		mine.push_back(i);
 	}
 	for (int i = 0; i < 100 ; i++)
 	{
-		std::cout << "at original " << original.at(i) << std::endl;			
-		std::cout << "at mine " << mine.at(i) << std::endl;			
+		std::cout << "at original " << original.at(i) << std::endl;				
 		
 	}	
 	std::cout << "back original " << original.back() << " front ";
 	std::cout << original.front() << std::endl;	
-	std::cout << "back mine " << mine.back() << " front ";
-	std::cout << mine.front() << std::endl;
 }
 
 void	test_push_back()
 {
 	ft::vector<int> a;
 	a.back();
-	std::cout <<  a.back() << std::endl;
+	// std::cout <<  a.back() << std::endl;
 	std::cout << "yes empty " << a.empty() << std::endl; 
 	std::cout << "NO empty " << a.empty() << std::endl; 
 	for (int i = 0; i < 100000; i++)
 	{
 		a.push_back(i);
-		std::cout <<  a[i] << " capacity = " << a.capacity() <<std::endl;
+		std::cout <<  a[i] << " size = " << a.size() <<std::endl;
 	}
 };
 
 void	test_pop()
 {
-	std::vector<int> brand;
+	ft::vector<int> brand;
 	ft::vector<int> copy;
 	for (int i = 0; i < 1000;i ++)
 	{
@@ -394,7 +388,7 @@ void	test_pop()
 
 void	test_clear()
 {
-	std::vector<int> brand;
+	ft::vector<int> brand;
 	ft::vector<int> copy;
 	for (int i = 0; i < 1000;i ++)
 	{
@@ -407,8 +401,8 @@ void	test_clear()
 	copy.clear();
 	std::cout << "Size after clear ";
 	std::cout << brand.size() << " == " << copy.size() << std::endl;
-	std::cout << "Capacity after clear ";
-	std::cout << brand.capacity() << " == " << copy.capacity() << std::endl;
+	// std::cout << "Capacity after clear ";
+	// std::cout << brand.capacity() << " == " << copy.capacity() << std::endl;
 	brand.get_allocator();
 	copy.get_allocator();
 }
@@ -463,8 +457,8 @@ void	test_crbegin_crend()
 
 void	test_const_iter()
 {
-	std::vector<int> a;
-	std::vector<int>::const_iterator it;
+	ft::vector<int> a;
+	ft::vector<int>::const_iterator it;
 	for (int i = 10; i < 100; i++)
 		a.push_back(i);
 	for (it = a.begin(); it != a.end(); it++)
@@ -559,8 +553,8 @@ void	test_not_equal()
 
 void	test_insert()
 {
-	std::vector<int> a(10, 12);
-	std::vector<int> b(10, 12);
+	ft::vector<int> a(10, 12);
+	ft::vector<int> b(10, 12);
 	a.insert(a.begin() + 10 , 25 );
 	std::cout << "inserted " << a[10] << std::endl;
 }
@@ -651,7 +645,7 @@ void	test_copy_constructor()
 void	test_erase()
 {
    ft::vector<int> myVector(10, 1);
-//    std::vector<int>::iterator its = myVector.begin();
+//    ft::vector<int>::iterator its = myVector.begin();
    	myVector.erase(myVector.end() - 1);
     std::cout << "Vector values: ";
     for (ft::vector<int>::iterator it = myVector.begin(); it != myVector.end(); ++it)
@@ -672,8 +666,8 @@ void	test_erase_with_iter()
 }
 void	test_swap()
 {
-	std::vector<int> foo (3,100);   // three ints with a value of 100
-  std::vector<int> bar (5,200);   // five ints with a value of 200
+	ft::vector<int> foo (3,100);   // three ints with a value of 100
+  ft::vector<int> bar (5,200);   // five ints with a value of 200
 
   foo.swap(bar);
 

@@ -1,39 +1,43 @@
 str = """
-		test_mypair();
-	test_make_pair();
-	test_insert();
-	test_iterators();
-	test_iterators_operators();
-	original_insert_test();
-	test_access_operator();
-	test_copy_constructor();
-	test_begin();
-	test_end();
-	test_rbegin();
-	test_rend();
-	test_empty();
-	test_size();
-	test_max_size();
-	test_original_delete();
-	test_delete();
-	original_test_erase();
-	test_accessor();
-	test_at();
-	test_swap();
-	test_equal();
-	test_clear();
-	test_comp();
-	test_value_comp();
-	test_count();
-	test_allocator();
-	test_square();
-	test_range_rev_iter_const();
-	test_find();
-	tet_lower_upper_bound();
-	test_equal_range();"""
+	rev_operators(void)
+rev_mli_comp(void)
+ret2(void)
+test_insert_mli()
+test_erase_mli(void)
+test_copy_constructor_mli()
+test_biderection_at(void)
+test_at_mli(void)
+test_at()
+test_push_back()
+test_pop()
+test_clear()
+test_equalibrium()
+test_begin_end()
+test_rbegin_rend()
+test_crbegin_crend()
+test_const_iter()
+test_smaller()
+test_larger()
+test_larger_or_equal()
+test_less_or_equal()
+test_not_equal()
+test_insert()
+test_my_insert()
+test_my_insert_iter()
+test_allocator_const()
+test_fill_vec_constr()
+test_fill_vec_iter_constr()
+test_assign()
+test_assign2()
+test_equal_operator()
+test_copy_constructor()
+test_erase()
+test_erase_with_iter()
+test_swap()
+test_non_member_swap()"""
 str.replace(";", "")
 list_functions = str.split("\n")
 
 for i in list_functions:
     print(f"	std::cout << \" -{i}- \" << std::endl;")
-    print(f"{i};")
+    print(f"	{i};")

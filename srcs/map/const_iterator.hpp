@@ -343,6 +343,7 @@ namespace ft
 			}
 			const_iterator &operator++()
 			{
+				
 				if (before_start)
 					*this  = const_iterator(increment_before_start());
 				else if (is_end)

@@ -5,7 +5,7 @@
 #include <list>
 
 #define TESTED_TYPE int
-#define TESTED_NAMESPACE ft
+#define TESTED_NAMESPACE std
 
 #define T_SIZE_TYPE typename TESTED_NAMESPACE::vector<T>::size_type
 
@@ -13,13 +13,13 @@ template <typename T>
 void	printSize(TESTED_NAMESPACE::vector<T> const &vct, bool print_content = true)
 {
 	const T_SIZE_TYPE size = vct.size();
-	const T_SIZE_TYPE capacity = vct.capacity();
-	const std::string isCapacityOk = (capacity >= size) ? "OK" : "KO";
+	// const T_SIZE_TYPE capacity = vct.capacity();
+	// const std::string isCapacityOk = (capacity >= size) ? "OK" : "KO";
 	// Cannot limit capacity's max value because it's implementation dependent
 
 	std::cout << "size: " << size << std::endl;
-	std::cout << "capacity: " << isCapacityOk << std::endl;
-	std::cout << "max_size: " << vct.max_size() << std::endl;
+	// std::cout << "capacity: " << isCapacityOk << std::endl;
+	// std::cout << "max_size: " << vct.max_size() << std::endl;
 	if (print_content)
 	{
 		typename TESTED_NAMESPACE::vector<T>::const_iterator it = vct.begin();
@@ -141,11 +141,11 @@ int		rev_mli_comp(void)
 }
 int		ret2(void)
 {
-	const int size = 5;
+	const int size = 100;
 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it = vct.rbegin();
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator ite = vct.rbegin();
-std::cout << "size, capacity = " << vct.size() << "   " <<vct.capacity() << std::endl;
+	std::cout << "size " << vct.size() << std::endl;
 	std::cout << "begin, end " << vct.begin().base() << " " << vct.end().base() << std::endl;
 	std::cout << "it , ite " << it.base().base() << ", " << ite.base().base() << std::endl; 
 	for (int i = 0; i < size; ++i)
@@ -156,10 +156,8 @@ std::cout << "size, capacity = " << vct.size() << "   " <<vct.capacity() << std:
 	std::cout << "address "<< it.base().base() << " it = " << *it << "   ,  it + 5 = ";
 	it = it + 5;
 	std::cout << *it << std::endl;
-	std::cout << "address "<< it.base().base() << " it = " << *it << "   ,  1 + it = ";
+	// std::cout << "address "<< it.base().base() << " it = " << *it << "   ,  1 + it = ";
 	it = 1 + it;
-	std::cout << *it << std::endl;
-	std::cout << "address "<< it.base().base() << " it = " << *it << "   ,  it - 4 = ";
 	it = it - 4;
 	std::cout << *it << std::endl;
 
@@ -251,6 +249,7 @@ void test_erase_mli(void)
 
 }
 
+
 void test_copy_constructor_mli()
 {
 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(5);
@@ -339,43 +338,38 @@ int		test_at_mli(void)
 void	test_at()
 {
 	std::vector<int> original;
-	ft::vector<int>	mine;
 
 	for (int i = 0; i < 100; i++)
 	{
 		original.push_back(i);
-		mine.push_back(i);
 	}
 	for (int i = 0; i < 100 ; i++)
 	{
-		std::cout << "at original " << original.at(i) << std::endl;			
-		std::cout << "at mine " << mine.at(i) << std::endl;			
+		std::cout << "at original " << original.at(i) << std::endl;				
 		
 	}	
 	std::cout << "back original " << original.back() << " front ";
 	std::cout << original.front() << std::endl;	
-	std::cout << "back mine " << mine.back() << " front ";
-	std::cout << mine.front() << std::endl;
 }
 
 void	test_push_back()
 {
-	ft::vector<int> a;
+	std::vector<int> a;
 	a.back();
-	std::cout <<  a.back() << std::endl;
+	// std::cout <<  a.back() << std::endl;
 	std::cout << "yes empty " << a.empty() << std::endl; 
 	std::cout << "NO empty " << a.empty() << std::endl; 
 	for (int i = 0; i < 100000; i++)
 	{
 		a.push_back(i);
-		std::cout <<  a[i] << " capacity = " << a.capacity() <<std::endl;
+		std::cout <<  a[i] << " size = " << a.size() <<std::endl;
 	}
 };
 
 void	test_pop()
 {
 	std::vector<int> brand;
-	ft::vector<int> copy;
+	std::vector<int> copy;
 	for (int i = 0; i < 1000;i ++)
 	{
 		brand.push_back(i);
@@ -395,7 +389,7 @@ void	test_pop()
 void	test_clear()
 {
 	std::vector<int> brand;
-	ft::vector<int> copy;
+	std::vector<int> copy;
 	for (int i = 0; i < 1000;i ++)
 	{
 		brand.push_back(i);
@@ -407,16 +401,16 @@ void	test_clear()
 	copy.clear();
 	std::cout << "Size after clear ";
 	std::cout << brand.size() << " == " << copy.size() << std::endl;
-	std::cout << "Capacity after clear ";
-	std::cout << brand.capacity() << " == " << copy.capacity() << std::endl;
+	// std::cout << "Capacity after clear ";
+	// std::cout << brand.capacity() << " == " << copy.capacity() << std::endl;
 	brand.get_allocator();
 	copy.get_allocator();
 }
 
 void	test_equalibrium()
 {
-	ft::vector<int> brand;
-	ft::vector<int> copy;
+	std::vector<int> brand;
+	std::vector<int> copy;
 	for (int i = 0; i < 10;i ++)
 	{
 		brand.push_back(i);
@@ -433,8 +427,8 @@ void	test_equalibrium()
 
 void	test_begin_end()
 {
-	ft::vector<int> a;
-	ft::vector<int>::iterator it;
+	std::vector<int> a;
+	std::vector<int>::iterator it;
 	for (int i = 10; i < 100; i++)
 		a.push_back(i);
 	for (it = a.begin(); it != a.end(); it++)
@@ -442,8 +436,8 @@ void	test_begin_end()
 }
 void	test_rbegin_rend()
 {
-	ft::vector<int> a;
-	ft::vector<int>::reverse_iterator it;
+	std::vector<int> a;
+	std::vector<int>::reverse_iterator it;
 	for (int i = 10; i < 100; i++)
 		a.push_back(i);
 	for (it = a.rbegin(); it != a.rend(); it++)
@@ -451,8 +445,8 @@ void	test_rbegin_rend()
 }
 void	test_crbegin_crend()
 {
-	ft::vector<int> a;
-	ft::vector<int>::const_reverse_iterator it;
+	std::vector<int> a;
+	std::vector<int>::const_reverse_iterator it;
 	for (int i = 10; i < 100; i++)
 		a.push_back(i);
 	for (it = a.rbegin(); it != a.rend(); it++)
@@ -473,8 +467,8 @@ void	test_const_iter()
 
 void	test_smaller()
 {
-	ft::vector<int> brand;
-	ft::vector<int> copy;
+	std::vector<int> brand;
+	std::vector<int> copy;
 	for (int i = 0; i < 10;i ++)
 	{
 		brand.push_back(0);
@@ -490,8 +484,8 @@ void	test_smaller()
 }
 void	test_larger()
 {
-	ft::vector<int> brand;
-	ft::vector<int> copy;
+	std::vector<int> brand;
+	std::vector<int> copy;
 	for (int i = 0; i < 10;i ++)
 	{
 		brand.push_back(0);
@@ -507,8 +501,8 @@ void	test_larger()
 }
 void	test_larger_or_equal()
 {
-	ft::vector<int> brand;
-	ft::vector<int> copy;
+	std::vector<int> brand;
+	std::vector<int> copy;
 	for (int i = 0; i < 10;i ++)
 	{
 		brand.push_back(0);
@@ -524,8 +518,8 @@ void	test_larger_or_equal()
 }
 void	test_less_or_equal()
 {
-	ft::vector<int> brand;
-	ft::vector<int> copy;
+	std::vector<int> brand;
+	std::vector<int> copy;
 	for (int i = 0; i < 10;i ++)
 	{
 		brand.push_back(0);
@@ -541,8 +535,8 @@ void	test_less_or_equal()
 }
 void	test_not_equal()
 {
-	ft::vector<int> brand;
-	ft::vector<int> copy;
+	std::vector<int> brand;
+	std::vector<int> copy;
 	for (int i = 0; i < 10;i ++)
 	{
 		brand.push_back(0);
@@ -567,7 +561,7 @@ void	test_insert()
 
 void	test_my_insert()
 {
-	ft::vector<int> a;
+	std::vector<int> a;
 	a.push_back(1);
 	a.push_back(2);
 	a.push_back(3);
@@ -580,7 +574,7 @@ void	test_my_insert()
 
 void	test_my_insert_iter()
 {
-	ft::vector<int> a;
+	std::vector<int> a;
 	a.push_back(1);
 	a.push_back(2);
 	a.push_back(3);
@@ -594,12 +588,12 @@ void	test_my_insert_iter()
 void	test_allocator_const()
 {
     std::allocator<int> myAlloc; // Define an allocator object
-    ft::vector<int, std::allocator<int> > myVector(myAlloc); // Create a vector object with specified allocator
+    std::vector<int, std::allocator<int> > myVector(myAlloc); // Create a vector object with specified allocator
     std::cout << "Vector size is: " << myVector.size() << std::endl; // Output the size of the vector
 }
 void	test_fill_vec_constr()
 {
-	ft::vector<int> a(10, 1);
+	std::vector<int> a(10, 1);
 	for ( int i =  0; i < 10; i++)
 		std::cout << a[i] << std::endl;
 }
@@ -607,7 +601,7 @@ void	test_fill_vec_constr()
 void	test_fill_vec_iter_constr()
 {
 	int arr[]= {1, 2 , 3, 4};
-	ft::vector<int> a(arr, arr + 4);
+	std::vector<int> a(arr, arr + 4);
 	arr[0] = 2;
 	for ( int i =  0; i < 4; i++)
 		std::cout << a[i] << std::endl;
@@ -615,7 +609,7 @@ void	test_fill_vec_iter_constr()
 
 void	test_assign()
 {
-	ft::vector<int> a;
+	std::vector<int> a;
 
 	a.assign(10, 1);
 	for ( int i =  0; i < 10; i++)
@@ -623,38 +617,38 @@ void	test_assign()
 }
 void	test_assign2()
 {
-    ft::vector<int> myVector;
+    std::vector<int> myVector;
 
     int values[] = {1, 2, 3, 4, 5};
     myVector.assign(values, values + 5);
 
     std::cout << "Vector values: ";
-    for (ft::vector<int>::iterator it = myVector.begin(); it != myVector.end(); ++it) {
+    for (std::vector<int>::iterator it = myVector.begin(); it != myVector.end(); ++it) {
         std::cout << *it << " ";
     }
     std::cout << std::endl;
 }
 void	test_equal_operator()
 {
-	ft::vector<int> a(10, 1);
-	ft::vector<int>b;
+	std::vector<int> a(10, 1);
+	std::vector<int>b;
 	b = a;
 };
 
 void	test_copy_constructor()
 {
-	ft::vector<int> a(10,1);
-	ft::vector<int> b(a);
+	std::vector<int> a(10,1);
+	std::vector<int> b(a);
 	for ( int i =  0; i < 10; i++)
 		std::cout << b[i] << std::endl;
 }
 void	test_erase()
 {
-   ft::vector<int> myVector(10, 1);
+   std::vector<int> myVector(10, 1);
 //    std::vector<int>::iterator its = myVector.begin();
    	myVector.erase(myVector.end() - 1);
     std::cout << "Vector values: ";
-    for (ft::vector<int>::iterator it = myVector.begin(); it != myVector.end(); ++it)
+    for (std::vector<int>::iterator it = myVector.begin(); it != myVector.end(); ++it)
         std::cout << *it << " ";
 
 }
@@ -662,11 +656,11 @@ void	test_erase()
 void	test_erase_with_iter()
 {
 	//test erase(iterator first, iterator last) of std
-	ft::vector<int> a(10, 1);
-	ft::vector<int>::iterator its = a.begin();
+	std::vector<int> a(10, 1);
+	std::vector<int>::iterator its = a.begin();
 	a.erase(its + 1, a.end());
 	std::cout << "Vector values: ";
-	for (ft::vector<int>::iterator it = a.begin(); it != a.end(); ++it)
+	for (std::vector<int>::iterator it = a.begin(); it != a.end(); ++it)
 		std::cout << *it << " ";
 
 }
@@ -689,18 +683,18 @@ void	test_swap()
 };
 void	test_non_member_swap()
 {
-  ft::vector<int> foo (3,100);   // three ints with a value of 100
-  ft::vector<int> bar (5,200);   // five ints with a value of 200
+  std::vector<int> foo (3,100);   // three ints with a value of 100
+  std::vector<int> bar (5,200);   // five ints with a value of 200
 
   foo.swap(bar);
 
   std::cout << "foo contains:";
-  for (ft::vector<int>::iterator it = foo.begin(); it!=foo.end(); ++it)
+  for (std::vector<int>::iterator it = foo.begin(); it!=foo.end(); ++it)
     std::cout << ' ' << *it;
   std::cout << '\n';
 
   std::cout << "bar contains:";
-  for (ft::vector<int>::iterator it = bar.begin(); it!=bar.end(); ++it)
+  for (std::vector<int>::iterator it = bar.begin(); it!=bar.end(); ++it)
     std::cout << ' ' << *it;
   std::cout << '\n';
 };

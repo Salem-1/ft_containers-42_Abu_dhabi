@@ -102,6 +102,8 @@ class vector
 			const allocator_type& alloc = allocator_type()) : allocator(alloc),
 				  _capacity(0), _size(n), max_capacity(allocator.max_size())
 			{
+				if (n > max_capacity)
+					throw (std::length_error("cannot create ft::vector larger than max_size()"));
 				_capacity = update_capacity(n);
 				arr = allocator.allocate(_capacity);
 				for (size_type i = 0; i < _size; i++)
@@ -217,8 +219,8 @@ class vector
 		};
 		void	reserve(size_type n)
 		{
-			// if (n > max_capacity())
-			// 	throw (std::length_error("n > max size"));
+			if (n > max_capacity)
+				throw (std::length_error("n > max size"));
 			if (n <= _capacity)
 				return ;
 			old_capacity = _capacity;
