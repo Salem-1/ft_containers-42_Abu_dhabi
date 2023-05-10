@@ -74,8 +74,9 @@ namespace ft
 // 			iterator(const_pointer ptr): _node(ptr), is_end(0), before_start(0){};
 // 			iterator(const iterator& it): _node(it.base()), is_end(it.end), before {};
 			template <typename input_iterator>		
-			iterator(const iterator<input_iterator>& it): _node(it.base()), is_end(0), before_start(0)
+			iterator(const iterator<input_iterator>& it): _node(it.base()), is_end(it.get_end()), before_start(it.get_before_start())
 			{
+				std::cout << "called this constructor" << std::endl;
 				if (it.base())
 					_val = it.base()->key_val;
 				else
@@ -469,10 +470,31 @@ namespace ft
 	template < class iter1, class iter2>
 	bool operator==(const iterator<iter1>& lhs, const iterator<iter2>& rhs)
 	{
+		// if ((lhs.get_before_start() == rhs.get_before_start()
+		// 		|| lhs.get_end() == rhs.get_end()))
+		// {
+		// 	return (true);
+		// }
 		if (!lhs.base() && !rhs.base())
+		{
+			std::cout << "no base" << std::endl;
 			return (true);
+		}
 		else if (!lhs.base() || !rhs.base())
+		{
+			if (lhs.get_before_start() == rhs.get_before_start()
+				&& lhs.get_end() == rhs.get_end())
+				return (true);
+			// std:: cout << "one without base" << std::endl;
 			return (false);
+		}
+		// if (lhs.get_before_start() == rhs.get_before_start()
+		// 		&& lhs.get_end() == rhs.get_end()
+		// 	 	&& lhs.base() == rhs.base())
+		// 	std::cout << "the are equal" << std::endl;
+		// else
+		// 	std::cout << "the are NOT equal" << std::endl;
+			
 		return (lhs.get_before_start() == rhs.get_before_start()
 				&& lhs.get_end() == rhs.get_end()
 			 	&& lhs.base() == rhs.base());
@@ -485,13 +507,13 @@ namespace ft
 	template < class iter1, class iter2>
 	bool operator< (const iterator<iter1>& lhs, const iterator<iter2>& rhs)
 	{
-		return (lhs->first < rhs->first);
+		return (lhs.base() < rhs.base());
 	};
 	
 	template < class iter1, class iter2>
 	bool operator> (const iterator<iter1>& lhs, const iterator<iter2>& rhs)
 	{
-		return (lhs->first > rhs->first);
+		return (lhs.base() > rhs.base());
 	};
 	template < class iter1, class iter2>
 	bool operator>= (const iterator<iter1>& lhs, const iterator<iter2>& rhs)

@@ -459,9 +459,10 @@ namespace ft
 			// }
 
  	};
-		template < class iter1, class iter2>
+	template < class iter1, class iter2>
 	bool operator==(const const_iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
 	{
+		
 		if (!lhs.base() && !rhs.base())
 			return (true);
 		else if (!lhs.base() || !rhs.base())

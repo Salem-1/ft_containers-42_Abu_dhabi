@@ -357,7 +357,7 @@ namespace ft
 		}
 		//--------------------------END INSERT---------------------//
 	private:
-		tree	*do_find(const key_type &k, tree *root)
+		tree	*do_find(const key_type &k, tree *root) const
 		{
 			if (!root || k == root->key_val.first)
 				return (root);
@@ -369,17 +369,21 @@ namespace ft
 	public:
 		iterator find (const key_type& k)
 		{
+			// std::cout << "\nNormal find" << std::endl;
 			tree *searched_node = do_find(k, get_root());
 			if (!searched_node)
+			{
 				return (end());
+			}
 			return (iterator(searched_node));
 		};
 		const_iterator find (const key_type& k) const
 		{
+			// std::cout << "\nconst find" << std::endl;
 			tree *searched_node = do_find(k, get_root());
 			if (!searched_node)
 				return (end());
-			return (iterator(searched_node));
+			return (const_iterator(searched_node));
 		};
 		//------------------------DELETION--------------------// 
 	private:
@@ -1011,6 +1015,54 @@ template <class InputIterator1, class InputIterator2>
 		// x = y;
 		// y = tmp;
 	};
+	template < class iter1, class iter2>
+	bool operator==(const const_iterator<iter1>& lhs, const iterator<iter2>& rhs)
+	{
+			// 	if (lhs.get_before_start() == rhs.get_before_start()
+			// 	|| lhs.get_end() == rhs.get_end())
+			// return (true);
+		if (!lhs.base() && !rhs.base())
+			return (true);
+		else if (!lhs.base() || !rhs.base())
+			return (false);
+		return (lhs.get_before_start() == rhs.get_before_start()
+				&& lhs.get_end() == rhs.get_end()
+			 	&& lhs.base() == rhs.base());
+	};
+		template < class iter1, class iter2>
+	bool operator!=(const iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
+	{
+		return (!(lhs == rhs));
+	}
+	// template < class iter1, class iter2>
+	// bool operator!=(const iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
+	// {
+	// 	return (!(lhs == rhs));
+	// }
+	template < class iter1, class iter2>
+	bool operator< (const iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
+	{
+		return (lhs->first < rhs->first);
+	};
+	
+	template < class iter1, class iter2>
+	bool operator> (const iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
+	{
+		return (lhs->first > rhs->first);
+	};
+	template < class iter1, class iter2>
+	bool operator>= (const iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
+	{
+		return (lhs->first >= rhs->first);
+	};
+	template < class iter1, class iter2>
+	bool operator<= (const iterator<iter1>& lhs, const const_iterator<iter2>& rhs)
+	{
+		if (lhs == rhs)
+			return (true);
+		return (lhs < rhs);
+	};
+	
 }
 #endif
 
