@@ -607,7 +607,7 @@ namespace ft
 		  	    return RR_rotate(root);
 		  	  }
 		  	}
-		  	if (balanceFactor < -1) 
+		  	else if (balanceFactor < -1) 
 			{
 		  		if (getBalanceFactor(root->right) <= 0)
 		  	    	return LL_rotate(root);

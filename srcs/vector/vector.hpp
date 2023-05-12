@@ -68,9 +68,11 @@ class vector
 		value_type	*vec_realloc()
 		{
 			value_type	*tmp = allocator.allocate(_capacity, 0);
+			
+			// allocator_type::construct(&tmp[i],value_type());
+				// allocator.construct(&tmp[i],value_type());
 			for (size_t i = 0; i < _size; i++)
 				tmp[i] = arr[i];
-			//allocator_type::construct(&tmp[i],&arr[i]);
 			//std::allocator_traits::construct
 			if (old_capacity)
 			{
