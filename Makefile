@@ -17,6 +17,6 @@ clean:
 yalla:
 	docker-compose run --rm app
 	
-up: build run
+up: build run yalla
 
 re: stop clean up
