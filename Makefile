@@ -14,7 +14,9 @@ stop:
 
 clean:
 	docker rmi $(IMAGE_NAME)
-
+yalla:
+	docker-compose run --rm app
+	
 up: build run
 
 re: stop clean up
